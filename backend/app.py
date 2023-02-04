@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-import os
 import sys
-from flask import Flask, jsonify
+from flask import Flask
+from table_apis import inject_table_apis
+from backup_apis import inject_backup_apis
 from common import *
 
 PORT = 2023
@@ -12,16 +13,8 @@ app = Flask(
     static_folder=FRONTEND_PATH,
 )
 
-
-@app.get('/api/list')
-def api_list():
-    tables_names = [
-        os.path.basename(table_path)
-        for table_path in os.listdir(DATA_PATH)
-        if tables_path.endswith('.csv')
-    ]
-    return jsonify(tables_names)
-
+inject_table_apis(app)
+inject_backup_apis(app)
 
 if __name__ == '__main__':
 

@@ -1,21 +1,71 @@
-from os import path
+import os
+import time
+import re
+import pandas as pd
+from typing import NoReturn
 
-BACKEND_PATH = path.dirname(__file__)
-FRONTEND_PATH = path.join(BACKEND_PATH, '../dist')
-DATA_PATH = path.join(BACKEND_PATH, '../data')
+BACKEND_PATH = os.path.dirname(__file__)
+FRONTEND_PATH = os.path.join(BACKEND_PATH, '../frontend')
+DATA_PATH = os.path.join(BACKEND_PATH, '../data')
+BACKUP_PATH = os.path.join(BACKEND_PATH, '../backup')
 
-COLUMNS = [
-    'record_id',  # 编号
-    'student_school',  # 学院（全称）
-    'student_class',  # 班级
-    'student_name',  # 姓名
-    'student_id',  # 学号
-    'activity_length',  # 志愿时长（小时）
-    'activity_date',  # 服务日期
-    'activity_name',  # 志愿项目名称（全称）
-    'activity_type',  # 志愿项目类别
-    'activity_host',  # 举办单位
-    'manager_name',  # 项目负责人姓名
-    'manager_qq',  # 项目负责人QQ号
-    'notes',  # 备注
-]
+DATE_FORMAT = '%Y/%m/%d'
+PATTERN_TABLE_NAME = re.compile(r'^\d{2}$')
+
+INDEX_NAME = 'record_id'
+DTYPES: dict[str, str] = {
+    'student_school': 'string',
+    'student_class': 'string',
+    'student_name': 'string',
+    'student_id': 'string',
+    'activity_length': 'string',
+    'activity_date': 'datetime64',
+    'activity_name': 'string',
+    'activity_type': 'string',
+    'activity_host': 'string',
+    'manager_name': 'string',
+    'manager_qq': 'string',
+    'notes': 'string',
+}
+COLUMNS: list[str] = list(DTYPES.keys())
+
+RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
+RESPONSE_DUPLICATE_TABLE_NAME = ('指定的表已经存在', 403)
+RESPONSE_TABLE_NOT_FOUND = ('指定的表不存在', 400)
+RESPONSE_INVALID_RECORD = ('记录不符合要求', 400)
+RESPONSE_TOO_FREQUENT = ('操作太频繁，请稍后重试', 403)
+RESPONSE_RECORD_NOT_FOUND = ('指定的记录不存在', 400)
+
+
+def is_valid_table_name(table_name: str) -> bool:
+    return PATTERN_TABLE_NAME.match(table_name) != None
+
+
+def get_table_path(table_name: str) -> str:
+    assert is_valid_table_name(table_name)
+    return os.path.join(DATA_PATH, f'{table_name}.csv')
+
+
+def init_table(path: str) -> NoReturn:
+    index = pd.Index(name=INDEX_NAME)
+    df = pd.DataFrame(
+        columns=COLUMNS,
+        index=index,
+    )
+    df.to_csv(path)
+
+
+def read_table(path: str) -> pd.DataFrame:
+    return pd.read_csv(
+        path,
+        index_col=INDEX_NAME,
+        infer_datetime_format=True,
+        dtype=DTYPES,
+    )
+
+
+def save_table(df: pd.DataFrame, path: str) -> NoReturn:
+    df.to_csv(
+        path,
+        date_format=DATE_FORMAT,
+    )
