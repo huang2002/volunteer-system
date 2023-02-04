@@ -12,9 +12,8 @@ if (fs.existsSync(TARGET_PATH)) {
     fs.rmdirSync(TARGET_PATH);
 }
 fs.mkdirSync(TARGET_PATH);
-fs.mkdirSync(
-    path.join(TARGET_PATH, 'backup')
-);
+fs.mkdirSync(path.join(TARGET_PATH, 'backup'));
+fs.mkdirSync(path.join(TARGET_PATH, 'output'));
 
 // copy backend files
 fs.cpSync(

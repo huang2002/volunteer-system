@@ -13,7 +13,6 @@ dist
 dist-ssr
 coverage
 *.local
-releases
 
 /cypress/videos/
 /cypress/screenshots/
@@ -32,3 +31,7 @@ releases
 docs/*
 !docs/documentation.tex
 !docs/documentation.pdf
+
+# custom
+output
+releases
