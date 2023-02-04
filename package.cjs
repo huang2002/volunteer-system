@@ -3,9 +3,16 @@ const fs = require('fs');
 const path = require('path');
 const { version } = require('./package.json');
 
-const BASE_PATH = path.join(__dirname, 'releases');
+const sourcePath = (...paths) => (
+    path.join(__dirname, ...paths)
+);
+
 const TARGET_NAME = `志愿服务信息管理系统v${version}`;
-const TARGET_PATH = path.join(BASE_PATH, TARGET_NAME);
+const TARGET_DIR = sourcePath('releases', TARGET_NAME);
+
+const targetPath = (...paths) => (
+    path.join(TARGET_DIR, ...paths)
+);
 
 function copyDirSync(src, dest) {
     fs.cpSync(src, dest, {
@@ -14,41 +21,49 @@ function copyDirSync(src, dest) {
 }
 
 // reset output directory
-if (fs.existsSync(TARGET_PATH)) {
-    fs.rmdirSync(TARGET_PATH);
+if (fs.existsSync(TARGET_DIR)) {
+    fs.rmdirSync(TARGET_DIR);
 }
-fs.mkdirSync(TARGET_PATH);
-fs.mkdirSync(path.join(TARGET_PATH, 'backup'));
-fs.mkdirSync(path.join(TARGET_PATH, 'output'));
+fs.mkdirSync(TARGET_DIR);
+fs.mkdirSync(targetPath('backup'));
+fs.mkdirSync(targetPath('output'));
 
 // copy backend files
 copyDirSync(
-    path.join(BASE_PATH, 'backend'),
-    path.join(TARGET_PATH, 'backend'),
+    sourcePath('backend'),
+    targetPath('backend'),
 );
 
 // copy frontend files
 copyDirSync(
-    path.join(BASE_PATH, 'dist'),
-    path.join(TARGET_PATH, 'frontend'),
+    sourcePath('dist'),
+    targetPath('frontend'),
 );
 
 // copy template files
 copyDirSync(
-    path.join(BASE_PATH, 'template'),
-    path.join(TARGET_PATH, 'template'),
+    sourcePath('template'),
+    targetPath('template'),
 );
 
 // copy other files
 fs.copyFileSync(
-    path.join(BASE_PATH, 'launch.bat'),
-    path.join(TARGET_PATH, '启动.bat'),
+    sourcePath('scripts/launch.bat'),
+    targetPath('启动（Windows）.bat'),
 );
 fs.copyFileSync(
-    path.join(BASE_PATH, 'launch.bash'),
-    path.join(TARGET_PATH, '启动.bash'),
+    sourcePath('scripts/launch.bash'),
+    targetPath('启动（MacOS/Linux）.bash'),
 );
 fs.copyFileSync(
-    path.join(BASE_PATH, 'docs/documentation.pdf'),
-    path.join(TARGET_PATH, '说明书.pdf'),
+    sourcePath('scripts/install-deps.bat'),
+    targetPath('安装依赖（Windows）.bat'),
+);
+fs.copyFileSync(
+    sourcePath('scripts/install-deps.bash'),
+    targetPath('安装依赖（MacOS/Linux）.bash'),
+);
+fs.copyFileSync(
+    sourcePath('docs/documentation.pdf'),
+    targetPath('说明书.pdf'),
 );
