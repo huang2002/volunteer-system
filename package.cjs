@@ -7,6 +7,12 @@ const BASE_PATH = path.join(__dirname, 'releases');
 const TARGET_NAME = `志愿服务信息管理系统v${version}`;
 const TARGET_PATH = path.join(BASE_PATH, TARGET_NAME);
 
+function copyDirSync(src, dest) {
+    fs.cpSync(src, dest, {
+        recursive: true,
+    });
+}
+
 // reset output directory
 if (fs.existsSync(TARGET_PATH)) {
     fs.rmdirSync(TARGET_PATH);
@@ -16,19 +22,19 @@ fs.mkdirSync(path.join(TARGET_PATH, 'backup'));
 fs.mkdirSync(path.join(TARGET_PATH, 'output'));
 
 // copy backend files
-fs.cpSync(
+copyDirSync(
     path.join(BASE_PATH, 'backend'),
     path.join(TARGET_PATH, 'backend'),
 );
 
 // copy frontend files
-fs.cpSync(
+copyDirSync(
     path.join(BASE_PATH, 'dist'),
-    path.join(TARGET_PATH, 'dist'),
+    path.join(TARGET_PATH, 'frontend'),
 );
 
 // copy template files
-fs.cpSync(
+copyDirSync(
     path.join(BASE_PATH, 'template'),
     path.join(TARGET_PATH, 'template'),
 );
