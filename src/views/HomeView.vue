@@ -1,14 +1,26 @@
 <script setup lang="ts">
 import { FilePdfOutlined } from '@ant-design/icons-vue';
 
+// eslint-disable-next-line no-undef
+const VERSION = 'v' + __VERSION__;
 const REPO_URL = 'https://github.com/huang2002/volunteer-system';
 </script>
 
 <template>
   <a-typography id="home-view" class="view">
+
     <a-typography-title :level="2">
       欢迎使用“志愿服务管理系统”！
     </a-typography-title>
+
+    <a-typography-paragraph>
+      当前系统版本：
+      <a-typography-text code>
+        {{ VERSION }}
+      </a-typography-text>
+      。
+    </a-typography-paragraph>
+
     <a-typography-paragraph>
       关于如何使用此系统，请参考文件夹中的
       <a-typography-text code>
@@ -17,6 +29,7 @@ const REPO_URL = 'https://github.com/huang2002/volunteer-system';
       </a-typography-text>
       。
     </a-typography-paragraph>
+
     <a-typography-paragraph>
       如果发现系统本身有问题，
       或是有需要改进的地方，
@@ -28,7 +41,9 @@ const REPO_URL = 'https://github.com/huang2002/volunteer-system';
         提交Issue
       </a-typography-link>
       进行反馈。
-    </a-typography-paragraph><a-typography-paragraph>
+    </a-typography-paragraph>
+
+    <a-typography-paragraph>
       本项目的
       <a-typography-text strong>GitHub仓库</a-typography-text>
       ：
@@ -40,6 +55,7 @@ const REPO_URL = 'https://github.com/huang2002/volunteer-system';
       </a-typography-link>
       。
     </a-typography-paragraph>
+
   </a-typography>
 </template>
 

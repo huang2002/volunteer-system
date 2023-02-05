@@ -3,8 +3,8 @@
 </script>
 
 <template>
-  <div id="table-view" class="view">
-    table-view
+  <div id="export-view" class="view">
+    export-view
   </div>
 </template>
 
