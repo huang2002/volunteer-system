@@ -19,7 +19,6 @@ DTYPES: dict[str, str] = {
     'student_name': 'string',
     'student_id': 'string',
     'activity_length': 'string',
-    'activity_date': 'datetime64',
     'activity_name': 'string',
     'activity_type': 'string',
     'activity_host': 'string',
@@ -27,7 +26,10 @@ DTYPES: dict[str, str] = {
     'manager_qq': 'string',
     'notes': 'string',
 }
-COLUMNS: list[str] = list(DTYPES.keys())
+DATE_COLUMNS = [
+    'activity_date',
+]
+COLUMNS: list[str] = DATE_COLUMNS + list(DTYPES.keys())
 
 RESPONSE_SUCCESS = ('success', 200)
 RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
@@ -58,6 +60,7 @@ def read_table(path: str) -> pd.DataFrame:
         index_col=INDEX_NAME,
         infer_datetime_format=True,
         dtype=DTYPES,
+        parse_dates=DATE_COLUMNS,
     )
 
 

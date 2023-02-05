@@ -11,7 +11,7 @@ const router = createRouter({
     name: 'home',
     component: HomeView,
   }, {
-    path: '/table/:tableName(\\d+)?',
+    path: '/table',
     name: 'table',
     component: TableView,
   }, {

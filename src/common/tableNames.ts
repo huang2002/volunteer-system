@@ -3,7 +3,7 @@ import { message } from 'ant-design-vue';
 
 const validateTableNames = (names: unknown): names is string[] => (
     Array.isArray(names)
-    && names.every(v => (typeof v !== 'string'))
+    && names.every(v => (typeof v === 'string'))
 );
 
 export const tableNames = ref<string[]>([]);

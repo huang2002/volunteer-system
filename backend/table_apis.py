@@ -32,11 +32,15 @@ def inject_table_apis(app: Flask):
             return RESPONSE_INVALID_TABLE_NAME
 
         table_path = get_table_path(table_name)
-        if os.path.exists(table_path):
-            return RESPONSE_DUPLICATE_TABLE_NAME
+        if not os.path.exists(table_path):
+            return RESPONSE_TABLE_NOT_FOUND
 
         df = read_table(table_path)
-        return df.to_dict('records')
+        for col in DATE_COLUMNS:
+            df[col] = df[col].dt.strftime(DATE_FORMAT)
+        df.fillna('', inplace=True)
+        df.reset_index(inplace=True)
+        return jsonify(df.to_dict('records'))
 
     @app.post('/api/append/<table_name>')
     def append_record(table_name: str):
@@ -65,6 +69,7 @@ def inject_table_apis(app: Flask):
             columns=COLUMNS,
             index=record_index,
             data=[record[key] for key in COLUMNS],
+            dtype=DTYPES,
         )
         df_result = df_source.append(df_addition)
         save_table(df_result, table_path)

@@ -1,14 +1,34 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
 import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, GithubOutlined, HomeOutlined, TableOutlined } from '@ant-design/icons-vue';
-import { onBeforeMount, ref } from 'vue';
+import { onMounted, ref, watch, type Component } from 'vue';
 import { updateTableNames } from './common/tableNames';
+
+onMounted(updateTableNames);
 
 // eslint-disable-next-line no-undef
 const VERSION = 'v' + __VERSION__;
 const selectedMenuKeys = ref(['home']);
 
-onBeforeMount(updateTableNames);
+const route = useRoute();
+watch(route, (rt) => {
+  if (selectedMenuKeys.value[0] !== rt.name) {
+    selectedMenuKeys.value = [rt.name as string];
+  }
+});
+
+interface LinkInfo {
+  name: string;
+  icon: Component;
+  text: string;
+}
+
+const links: LinkInfo[] = [
+  { name: 'home', icon: HomeOutlined, text: '欢迎页面' },
+  { name: 'table', icon: TableOutlined, text: '增删改查' },
+  { name: 'export', icon: ExportOutlined, text: '生成报表' },
+  { name: 'backup', icon: DatabaseOutlined, text: '数据备份' },
+];
 </script>
 
 <template>
@@ -44,28 +64,10 @@ onBeforeMount(updateTableNames);
         </h2>
 
         <a-menu id="sider-menu" theme="dark" v-model:selectedKeys="selectedMenuKeys">
-          <a-menu-item key="home" @click="$router.push('/')">
+          <a-menu-item v-for="link in links" :key="link.name" @click="$router.push({ name: link.name })">
             <a-space>
-              <HomeOutlined />
-              欢迎页面
-            </a-space>
-          </a-menu-item>
-          <a-menu-item key="table" @click="$router.push('/table')">
-            <a-space>
-              <TableOutlined />
-              增删改查
-            </a-space>
-          </a-menu-item>
-          <a-menu-item key="export" @click="$router.push('/export')">
-            <a-space>
-              <ExportOutlined />
-              生成报表
-            </a-space>
-          </a-menu-item>
-          <a-menu-item key="backup" @click="$router.push('/backup')">
-            <a-space>
-              <DatabaseOutlined />
-              数据备份
+              <component :is="link.icon" />
+              {{ link.text }}
             </a-space>
           </a-menu-item>
         </a-menu>
