@@ -48,10 +48,8 @@ def get_table_path(table_name: str) -> str:
 
 
 def init_table(path: str) -> NoReturn:
-    df = pd.DataFrame(
-        columns=[INDEX_NAME, *COLUMNS],
-    )
-    df.to_csv(path)
+    df = pd.DataFrame(columns=[INDEX_NAME, *COLUMNS])
+    df.to_csv(path, index=False)
 
 
 def read_table(path: str) -> pd.DataFrame:

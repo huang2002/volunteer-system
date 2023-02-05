@@ -7,7 +7,7 @@ def inject_table_apis(app: Flask):
     @app.get('/api/list/tables')
     def list_tables():
         return jsonify([
-            os.path.basename(table_path)
+            os.path.splitext(table_path)[0]
             for table_path in os.listdir(DATA_PATH)
             if table_path.endswith('.csv')
         ])
