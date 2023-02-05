@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from common import *
 
 
@@ -6,11 +6,11 @@ def inject_table_apis(app: Flask):
 
     @app.get('/api/list/tables')
     def list_tables():
-        return [
+        return jsonify([
             os.path.basename(table_path)
             for table_path in os.listdir(DATA_PATH)
             if tables_path.endswith('.csv')
-        ]
+        ])
 
     @app.get('/api/create/table/<table_name>')
     def create_table(table_name: str):
