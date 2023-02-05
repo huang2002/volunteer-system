@@ -9,7 +9,7 @@ def inject_table_apis(app: Flask):
         return jsonify([
             os.path.basename(table_path)
             for table_path in os.listdir(DATA_PATH)
-            if tables_path.endswith('.csv')
+            if table_path.endswith('.csv')
         ])
 
     @app.get('/api/create/table/<table_name>')
@@ -23,6 +23,7 @@ def inject_table_apis(app: Flask):
             return RESPONSE_DUPLICATE_TABLE_NAME
 
         init_table(table_path)
+        return RESPONSE_SUCCESS
 
     @app.get('/api/view/table/<table_name>')
     def view_table(table_name: str):
@@ -67,6 +68,7 @@ def inject_table_apis(app: Flask):
         )
         df_result = df_source.append(df_addition)
         save_table(df_result, table_path)
+        return RESPONSE_SUCCESS
 
     @app.get('/api/delete/<table_name>/<int:record_id>')
     def delete_record(table_name: str, record_id: int):
@@ -84,6 +86,7 @@ def inject_table_apis(app: Flask):
 
         df = df.drop(index=record_id)
         save_table(df, table_path)
+        return RESPONSE_SUCCESS
 
     @app.post('/api/update/<table_name>/<int:record_id>')
     def update_record(table_name: str, record_id: int):
@@ -119,3 +122,4 @@ def inject_table_apis(app: Flask):
             df.loc[record_id, key] = value
 
         save_table(df, table_path)
+        return RESPONSE_SUCCESS
