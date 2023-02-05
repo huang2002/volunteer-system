@@ -117,6 +117,11 @@ def inject_table_apis(app: Flask):
             dtype = DTYPES[key]
             if dtype == 'string':
                 value = str(raw_value)
+            elif dtype == 'uint8':
+                try:
+                    value = int(raw_value)
+                except:
+                    return RESPONSE_INVALID_RECORD
             elif dtype == 'datetime64':
                 try:
                     value = pd.to_datetime(raw_value, format=DATE_FORMAT)

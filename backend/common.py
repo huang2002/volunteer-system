@@ -18,7 +18,7 @@ DTYPES: dict[str, str] = {
     'student_class': 'string',
     'student_name': 'string',
     'student_id': 'string',
-    'activity_length': 'string',
+    'activity_length': 'uint8',
     'activity_name': 'string',
     'activity_type': 'string',
     'activity_host': 'string',

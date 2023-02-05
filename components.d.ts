@@ -7,6 +7,7 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
+    AAlert: typeof import('ant-design-vue/es')['Alert']
     ABackTop: typeof import('ant-design-vue/es')['BackTop']
     AButton: typeof import('ant-design-vue/es')['Button']
     ALayout: typeof import('ant-design-vue/es')['Layout']
@@ -24,6 +25,9 @@ declare module '@vue/runtime-core' {
     ATypographyParagraph: typeof import('ant-design-vue/es')['TypographyParagraph']
     ATypographyText: typeof import('ant-design-vue/es')['TypographyText']
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
+    copy: typeof import('./src/components/RecordModel copy.vue')['default']
+    CreateTableModel: typeof import('./src/components/CreateTableModel.vue')['default']
+    RecordModel: typeof import('./src/components/RecordModel.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TableModel: typeof import('./src/components/TableModel.vue')['default']

@@ -1,12 +1,20 @@
 <script setup lang="ts">
 import { tableNames } from '@/common/tableNames';
-import { DeleteOutlined, EditOutlined, InfoCircleOutlined, PlusSquareOutlined, WarningOutlined } from '@ant-design/icons-vue';
-import { message, type TableColumnType } from 'ant-design-vue';
-import { ref, watch } from 'vue';
+import { DeleteOutlined, EditOutlined, PlusSquareOutlined } from '@ant-design/icons-vue';
+import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
+import { computed, ref, watch } from 'vue';
 import { tableActionDisabled, updateRecord, deleteRecord } from '../common/tableActions';
 import RecordModel from '../components/RecordModel.vue';
+import type { ActivityRecord } from '../common/recordModel';
 
 const activeTableName = ref('');
+
+const tableNameOptions = computed((): RadioGroupProps['options'] => (
+  tableNames.value.map((name) => ({
+    label: `表 ${name}`,
+    value: name,
+  }))
+));
 
 const columns: TableColumnType[] = [
   { title: '记录编号', dataIndex: 'record_id', fixed: 'left' },
@@ -25,7 +33,7 @@ const columns: TableColumnType[] = [
   { title: '操作', key: 'actions', fixed: 'right' },
 ];
 
-const dataSource = ref<any[]>([]);
+const dataSource = ref<ActivityRecord[]>([]);
 const updateDataSource = async () => {
   const tableName = activeTableName.value;
   const response = await fetch(`/api/view/table/${tableName}`);
@@ -34,14 +42,14 @@ const updateDataSource = async () => {
       const result = await response.json();
       dataSource.value = result;
     } catch {
-      message.error('更新表名时出错');
+      message.error('更新数据时出错');
     }
   } else {
     try {
       const errorText = await response.text();
       message.error(errorText);
     } catch {
-      message.error('获取表名时出错');
+      message.error('获取数据时出错');
     }
   }
 };
@@ -51,40 +59,37 @@ watch(activeTableName, updateDataSource);
 const createTable = () => {
 
 };
-
-const recordModelVisibility = ref(false);
-const showRecordModel = () => {
-
-};
 </script>
 
 <template>
   <div id="table-view" class="view">
 
-    <a-space id="toolbar">
+    <section id="toolbar">
       <a-radio-group v-model:value="activeTableName" v-bind="{
-        id: 'toolbar-radio',
+        id: 'toolbar-radio-group',
         optionType: 'button',
         buttonStyle: 'solid',
-        options: tableNames,
+        options: tableNameOptions,
       }" />
-      <a-button @click="createTable">
+      <a-button class="toolbar-button" @click="createTable">
         <template #icon>
           <PlusSquareOutlined />
         </template>
         新建表格
       </a-button>
-    </a-space>
+    </section>
 
-    <a-space v-if="!activeTableName">
-      <InfoCircleOutlined />
-      请在上方选择想要查看/编辑的表格名称。
-    </a-space>
+    <a-alert v-if="!activeTableName" v-bind="{
+      type: 'info',
+      showIcon: true,
+      message: '请在上方选择想要查看/编辑的表格名称。',
+    }" />
 
-    <a-space v-else-if="!tableNames.includes(activeTableName)">
-      <WarningOutlined />
-      指定的表不存在，请重新选择，或刷新重试。
-    </a-space>
+    <a-alert v-else-if="!tableNames.includes(activeTableName)" v-bind="{
+      type: 'warning',
+      showIcon: true,
+      message: '指定的表不存在，请重新选择，或刷新重试。',
+    }" />
 
     <a-table v-else v-bind="{
       columns,
@@ -104,9 +109,9 @@ const showRecordModel = () => {
 
         <template v-else-if="(column as TableColumnType).key === 'actions'">
 
-          <a-button type="link" :disabled="tableActionDisabled" @click="updateRecord(
+          <a-button type="link" size="small" :disabled="tableActionDisabled" @click="updateRecord(
             activeTableName,
-            record.record_id,
+            (record as ActivityRecord),
             updateDataSource,
           )">
             <template #icon>
@@ -115,9 +120,9 @@ const showRecordModel = () => {
             修改
           </a-button>
 
-          <a-button type="link" danger :disabled="tableActionDisabled" @click="deleteRecord(
+          <a-button type="link" size="small" danger :disabled="tableActionDisabled" @click="deleteRecord(
             activeTableName,
-            record.record_id,
+            (record as ActivityRecord).record_id,
             updateDataSource,
           )">
             <template #icon>
@@ -140,5 +145,17 @@ const showRecordModel = () => {
 </template>
 
 <style scoped>
+#toolbar {
+  display: flex;
+  margin-bottom: 1em;
+}
 
+#toolbar-radio-group {
+  flex: 1 0;
+  overflow-x: auto;
+}
+
+.toolbar-button {
+  margin-left: 0.5em;
+}
 </style>
