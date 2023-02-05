@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { tableNames } from '@/common/tableNames';
-import { DeleteOutlined, EditOutlined, PlusSquareOutlined } from '@ant-design/icons-vue';
+import { tableNames, updateTableNames } from '../common/tableNames';
+import { DeleteOutlined, EditOutlined, FormOutlined, PlusSquareOutlined } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch } from 'vue';
-import { tableActionDisabled, updateRecord, deleteRecord } from '../common/tableActions';
+import { tableActionDisabled, updateRecord, deleteRecord, appendRecord } from '../common/tableActions';
 import RecordModel from '../components/RecordModel.vue';
 import type { ActivityRecord } from '../common/recordModel';
 
@@ -57,7 +57,8 @@ const updateDataSource = async () => {
 watch(activeTableName, updateDataSource);
 
 const createTable = () => {
-
+  // TODO:
+  updateTableNames();
 };
 </script>
 
@@ -65,18 +66,31 @@ const createTable = () => {
   <div id="table-view" class="view">
 
     <section id="toolbar">
+
       <a-radio-group v-model:value="activeTableName" v-bind="{
         id: 'toolbar-radio-group',
         optionType: 'button',
         buttonStyle: 'solid',
         options: tableNameOptions,
       }" />
+
       <a-button class="toolbar-button" @click="createTable">
         <template #icon>
           <PlusSquareOutlined />
         </template>
         新建表格
       </a-button>
+
+      <a-button class="toolbar-button" @click="appendRecord(
+        activeTableName,
+        updateDataSource,
+      )">
+        <template #icon>
+          <FormOutlined />
+        </template>
+        添加记录
+      </a-button>
+
     </section>
 
     <a-alert v-if="!activeTableName" v-bind="{

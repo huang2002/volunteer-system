@@ -1,19 +1,5 @@
 import { reactive, ref } from 'vue';
-
-export interface RecordModelState {
-    student_name: string;
-    student_school: string;
-    student_class: string;
-    student_id: string;
-    activity_length: number;
-    activity_date: string;
-    activity_name: string;
-    activity_type: string;
-    activity_host: string;
-    manager_name: string;
-    manager_qq: string;
-    notes: string;
-}
+import type { RecordModelState } from './common';
 
 export interface ActivityRecord extends RecordModelState {
     record_id: number;
@@ -22,9 +8,7 @@ export interface ActivityRecord extends RecordModelState {
 export type RecordModelCallback =
     (submittedRecord: RecordModelState | null) => void;
 
-export const recordModelVisibility = ref(false);
-export const recordModelCallback = ref<null | RecordModelCallback>(null);
-export const recordModelState = reactive<RecordModelState>({
+export const recordModelDefaults: RecordModelState = {
     student_name: '',
     student_school: '',
     student_class: '',
@@ -37,7 +21,11 @@ export const recordModelState = reactive<RecordModelState>({
     manager_name: '',
     manager_qq: '',
     notes: '',
-});
+};
+
+export const recordModelVisibility = ref(false);
+export const recordModelCallback = ref<null | RecordModelCallback>(null);
+export const recordModelState = reactive<RecordModelState>(recordModelDefaults);
 
 export const inputRecord = (
     init: RecordModelState,
