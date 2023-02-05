@@ -48,6 +48,10 @@ copyDirSync(
 
 // copy other files
 fs.copyFileSync(
+    sourcePath('LICENSE'),
+    targetPath('LICENSE'),
+);
+fs.copyFileSync(
     sourcePath('scripts/launch.bat'),
     targetPath('启动（Windows）.bat'),
 );
