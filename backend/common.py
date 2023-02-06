@@ -31,6 +31,16 @@ DATE_COLUMNS = [
 ]
 COLUMNS: list[str] = DATE_COLUMNS + list(DTYPES.keys())
 
+
+def convert_date(x):
+    return pd.to_datetime(x, format=DATE_FORMAT)
+
+
+CONVERTERS = dict(
+    (col, convert_date)
+    for col in DATE_COLUMNS
+)
+
 RESPONSE_SUCCESS = ('success', 200)
 RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
 RESPONSE_DUPLICATE_TABLE_NAME = ('指定的表已经存在', 403)
@@ -55,13 +65,17 @@ def init_table(path: str) -> NoReturn:
 
 
 def read_table(path: str) -> pd.DataFrame:
-    return pd.read_csv(
+    df = pd.read_csv(
         path,
         index_col=INDEX_NAME,
         infer_datetime_format=True,
         dtype=DTYPES,
+        converters=CONVERTERS,
         parse_dates=DATE_COLUMNS,
     )
+    for col in DATE_COLUMNS:
+        df[col] = df[col].astype('datetime64')
+    return df
 
 
 def save_table(df: pd.DataFrame, path: str) -> NoReturn:
