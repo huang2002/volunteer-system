@@ -96,7 +96,7 @@ const onCancel = () => {
           name: 'activity_length',
           addonAfter: '小时',
           min: 0,
-          precision: 0,
+          precision: 2,
           step: 1,
           style: { width: '100%' },
         }" />
@@ -159,7 +159,7 @@ const onCancel = () => {
           allowClear: true,
           showCount: true,
           maxlength: 200,
-          autosize: {
+          autoSize: {
             maxRows: 6,
           },
         }" />

@@ -6,15 +6,13 @@ import {
 } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch } from 'vue';
-import {
-  recordActionDisabled, updateRecord, deleteRecord,
-  appendRecord, appendingRecord,
-} from '@/common/recordActions';
+import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/common/recordActions';
 import { createTable } from '@/common/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
 import type { ActivityRecord } from '@/common/recordModal';
 import CreateTableModal from '@/components/CreateTableModal.vue';
 import { createTableModalVisible } from '@/common/createTableModal';
+import RecordAction from '@/components/RecordAction.vue';
 
 const activeTableName = ref('');
 
@@ -188,23 +186,37 @@ const onRefreshSuccess = () => {
 
         <a-space v-else-if="(column as TableColumnType).key === 'actions'">
 
-          <a-button type="primary" ghost size="small" :disabled="recordActionDisabled" @click="updateRecord(
-            activeTableName,
-            (record as ActivityRecord),
-            updateDataSource,
-          )">
-            <EditOutlined />
-            修改
-          </a-button>
+          <RecordAction v-bind="{
+            title: '修改',
+            color: 'blue',
+            onClick() {
+              updateRecord(
+                activeTableName.value,
+                (record as ActivityRecord),
+                updateDataSource,
+              );
+            },
+          }">
+            <template #icon>
+              <EditOutlined />
+            </template>
+          </RecordAction>
 
-          <a-button danger ghost size="small" :disabled="recordActionDisabled" @click="deleteRecord(
-            activeTableName,
-            (record as ActivityRecord).record_id,
-            updateDataSource,
-          )">
-            <DeleteOutlined />
-            删除
-          </a-button>
+          <RecordAction v-bind="{
+            title: '删除',
+            color: 'red',
+            onClick() {
+              deleteRecord(
+                activeTableName.value,
+                (record as ActivityRecord).record_id,
+                updateDataSource,
+              );
+            },
+          }">
+            <template #icon>
+              <DeleteOutlined />
+            </template>
+          </RecordAction>
 
         </a-space>
 

@@ -68,7 +68,7 @@ def inject_table_apis(app: Flask):
         df_addition = pd.DataFrame(
             columns=COLUMNS,
             index=record_index,
-            data=[record[key] for key in COLUMNS],
+            data=[[record[key] for key in COLUMNS]],
             dtype=DTYPES,
         )
         df_result = df_source.append(df_addition)

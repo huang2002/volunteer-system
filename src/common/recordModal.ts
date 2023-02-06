@@ -53,3 +53,21 @@ export const inputRecord = (
         recordModalVisible.value = true;
     })
 );
+
+export const finishRecord = () => {
+    recordModalPending.value = false;
+    if (
+        recordModalBatchModeAvailable.value
+        && recordModalBatchMode.value
+    ) {
+        Object.assign(recordModalState, {
+            student_name: '',
+            student_school: '',
+            student_class: '',
+            student_id: '',
+        });
+        recordModalForm.value?.clearValidate();
+    } else {
+        recordModalVisible.value = false;
+    }
+};

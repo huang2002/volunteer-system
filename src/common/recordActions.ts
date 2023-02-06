@@ -2,10 +2,7 @@ import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { CONTENT_TYPE_JSON } from './common';
-import {
-    inputRecord, recordModalDefaults, recordModalPending,
-    recordModalVisible, type ActivityRecord,
-} from './recordModal';
+import { finishRecord, inputRecord, recordModalDefaults, type ActivityRecord } from './recordModal';
 
 export const recordActionDisabled = ref(false);
 
@@ -50,8 +47,7 @@ export const updateRecord = async (
     }
 
     recordActionDisabled.value = false;
-    recordModalPending.value = false;
-    recordModalVisible.value = false;
+    finishRecord();
 
 };
 
@@ -80,7 +76,6 @@ export const appendRecord = async (
     if (!submitted) { // canceled
         recordActionDisabled.value = false;
         appendingRecord.value = false;
-        recordModalVisible.value = false;
         return;
     }
 
@@ -106,8 +101,7 @@ export const appendRecord = async (
 
     recordActionDisabled.value = false;
     appendingRecord.value = false;
-    recordModalPending.value = false;
-    recordModalVisible.value = false;
+    finishRecord();
 
 };
 
