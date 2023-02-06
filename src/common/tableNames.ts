@@ -9,7 +9,9 @@ const validateTableNames = (names: unknown): names is string[] => (
 export const tableNames = ref<string[]>([]);
 export const loadingTableNames = ref(false);
 
-export const updateTableNames = async () => {
+export const updateTableNames = async (
+    onSuccess?: () => void,
+) => {
 
     if (loadingTableNames.value) {
         return;
@@ -24,6 +26,7 @@ export const updateTableNames = async () => {
             const result = await response.json();
             if (validateTableNames(result)) {
                 tableNames.value = result;
+                onSuccess?.();
             } else {
                 message.error('后台返回的数据格式有误');
             }

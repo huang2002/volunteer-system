@@ -3,6 +3,7 @@ import { RouterView, useRoute } from 'vue-router';
 import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, GithubOutlined, HomeOutlined, TableOutlined } from '@ant-design/icons-vue';
 import { onMounted, ref, watch, type Component } from 'vue';
 import { updateTableNames } from './common/tableNames';
+import locale from 'ant-design-vue/es/locale/zh_CN';
 
 onMounted(updateTableNames);
 
@@ -32,55 +33,57 @@ const links: LinkInfo[] = [
 </script>
 
 <template>
-  <a-layout id="container">
+  <a-config-provider :locale="locale">
+    <a-layout id="container">
 
-    <a-layout-header id="header">
-      <h1 id="header-title">
-        志愿服务信息管理系统
-        <code id="header-version">
+      <a-layout-header id="header">
+        <h1 id="header-title">
+          志愿服务信息管理系统
+          <code id="header-version">
           {{ VERSION }}
         </code>
-      </h1>
-      <a-button v-bind="{
-        id: 'header-link',
-        type: 'link',
-        size: 'small',
-        href: 'https://github.com/huang2002/volunteer-system',
-      }">
-        <GithubOutlined />
-        huang2002
-      </a-button>
-    </a-layout-header>
+        </h1>
+        <a-button v-bind="{
+          id: 'header-link',
+          type: 'link',
+          size: 'small',
+          href: 'https://github.com/huang2002/volunteer-system',
+        }">
+          <GithubOutlined />
+          huang2002
+        </a-button>
+      </a-layout-header>
 
-    <a-layout>
+      <a-layout>
 
-      <a-layout-sider id="sider">
+        <a-layout-sider id="sider">
 
-        <h2 id="sider-title">
-          <a-space>
-            <AppstoreOutlined />
-            导航菜单
-          </a-space>
-        </h2>
-
-        <a-menu id="sider-menu" theme="dark" v-model:selectedKeys="selectedMenuKeys">
-          <a-menu-item v-for="link in links" :key="link.name" @click="$router.push({ name: link.name })">
+          <h2 id="sider-title">
             <a-space>
-              <component :is="link.icon" />
-              {{ link.text }}
+              <AppstoreOutlined />
+              导航菜单
             </a-space>
-          </a-menu-item>
-        </a-menu>
+          </h2>
 
-      </a-layout-sider>
+          <a-menu id="sider-menu" theme="dark" v-model:selectedKeys="selectedMenuKeys">
+            <a-menu-item v-for="link in links" :key="link.name" @click="$router.push({ name: link.name })">
+              <a-space>
+                <component :is="link.icon" />
+                {{ link.text }}
+              </a-space>
+            </a-menu-item>
+          </a-menu>
 
-      <a-layout-content id="content">
-        <RouterView />
-      </a-layout-content>
+        </a-layout-sider>
+
+        <a-layout-content id="content">
+          <RouterView />
+        </a-layout-content>
+
+      </a-layout>
 
     </a-layout>
-
-  </a-layout>
+  </a-config-provider>
 </template>
 
 <style scoped>

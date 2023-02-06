@@ -1,6 +1,6 @@
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
 
-export interface RecordModelState {
+export interface RecordModalState {
     student_name: string;
     student_school: string;
     student_class: string;

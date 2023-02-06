@@ -1,8 +1,9 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import TableView from '../views/TableView.vue';
-import BackupView from '../views/BackupView.vue';
-import ExportView from '../views/ExportView.vue';
+import HomeView from '@/views/HomeView.vue';
+import TableView from '@/views/TableView.vue';
+import BackupView from '@/views/BackupView.vue';
+import ExportView from '@/views/ExportView.vue';
+import { Modal } from 'ant-design-vue';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -23,6 +24,10 @@ const router = createRouter({
     name: 'export',
     component: ExportView,
   }],
+});
+
+router.beforeEach(() => {
+  Modal.destroyAll();
 });
 
 export default router;

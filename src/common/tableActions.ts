@@ -1,14 +1,12 @@
 import { message } from 'ant-design-vue';
 import { ref } from 'vue';
-import { CONTENT_TYPE_JSON } from './common';
-import { inputRecord, recordModelDefaults, type ActivityRecord } from './recordModel';
+import { createTableModalDefaults, createTableModalPending, createTableModalVisibility, inputTableName, type CreateTableModalState } from './createTableModal';
+import { updateTableNames } from './tableNames';
 
 export const tableActionDisabled = ref(false);
 
-export const updateRecord = async (
-    tableName: string,
-    oldRecord: ActivityRecord,
-    onSuccess: () => void,
+export const createTable = async (
+    onSuccess?: (newTableName: CreateTableModalState) => void,
 ) => {
 
     if (tableActionDisabled.value) {
@@ -16,103 +14,27 @@ export const updateRecord = async (
     }
     tableActionDisabled.value = true;
 
-    const submittedRecord = await inputRecord(oldRecord);
-    if (!submittedRecord) { // canceled
+    const submitted = await inputTableName(createTableModalDefaults);
+    if (!submitted) { // canceled
         tableActionDisabled.value = false;
         return;
     }
 
-    const url = `/api/update/${tableName}/${oldRecord.record_id}`;
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': CONTENT_TYPE_JSON,
-        },
-        body: JSON.stringify(submittedRecord),
-    });
-
+    const response = await fetch(`/api/create/table/${submitted.name}`);
     if (response.status === 200) {
-        onSuccess();
+        await updateTableNames();
+        onSuccess?.(submitted);
     } else {
         try {
             const errorText = await response.text();
             message.error(errorText);
         } catch {
-            message.error('更新数据时出错');
+            message.error('新建表格时出错');
         }
     }
 
+    createTableModalPending.value = false;
+    createTableModalVisibility.value = false;
     tableActionDisabled.value = false;
 
 };
-
-export const appendRecord = async (
-    tableName: string,
-    onSuccess: () => void,
-) => {
-
-    if (tableActionDisabled.value) {
-        return;
-    }
-    tableActionDisabled.value = true;
-
-    const submittedRecord = await inputRecord(recordModelDefaults);
-    if (!submittedRecord) { // canceled
-        tableActionDisabled.value = false;
-        return;
-    }
-
-    const url = `/api/append/${tableName}`;
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': CONTENT_TYPE_JSON,
-        },
-        body: JSON.stringify(submittedRecord),
-    });
-
-    if (response.status === 200) {
-        onSuccess();
-    } else {
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('添加记录时出错');
-        }
-    }
-
-    tableActionDisabled.value = false;
-
-};
-
-export const deleteRecord = async (
-    tableName: string,
-    recordId: number,
-    onSuccess: () => void,
-) => {
-
-    if (tableActionDisabled.value) {
-        return;
-    }
-    tableActionDisabled.value = true;
-
-    // TODO: confirm
-
-    const response = await fetch(`/api/delete/${tableName}/${recordId}`);
-    if (response.status === 200) {
-        onSuccess();
-    } else {
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('删除数据时出错');
-        }
-    }
-
-    tableActionDisabled.value = false;
-
-};
-
-// TODO: append
