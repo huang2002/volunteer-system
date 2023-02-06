@@ -90,16 +90,17 @@ const onRefreshSuccess = () => {
 
     <section id="toolbar">
 
-      <a-button @click="updateTableNames(onRefreshSuccess)" v-bind="{
-        type: 'link',
-        class: 'toolbar-button',
-        loading: loadingTableNames,
-      }">
-        <template #icon>
-          <SyncOutlined />
-        </template>
-        刷新表名
-      </a-button>
+      <a-tooltip color="blue" title="刷新表格列表">
+        <a-button @click="updateTableNames(onRefreshSuccess)" v-bind="{
+          type: 'link',
+          class: 'toolbar-button',
+          loading: loadingTableNames,
+        }">
+          <template #icon>
+            <SyncOutlined />
+          </template>
+        </a-button>
+      </a-tooltip>
 
       <a-radio-group v-model:value="activeTableName" v-bind="{
         id: 'toolbar-radio-group',
