@@ -1,3 +1,4 @@
+import type { FormInstance } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
 import type { RecordModalState } from './common';
 
@@ -23,15 +24,21 @@ export const recordModalDefaults: RecordModalState = {
     notes: '',
 };
 
-export const recordModalVisibility = ref(false);
+export const recordModalVisible = ref(false);
+export const recordModalTitle = ref('?');
 export const recordModalCallback =
     ref<null | RecordModalCallback>(null);
 export const recordModalState =
     reactive<RecordModalState>({ ...recordModalDefaults });
 export const recordModalPending = ref(false);
+export const recordModalForm = ref<FormInstance>();
+export const recordModalBatchMode = ref(true);
+export const recordModalBatchModeAvailable = ref(false);
 
 export const inputRecord = (
+    title: string,
     init: RecordModalState,
+    batchModeAvailable = false,
 ) => (
     new Promise<RecordModalState | null>((resolve) => {
         for (const key in recordModalState) {
@@ -39,7 +46,10 @@ export const inputRecord = (
                 (recordModalState as any)[key] = (init as any)[key];
             }
         }
+        recordModalForm.value?.clearValidate();
+        recordModalTitle.value = title;
+        recordModalBatchModeAvailable.value = batchModeAvailable;
         recordModalCallback.value = resolve;
-        recordModalVisibility.value = true;
+        recordModalVisible.value = true;
     })
 );

@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { createTableModalCallback, createTableModalState, createTableModalVisibility, createTableModalPending } from '@/common/createTableModal';
+import {
+  createTableModalCallback, createTableModalState, createTableModalVisible,
+  createTableModalPending, createTableModalForm,
+} from '@/common/createTableModal';
 
 const onSubmit = () => {
   createTableModalCallback.value?.(createTableModalState);
@@ -8,12 +11,12 @@ const onSubmit = () => {
 
 const onCancel = () => {
   createTableModalCallback.value?.(null);
-  createTableModalVisibility.value = false;
+  createTableModalVisible.value = false;
 };
 </script>
 
 <template>
-  <a-modal v-model:visible="createTableModalVisibility" @ok="onSubmit" @cancel="onCancel" v-bind="{
+  <a-modal v-model:visible="createTableModalVisible" @ok="onSubmit" @cancel="onCancel" v-bind="{
     title: '创建表格',
     footer: null,
     width: 400,
@@ -27,7 +30,7 @@ const onCancel = () => {
       </template>
     </a-alert>
 
-    <a-form @finish="onSubmit" v-bind="{
+    <a-form ref="createTableModalForm" @finish="onSubmit" v-bind="{
       id: 'create-table-form',
       model: createTableModalState,
       labelCol: { span: 5, offset: 3 },

@@ -2,7 +2,10 @@ import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { CONTENT_TYPE_JSON } from './common';
-import { inputRecord, recordModalDefaults, recordModalPending, type ActivityRecord } from './recordModal';
+import {
+    inputRecord, recordModalDefaults, recordModalPending,
+    recordModalVisible, type ActivityRecord,
+} from './recordModal';
 
 export const recordActionDisabled = ref(false);
 
@@ -17,7 +20,10 @@ export const updateRecord = async (
     }
     recordActionDisabled.value = true;
 
-    const submitted = await inputRecord(oldRecord);
+    const submitted = await inputRecord(
+        `修改记录（记录编号：${oldRecord.record_id}）`,
+        oldRecord,
+    );
     if (!submitted) { // canceled
         recordActionDisabled.value = false;
         return;
@@ -45,22 +51,36 @@ export const updateRecord = async (
 
     recordActionDisabled.value = false;
     recordModalPending.value = false;
+    recordModalVisible.value = false;
 
 };
 
+export const appendingRecord = ref(false);
+
 export const appendRecord = async (
     tableName: string,
+    // TODO: init
     onSuccess?: () => void,
 ) => {
 
-    if (recordActionDisabled.value) {
+    if (
+        recordActionDisabled.value
+        || appendingRecord.value
+    ) {
         return;
     }
     recordActionDisabled.value = true;
+    appendingRecord.value = true;
 
-    const submitted = await inputRecord(recordModalDefaults);
+    const submitted = await inputRecord(
+        '添加记录',
+        recordModalDefaults,
+        true,
+    );
     if (!submitted) { // canceled
         recordActionDisabled.value = false;
+        appendingRecord.value = false;
+        recordModalVisible.value = false;
         return;
     }
 
@@ -85,7 +105,9 @@ export const appendRecord = async (
     }
 
     recordActionDisabled.value = false;
+    appendingRecord.value = false;
     recordModalPending.value = false;
+    recordModalVisible.value = false;
 
 };
 

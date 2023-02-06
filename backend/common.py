@@ -9,6 +9,7 @@ FRONTEND_PATH = os.path.join(BACKEND_PATH, '../frontend')
 DATA_PATH = os.path.join(BACKEND_PATH, '../data')
 BACKUP_PATH = os.path.join(BACKEND_PATH, '../backup')
 
+DATE_DTYPE = 'datetime64'
 DATE_FORMAT = '%Y/%m/%d'
 PATTERN_TABLE_NAME = re.compile(r'^\d{2}$')
 
@@ -18,7 +19,7 @@ DTYPES: dict[str, str] = {
     'student_class': 'string',
     'student_name': 'string',
     'student_id': 'string',
-    'activity_length': 'uint8',
+    'activity_length': 'float32',
     'activity_name': 'string',
     'activity_type': 'string',
     'activity_host': 'string',
@@ -74,7 +75,7 @@ def read_table(path: str) -> pd.DataFrame:
         parse_dates=DATE_COLUMNS,
     )
     for col in DATE_COLUMNS:
-        df[col] = df[col].astype('datetime64')
+        df[col] = df[col].astype(DATE_DTYPE)
     return df
 
 

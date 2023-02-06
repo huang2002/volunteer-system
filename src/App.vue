@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { RouterView, useRoute } from 'vue-router';
-import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, GithubOutlined, HomeOutlined, TableOutlined } from '@ant-design/icons-vue';
+import {
+  AppstoreOutlined, DatabaseOutlined, ExportOutlined,
+  GithubOutlined, HomeOutlined, TableOutlined,
+} from '@ant-design/icons-vue';
 import { onMounted, ref, watch, type Component } from 'vue';
 import { updateTableNames } from './common/tableNames';
 import locale from 'ant-design-vue/es/locale/zh_CN';

@@ -114,15 +114,15 @@ def inject_table_apis(app: Flask):
             if not key in COLUMNS:
                 return RESPONSE_INVALID_RECORD
             raw_value = addition[key]
-            dtype = DTYPES[key]
+            dtype = DATE_DTYPE if key in DATE_COLUMNS else DTYPES[key]
             if dtype == 'string':
                 value = str(raw_value)
-            elif dtype == 'uint8':
+            elif dtype.startswith('float'):
                 try:
-                    value = int(raw_value)
+                    value = float(raw_value)
                 except:
                     return RESPONSE_INVALID_RECORD
-            elif dtype == 'datetime64':
+            elif dtype == DATE_DTYPE:
                 try:
                     value = pd.to_datetime(raw_value, format=DATE_FORMAT)
                 except:

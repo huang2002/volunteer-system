@@ -1,14 +1,20 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/common/tableNames';
-import { DeleteOutlined, EditOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import {
+  DeleteOutlined, EditOutlined, FormOutlined,
+  PlusSquareOutlined, ReloadOutlined, SyncOutlined,
+} from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch } from 'vue';
-import { recordActionDisabled, updateRecord, deleteRecord, appendRecord } from '@/common/recordActions';
+import {
+  recordActionDisabled, updateRecord, deleteRecord,
+  appendRecord, appendingRecord,
+} from '@/common/recordActions';
 import { createTable } from '@/common/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
-import { type ActivityRecord, recordModalVisibility } from '@/common/recordModal';
+import type { ActivityRecord } from '@/common/recordModal';
 import CreateTableModal from '@/components/CreateTableModal.vue';
-import { createTableModalVisibility } from '@/common/createTableModal';
+import { createTableModalVisible } from '@/common/createTableModal';
 
 const activeTableName = ref('');
 
@@ -90,28 +96,29 @@ const onRefreshSuccess = () => {
 
     <section id="toolbar">
 
-      <a-tooltip color="blue" title="刷新表格列表">
-        <a-button @click="updateTableNames(onRefreshSuccess)" v-bind="{
-          type: 'link',
-          class: 'toolbar-button',
-          loading: loadingTableNames,
+      <a-input-group id="toolbar-table-select" compact>
+        <a-tooltip v-bind="{
+          color: 'blue',
+          title: '刷新表格列表',
         }">
-          <template #icon>
-            <SyncOutlined />
-          </template>
-        </a-button>
-      </a-tooltip>
-
-      <a-radio-group v-model:value="activeTableName" v-bind="{
-        id: 'toolbar-radio-group',
-        optionType: 'button',
-        buttonStyle: 'solid',
-        options: tableNameOptions,
-      }" />
+          <a-button @click="updateTableNames(onRefreshSuccess)" v-bind="{
+            loading: loadingTableNames,
+          }">
+            <template #icon>
+              <SyncOutlined />
+            </template>
+          </a-button>
+        </a-tooltip>
+        <a-radio-group v-model:value="activeTableName" v-bind="{
+          optionType: 'button',
+          buttonStyle: 'solid',
+          options: tableNameOptions,
+        }" />
+      </a-input-group>
 
       <a-button @click="appendRecord(activeTableName, updateDataSource)" v-bind="{
         class: 'toolbar-button',
-        loading: recordModalVisibility,
+        loading: appendingRecord,
         disabled: !activeTableName,
       }">
         <template #icon>
@@ -133,7 +140,7 @@ const onRefreshSuccess = () => {
 
       <a-button @click="createAndViewTable" v-bind="{
         class: 'toolbar-button',
-        loading: createTableModalVisibility,
+        loading: createTableModalVisible,
       }">
         <template #icon>
           <PlusSquareOutlined />
@@ -217,15 +224,16 @@ const onRefreshSuccess = () => {
 #toolbar {
   display: flex;
   margin-bottom: 1em;
-}
-
-#toolbar-radio-group {
-  flex: 1 0;
+  white-space: nowrap;
   overflow-x: auto;
 }
 
+#toolbar-table-select {
+  flex: 1 0;
+}
+
 .toolbar-button {
-  margin: 0 0.3em;
+  margin-left: 0.6em;
 }
 
 .table-header-cell {

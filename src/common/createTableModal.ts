@@ -1,3 +1,4 @@
+import type { FormInstance } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
 
 export interface CreateTableModalState {
@@ -11,12 +12,13 @@ export const createTableModalDefaults: CreateTableModalState = {
     name: '',
 };
 
-export const createTableModalVisibility = ref(false);
+export const createTableModalVisible = ref(false);
 export const createTableModalCallback =
     ref<null | CreateTableModalCallback>(null);
 export const createTableModalState =
     reactive<CreateTableModalState>({ ...createTableModalDefaults });
 export const createTableModalPending = ref(false);
+export const createTableModalForm = ref<FormInstance>();
 
 export const inputTableName = (
     init: CreateTableModalState,
@@ -27,7 +29,8 @@ export const inputTableName = (
                 (createTableModalState as any)[key] = (init as any)[key];
             }
         }
+        createTableModalForm.value?.clearValidate();
         createTableModalCallback.value = resolve;
-        createTableModalVisibility.value = true;
+        createTableModalVisible.value = true;
     })
 );

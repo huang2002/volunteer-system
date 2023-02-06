@@ -1,6 +1,9 @@
 import { message } from 'ant-design-vue';
 import { ref } from 'vue';
-import { createTableModalDefaults, createTableModalPending, createTableModalVisibility, inputTableName, type CreateTableModalState } from './createTableModal';
+import {
+    createTableModalDefaults, createTableModalPending,
+    createTableModalVisible, inputTableName, type CreateTableModalState,
+} from './createTableModal';
 import { updateTableNames } from './tableNames';
 
 export const tableActionDisabled = ref(false);
@@ -34,7 +37,7 @@ export const createTable = async (
     }
 
     createTableModalPending.value = false;
-    createTableModalVisibility.value = false;
+    createTableModalVisible.value = false;
     tableActionDisabled.value = false;
 
 };
