@@ -111,6 +111,7 @@ const onRefreshSuccess = () => {
       <a-button @click="appendRecord(activeTableName, updateDataSource)" v-bind="{
         class: 'toolbar-button',
         loading: recordModalVisibility,
+        disabled: !activeTableName,
       }">
         <template #icon>
           <FormOutlined />
@@ -121,6 +122,7 @@ const onRefreshSuccess = () => {
       <a-button @click="updateDataSource(onRefreshSuccess)" v-bind="{
         class: 'toolbar-button',
         loading: loadingDataSource,
+        disabled: !activeTableName,
       }">
         <template #icon>
           <ReloadOutlined />
