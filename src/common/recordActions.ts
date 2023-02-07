@@ -1,8 +1,8 @@
 import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
-import { CONTENT_TYPE_JSON } from './common';
-import { finishRecord, inputRecord, recordModalDefaults, type ActivityRecord } from './recordModal';
+import { CONTENT_TYPE_JSON, type RecordModalState } from './common';
+import { finishRecord, inputRecord, type ActivityRecord } from './recordModal';
 
 export const recordActionDisabled = ref(false);
 
@@ -36,6 +36,7 @@ export const updateRecord = async (
     });
 
     if (response.status === 200) {
+        message.success('修改成功');
         onSuccess?.();
     } else {
         try {
@@ -55,7 +56,7 @@ export const appendingRecord = ref(false);
 
 export const appendRecord = async (
     tableName: string,
-    // TODO: init
+    init: RecordModalState,
     onSuccess?: () => void,
 ) => {
 
@@ -70,7 +71,7 @@ export const appendRecord = async (
 
     const submitted = await inputRecord(
         '添加记录',
-        recordModalDefaults,
+        init,
         true,
     );
     if (!submitted) { // canceled
@@ -89,6 +90,7 @@ export const appendRecord = async (
     });
 
     if (response.status === 200) {
+        message.success('添加成功');
         onSuccess?.();
     } else {
         try {
@@ -128,6 +130,7 @@ export const deleteRecord = async (
         async onOk() {
             const response = await fetch(`/api/delete/${tableName}/${recordId}`);
             if (response.status === 200) {
+                message.success('删除成功');
                 onSuccess?.();
             } else {
                 try {

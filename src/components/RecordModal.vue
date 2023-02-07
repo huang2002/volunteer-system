@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { RecordModalState } from '@/common/common';
 import {
   recordModalCallback, recordModalState, recordModalVisible,
   recordModalPending, recordModalTitle, recordModalForm,
@@ -6,6 +7,12 @@ import {
 } from '@/common/recordModal';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
+import { computed } from 'vue';
+import { merge, unique } from '3h-utils';
+
+const props = defineProps<{
+  suggestionSource: RecordModalState[];
+}>();
 
 const formCommonLayout = {
   labelCol: { span: 6, offset: 2 },
@@ -36,9 +43,88 @@ const rules: Record<string, Rule[]> = {
   notes: [{ type: 'string' }],
 };
 
+const generateSuggestions = (
+  filterKey: (keyof RecordModalState)[],
+  valueKey: keyof RecordModalState,
+) => (
+  computed(() => {
+
+    let source = props.suggestionSource;
+
+    filterKey.forEach((key) => {
+      const expected = recordModalState[key];
+      if (!expected) {
+        return;
+      }
+      source = source.filter((record) => (
+        record[key] === expected
+      ));
+    });
+
+    return unique(
+      source.map(
+        (record) => record[valueKey]
+      )
+    ).map((value) => ({
+      text: String(value),
+      value,
+    }));
+
+  })
+);
+
+const studentSchoolSuggestions = generateSuggestions(
+  [],
+  'student_school'
+);
+const studentClassSuggestions = generateSuggestions(
+  ['student_school'],
+  'student_class',
+);
+const studentNameSuggestions = generateSuggestions(
+  ['student_school', 'student_class', 'student_id'],
+  'student_name',
+);
+const studentIdSuggestions = generateSuggestions(
+  ['student_school', 'student_class', 'student_name'],
+  'student_id',
+);
+
+const activityColumns: (keyof RecordModalState)[] = [
+  'activity_name',
+  'activity_type',
+  'activity_host',
+];
+const generateActivitySuggestions = (
+  valueKey: keyof RecordModalState,
+) => (
+  generateSuggestions(
+    activityColumns.filter(
+      (key) => (key !== valueKey)
+    ),
+    valueKey,
+  )
+);
+const activityNameSuggestions = generateActivitySuggestions('activity_name');
+const activityTypeSuggestions = generateActivitySuggestions('activity_type');
+const activityHostSuggestions = generateActivitySuggestions('activity_host');
+
+const managerNameSuggestions = generateSuggestions(
+  ['manager_qq'],
+  'manager_name',
+);
+const managerQQSuggestions = generateSuggestions(
+  ['manager_name'],
+  'manager_qq',
+);
+const notesSuggestions = generateSuggestions(
+  [],
+  'notes',
+);
+
 const onSubmit = () => {
-  recordModalCallback.value?.(recordModalState);
   recordModalPending.value = true;
+  recordModalCallback.value?.(merge(recordModalState));
 };
 
 const onCancel = () => {
@@ -63,32 +149,48 @@ const onCancel = () => {
       ...formCommonLayout,
     }">
 
-      <a-form-item name="student_name" label="姓名">
-        <a-input v-model:value="recordModalState.student_name" v-bind="{
-          name: 'student_name',
-          allowClear: true,
-        }" />
-      </a-form-item>
-
       <a-form-item name="student_school" label="学院名称（全称）">
-        <a-input v-model:value="recordModalState.student_school" v-bind="{
-          name: 'student_school',
+        <a-auto-complete v-model:value="recordModalState.student_school" v-bind="{
+          dataSource: studentSchoolSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="student_school" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="student_class" label="班级">
-        <a-input v-model:value="recordModalState.student_class" v-bind="{
-          name: 'student_class',
+        <a-auto-complete v-model:value="recordModalState.student_class" v-bind="{
+          dataSource: studentClassSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="student_class" />
+        </a-auto-complete>
+      </a-form-item>
+
+      <a-form-item name="student_name" label="姓名">
+        <a-auto-complete v-model:value="recordModalState.student_name" v-bind="{
+          dataSource: studentNameSuggestions,
+          allowClear: true,
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="student_name" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="student_id" label="学号">
-        <a-input v-model:value="recordModalState.student_id" v-bind="{
-          name: 'student_id',
+        <a-auto-complete v-model:value="recordModalState.student_id" v-bind="{
+          dataSource: studentIdSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="student_id" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="activity_length" label="志愿时长">
@@ -119,50 +221,76 @@ const onCancel = () => {
       </a-form-item>
 
       <a-form-item name="activity_name" label="项目名称（全称）">
-        <a-input v-model:value="recordModalState.activity_name" v-bind="{
-          name: 'activity_name',
+        <a-auto-complete v-model:value="recordModalState.activity_name" v-bind="{
+          dataSource: activityNameSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="activity_name" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="activity_type" label="项目类型">
-        <a-input v-model:value="recordModalState.activity_type" v-bind="{
-          name: 'activity_type',
+        <a-auto-complete v-model:value="recordModalState.activity_type" v-bind="{
+          dataSource: activityTypeSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="activity_type" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="activity_host" label="举办单位">
-        <a-input v-model:value="recordModalState.activity_host" v-bind="{
-          name: 'activity_host',
+        <a-auto-complete v-model:value="recordModalState.activity_host" v-bind="{
+          dataSource: activityHostSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="activity_host" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="manager_name" label="项目负责人姓名">
-        <a-input v-model:value="recordModalState.manager_name" v-bind="{
-          name: 'manager_name',
+        <a-auto-complete v-model:value="recordModalState.manager_name" v-bind="{
+          dataSource: managerNameSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="manager_name" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item name="manager_qq" label="项目负责人QQ">
-        <a-input v-model:value="recordModalState.manager_qq" v-bind="{
-          name: 'manager_qq',
+        <a-auto-complete v-model:value="recordModalState.manager_qq" v-bind="{
+          dataSource: managerQQSuggestions,
           allowClear: true,
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="manager_qq" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item id="record-form-item-notes" name="notes" label="备注">
-        <a-textarea v-model:value="recordModalState.notes" v-bind="{
-          name: 'notes',
+        <a-auto-complete v-model:value="recordModalState.notes" v-bind="{
+          dataSource: notesSuggestions,
           allowClear: true,
-          showCount: true,
-          maxlength: 200,
-          autoSize: {
-            maxRows: 6,
-          },
-        }" />
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-textarea v-bind="{
+            name: 'notes',
+            showCount: true,
+            maxlength: 200,
+            autoSize: {
+              maxRows: 6,
+            },
+          }" />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item v-if="recordModalBatchModeAvailable" v-bind="formTailLayout">
@@ -172,7 +300,7 @@ const onCancel = () => {
           </template>
           <a-checkbox v-model:checked="recordModalBatchMode">
             批量导入模式
-            <InfoCircleOutlined />
+            <InfoCircleOutlined style="color: #19F;" />
           </a-checkbox>
         </a-tooltip>
       </a-form-item>
@@ -196,6 +324,6 @@ const onCancel = () => {
 }
 
 #record-form-item-notes {
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
 }
 </style>

@@ -9,11 +9,15 @@ export interface ActivityRecord extends RecordModalState {
 export type RecordModalCallback =
     (submitted: Readonly<RecordModalState> | null) => void;
 
-export const recordModalDefaults: RecordModalState = {
+export const recordModalStudentDefaults = {
     student_name: '',
     student_school: '',
     student_class: '',
     student_id: '',
+};
+
+export const recordModalDefaults: RecordModalState = {
+    ...recordModalStudentDefaults,
     activity_length: 0,
     activity_date: '',
     activity_name: '',
@@ -55,19 +59,17 @@ export const inputRecord = (
 );
 
 export const finishRecord = () => {
+
     recordModalPending.value = false;
+
     if (
         recordModalBatchModeAvailable.value
         && recordModalBatchMode.value
     ) {
-        Object.assign(recordModalState, {
-            student_name: '',
-            student_school: '',
-            student_class: '',
-            student_id: '',
-        });
+        Object.assign(recordModalState, recordModalStudentDefaults);
         recordModalForm.value?.clearValidate();
     } else {
         recordModalVisible.value = false;
     }
+
 };

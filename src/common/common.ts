@@ -1,4 +1,9 @@
+import type { InjectionKey } from 'vue';
+
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
+
+export const KEY_GET_CONTENT_CONTAINER =
+    Symbol('KEY_GET_CONTENT_CONTAINER') as InjectionKey<() => HTMLElement>;
 
 export interface RecordModalState {
     student_name: string;

@@ -4,9 +4,16 @@ import {
   AppstoreOutlined, DatabaseOutlined, ExportOutlined,
   GithubOutlined, HomeOutlined, TableOutlined,
 } from '@ant-design/icons-vue';
-import { onMounted, ref, watch, type Component } from 'vue';
+import { onMounted, provide, ref, watch, type Component } from 'vue';
 import { updateTableNames } from './common/tableNames';
 import locale from 'ant-design-vue/es/locale/zh_CN';
+import { KEY_GET_CONTENT_CONTAINER } from './common/common';
+
+const CONTENT_ID = 'content';
+const getContentContainer = () => (
+  document.getElementById(CONTENT_ID)
+);
+provide(KEY_GET_CONTENT_CONTAINER, getContentContainer);
 
 onMounted(updateTableNames);
 
@@ -79,8 +86,16 @@ const links: LinkInfo[] = [
 
         </a-layout-sider>
 
-        <a-layout-content id="content">
+        <a-layout-content :id="CONTENT_ID">
           <RouterView />
+          <a-back-top v-bind="{
+            target: getContentContainer,
+            visibilityHeight: 200,
+            title: '返回顶部',
+            style: {
+              right: '2em',
+            },
+          }" />
         </a-layout-content>
 
       </a-layout>
@@ -138,12 +153,12 @@ const links: LinkInfo[] = [
 
 #content {
   background-color: #EEE;
-  padding: 2em;
   overflow: auto;
 }
 
 .view {
   min-height: 100%;
+  margin: 2em;
   padding: 2em;
   background-color: #FFF;
 }

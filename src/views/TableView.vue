@@ -1,18 +1,24 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/common/tableNames';
 import {
+  CopyOutlined,
   DeleteOutlined, EditOutlined, FormOutlined,
   PlusSquareOutlined, ReloadOutlined, SyncOutlined,
 } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
-import { computed, ref, watch } from 'vue';
+import { computed, ref, watch, inject } from 'vue';
 import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/common/recordActions';
 import { createTable } from '@/common/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
-import type { ActivityRecord } from '@/common/recordModal';
+import { recordModalDefaults, recordModalStudentDefaults, type ActivityRecord } from '@/common/recordModal';
 import CreateTableModal from '@/components/CreateTableModal.vue';
 import { createTableModalVisible } from '@/common/createTableModal';
 import RecordAction from '@/components/RecordAction.vue';
+import { merge } from '3h-utils';
+import TableToolbarButton from '@/components/TableToolbarButton.vue';
+import { KEY_GET_CONTENT_CONTAINER } from '@/common/common';
+
+const getContentContainer = inject(KEY_GET_CONTENT_CONTAINER);
 
 const activeTableName = ref('');
 
@@ -114,37 +120,45 @@ const onRefreshSuccess = () => {
         }" />
       </a-input-group>
 
-      <a-button @click="appendRecord(activeTableName, updateDataSource)" v-bind="{
-        class: 'toolbar-button',
+      <TableToolbarButton v-bind="{
         loading: appendingRecord,
         disabled: !activeTableName,
+        onClick: () => {
+          appendRecord(
+            activeTableName,
+            recordModalDefaults,
+            updateDataSource,
+          );
+        },
       }">
         <template #icon>
           <FormOutlined />
         </template>
         添加记录
-      </a-button>
+      </TableToolbarButton>
 
-      <a-button @click="updateDataSource(onRefreshSuccess)" v-bind="{
-        class: 'toolbar-button',
+      <TableToolbarButton v-bind="{
         loading: loadingDataSource,
         disabled: !activeTableName,
+        onClick: () => {
+          updateDataSource(onRefreshSuccess);
+        },
       }">
         <template #icon>
           <ReloadOutlined />
         </template>
         刷新表格
-      </a-button>
+      </TableToolbarButton>
 
-      <a-button @click="createAndViewTable" v-bind="{
-        class: 'toolbar-button',
+      <TableToolbarButton v-bind="{
         loading: createTableModalVisible,
+        onClick: createAndViewTable,
       }">
         <template #icon>
           <PlusSquareOutlined />
         </template>
         新建表格
-      </a-button>
+      </TableToolbarButton>
 
     </section>
 
@@ -166,7 +180,7 @@ const onRefreshSuccess = () => {
       loading: loadingDataSource,
       rowKey: 'record_id',
       scroll: { x: 'max-content' },
-      sticky: true,
+      sticky: { getContainer: getContentContainer },
       bordered: true,
       pagination: false,
     }">
@@ -189,9 +203,9 @@ const onRefreshSuccess = () => {
           <RecordAction v-bind="{
             title: '修改',
             color: 'blue',
-            onClick() {
+            onClick: () => {
               updateRecord(
-                activeTableName.value,
+                activeTableName,
                 (record as ActivityRecord),
                 updateDataSource,
               );
@@ -203,11 +217,27 @@ const onRefreshSuccess = () => {
           </RecordAction>
 
           <RecordAction v-bind="{
+            title: '添加此项目的其他记录',
+            color: 'green',
+            onClick: () => {
+              appendRecord(
+                activeTableName,
+                merge(record as ActivityRecord, recordModalStudentDefaults),
+                updateDataSource,
+              );
+            },
+          }">
+            <template #icon>
+              <CopyOutlined />
+            </template>
+          </RecordAction>
+
+          <RecordAction v-bind="{
             title: '删除',
             color: 'red',
-            onClick() {
+            onClick: () => {
               deleteRecord(
-                activeTableName.value,
+                activeTableName,
                 (record as ActivityRecord).record_id,
                 updateDataSource,
               );
@@ -225,9 +255,7 @@ const onRefreshSuccess = () => {
     </a-table>
 
     <CreateTableModal />
-    <RecordModal />
-
-    <a-back-top />
+    <RecordModal :suggestion-source="dataSource" />
 
   </div>
 </template>
@@ -242,10 +270,6 @@ const onRefreshSuccess = () => {
 
 #toolbar-table-select {
   flex: 1 0;
-}
-
-.toolbar-button {
-  margin-left: 0.6em;
 }
 
 .table-header-cell {
