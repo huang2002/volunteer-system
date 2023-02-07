@@ -28,7 +28,7 @@ export const updateTableNames = async (
                 tableNames.value = result;
                 onSuccess?.();
             } else {
-                message.error('后台返回的数据格式有误');
+                message.error('后台返回的表名格式有误');
             }
         } catch {
             message.error('更新表名时出错');
