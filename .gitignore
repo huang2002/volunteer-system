@@ -36,6 +36,6 @@ docs/*
 __pycache__
 
 # custom
-output
-backup
-releases
+/output/
+/backup/
+/releases/
