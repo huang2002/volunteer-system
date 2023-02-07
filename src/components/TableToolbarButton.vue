@@ -21,6 +21,6 @@ const props = defineProps<{
 
 <style scoped>
 .toolbar-button {
-  margin-left: 0.6em;
+  margin-left: 8px;
 }
 </style>

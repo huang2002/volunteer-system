@@ -119,8 +119,8 @@ export const deleteRecord = async (
     recordActionDisabled.value = true;
 
     Modal.confirm({
-        title: '删除记录',
-        content: `确定要删除此条记录吗？（记录编号：${recordId}）`,
+        title: `删除记录#${recordId}`,
+        content: '确定要删除此条记录吗？',
         icon: h(WarningOutlined, { style: { color: '#F90' } }),
         okButtonProps: { danger: true },
         okText: '确认',

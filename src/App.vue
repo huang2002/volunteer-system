@@ -87,13 +87,17 @@ const links: LinkInfo[] = [
         </a-layout-sider>
 
         <a-layout-content :id="CONTENT_ID">
-          <RouterView />
+          <div id="view-wrapper">
+            <RouterView />
+          </div>
           <a-back-top v-bind="{
             target: getContentContainer,
             visibilityHeight: 200,
             title: '返回顶部',
             style: {
-              right: '2em',
+              top: '90px',
+              right: '3em',
+              bottom: 'unset',
             },
           }" />
         </a-layout-content>
@@ -156,10 +160,16 @@ const links: LinkInfo[] = [
   overflow: auto;
 }
 
-.view {
+#view-wrapper {
+  display: flex;
   min-height: 100%;
-  margin: 2em;
-  padding: 2em;
+  padding: 20px;
+}
+
+.view {
+  width: 100%;
+  min-height: 100%;
+  padding: 20px;
   background-color: #FFF;
 }
 </style>

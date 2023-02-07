@@ -98,7 +98,7 @@ const onRefreshSuccess = () => {
 <template>
   <div id="table-view" class="view">
 
-    <section id="toolbar">
+    <div id="toolbar">
 
       <a-input-group id="toolbar-table-select" compact>
         <a-tooltip v-bind="{
@@ -132,7 +132,7 @@ const onRefreshSuccess = () => {
         },
       }">
         <template #icon>
-          <FormOutlined />
+          <FormOutlined style="color: #F90;" />
         </template>
         添加记录
       </TableToolbarButton>
@@ -145,7 +145,7 @@ const onRefreshSuccess = () => {
         },
       }">
         <template #icon>
-          <ReloadOutlined />
+          <ReloadOutlined style="color: #19F;" />
         </template>
         刷新表格
       </TableToolbarButton>
@@ -155,12 +155,12 @@ const onRefreshSuccess = () => {
         onClick: createAndViewTable,
       }">
         <template #icon>
-          <PlusSquareOutlined />
+          <PlusSquareOutlined style="color: #1C3;" />
         </template>
         新建表格
       </TableToolbarButton>
 
-    </section>
+    </div>
 
     <a-alert v-if="!activeTableName" v-bind="{
       type: 'info',
@@ -192,7 +192,7 @@ const onRefreshSuccess = () => {
           小时
         </template>
 
-        <template v-if="(column as TableColumnType).dataIndex === 'notes'">
+        <template v-else-if="(column as TableColumnType).dataIndex === 'notes'">
           <template v-if="!(record as ActivityRecord).notes">
             <a-typography-text disabled>无</a-typography-text>
           </template>
@@ -263,7 +263,7 @@ const onRefreshSuccess = () => {
 <style scoped>
 #toolbar {
   display: flex;
-  margin-bottom: 1em;
+  margin-bottom: 8px;
   white-space: nowrap;
   overflow-x: auto;
 }
@@ -282,6 +282,6 @@ const onRefreshSuccess = () => {
 }
 
 :deep(.ant-table-cell) {
-  min-width: 7em;
+  min-width: 100px;
 }
 </style>
