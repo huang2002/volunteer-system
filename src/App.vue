@@ -2,7 +2,7 @@
 import { RouterView, useRoute } from 'vue-router';
 import {
   AppstoreOutlined, DatabaseOutlined, ExportOutlined,
-  GithubOutlined, HomeOutlined, TableOutlined,
+  GithubOutlined, HomeOutlined, ImportOutlined, TableOutlined,
 } from '@ant-design/icons-vue';
 import { onMounted, provide, ref, watch, type Component } from 'vue';
 import { updateTableNames } from './common/tableNames';
@@ -38,6 +38,7 @@ const links: LinkInfo[] = [
   { name: 'home', icon: HomeOutlined, text: '欢迎页面' },
   { name: 'table', icon: TableOutlined, text: '增删改查' },
   { name: 'export', icon: ExportOutlined, text: '生成报表' },
+  { name: 'import', icon: ImportOutlined, text: '导入记录' },
   { name: 'backup', icon: DatabaseOutlined, text: '数据备份' },
 ];
 </script>
