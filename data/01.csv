@@ -1,3 +1,4 @@
 record_id,student_school,student_class,student_name,student_id,activity_length,activity_date,activity_name,activity_type,activity_host,manager_name,manager_qq,notes
-584622684,数学学院,C班,林玲,0100,8,2023/02/05,活动名_2,活动类型_2,主办方_2,小帅,9517538426,
-648316753,物理学院,D班,凌衣,0101,1,2222/12/05,活动名_3,活动类型_3,主办方_3,小帅,9517538426,notes here
+584622684,数学学院,C班,林玲,0100,8.0,2023/02/05,活动名_2,活动类型_2,主办方_2,小帅,9517538426,
+648316753,物理学院,D班,凌衣,0101,1.0,2222/12/05,活动名_3,活动类型_3,主办方_3,小帅,9517538426,notes here
+1675739988,AAA,aa,a,123456,2.5,2023/02/02,foo,bar,baz,Tom,987654321,/

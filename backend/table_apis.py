@@ -64,13 +64,23 @@ def inject_table_apis(app: Flask):
         if record_id in df_source.index:
             return RESPONSE_TOO_FREQUENT
 
-        record_index = pd.Index([record_id])
+        record_index = pd.Index([record_id], name=INDEX_NAME)
+        data = [[record[key] for key in COLUMNS]]
         df_addition = pd.DataFrame(
             columns=COLUMNS,
             index=record_index,
-            data=[[record[key] for key in COLUMNS]],
-            dtype=DTYPES,
+            data=data,
         )
+        for col in COLUMNS:
+            if col in DATE_COLUMNS:
+                df_addition[col] = pd.to_datetime(
+                    df_addition[col],
+                    format=DATE_FORMAT,
+                )
+            else:
+                dtype = DTYPES[col]
+                df_addition[col] = df_addition[col].astype(dtype)
+
         df_result = df_source.append(df_addition)
         save_table(df_result, table_path)
         return RESPONSE_SUCCESS

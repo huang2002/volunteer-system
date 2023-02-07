@@ -70,5 +70,5 @@ fs.copyFileSync(
 );
 fs.copyFileSync(
     sourcePath('docs/documentation.pdf'),
-    targetPath('说明书.pdf'),
+    targetPath('使用手册.pdf'),
 );

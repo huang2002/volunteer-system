@@ -25,7 +25,7 @@ const REPO_URL = 'https://github.com/huang2002/volunteer-system';
       关于如何使用此系统，请参考文件夹中的
       <a-typography-text code>
         <FilePdfOutlined />
-        说明书.pdf
+        使用手册.pdf
       </a-typography-text>
       。
     </a-typography-paragraph>
