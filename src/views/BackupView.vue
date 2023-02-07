@@ -1,10 +1,16 @@
 <script setup lang="ts">
+import CreateBackupModal from '@/components/CreateBackupModal.vue';
+
 
 </script>
 
 <template>
   <div id="backup-view" class="view">
-    backup-view
+
+
+
+    <CreateBackupModal />
+
   </div>
 </template>
 

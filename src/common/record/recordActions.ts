@@ -1,7 +1,7 @@
 import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
-import { CONTENT_TYPE_JSON, type RecordModalState } from './common';
+import { CONTENT_TYPE_JSON, type RecordModalState } from '.@/common';
 import { finishRecord, inputRecord, type ActivityRecord } from './recordModal';
 
 export const recordActionDisabled = ref(false);

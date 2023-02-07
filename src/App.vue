@@ -5,9 +5,9 @@ import {
   GithubOutlined, HomeOutlined, ImportOutlined, TableOutlined,
 } from '@ant-design/icons-vue';
 import { onMounted, provide, ref, watch, type Component } from 'vue';
-import { updateTableNames } from './common/tableNames';
+import { updateTableNames } from '@/common/table/tableNames';
 import locale from 'ant-design-vue/es/locale/zh_CN';
-import { KEY_GET_CONTENT_CONTAINER } from './common/common';
+import { KEY_GET_CONTENT_CONTAINER } from '@/common/common';
 
 const CONTENT_ID = 'content';
 const getContentContainer = () => (
