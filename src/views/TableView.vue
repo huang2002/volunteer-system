@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { tableNames, updateTableNames, loadingTableNames } from '@/common/table/tableNameseNames';
+import { tableNames, updateTableNames, loadingTableNames } from '@/common/table/tableNames';
 import {
   CopyOutlined,
   DeleteOutlined, EditOutlined, FormOutlined,
@@ -7,12 +7,12 @@ import {
 } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch, inject } from 'vue';
-import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/common/record/recordActionsActions';
-import { createTable } from '@/common/table/tableActionsctions';
+import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/common/record/recordActions';
+import { createTable } from '@/common/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
-import { recordModalDefaults, recordModalStudentDefaults, type ActivityRecord } from '@/common/record/recordModalrdModal';
+import { recordModalDefaults, recordModalStudentDefaults, type ActivityRecord } from '@/common/record/recordModal';
 import CreateTableModal from '@/components/CreateTableModal.vue';
-import { createTableModalVisible } from '@/common/table/createTableModaleModal';
+import { createTableModalVisible } from '@/common/table/createTableModal';
 import RecordAction from '@/components/RecordAction.vue';
 import { merge } from '3h-utils';
 import TableToolbarButton from '@/components/TableToolbarButton.vue';

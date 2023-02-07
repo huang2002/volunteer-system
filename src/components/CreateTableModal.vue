@@ -3,7 +3,7 @@ import { merge } from '3h-utils';
 import {
   createTableModalCallback, createTableModalState, createTableModalVisible,
   createTableModalPending, createTableModalForm,
-} from '@/common/table/createTableModaleModal';
+} from '@/common/table/createTableModal';
 
 const onSubmit = () => {
   createTableModalCallback.value?.(merge(createTableModalState));

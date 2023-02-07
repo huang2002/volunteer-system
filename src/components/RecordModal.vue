@@ -4,7 +4,7 @@ import {
   recordModalCallback, recordModalState, recordModalVisible,
   recordModalPending, recordModalTitle, recordModalForm,
   recordModalBatchMode, recordModalBatchModeAvailable,
-} from '@/common/record/recordModalrdModal';
+} from '@/common/record/recordModal';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
 import { computed } from 'vue';
