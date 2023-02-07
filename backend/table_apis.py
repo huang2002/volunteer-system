@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from common import *
+from common_table import *
 
 
 def inject_table_apis(app: Flask):
@@ -8,7 +9,7 @@ def inject_table_apis(app: Flask):
     def list_tables():
         return jsonify([
             os.path.splitext(table_path)[0]
-            for table_path in os.listdir(DATA_PATH)
+            for table_path in os.listdir(DATA_DIR)
             if table_path.endswith('.csv')
         ])
 
@@ -20,7 +21,7 @@ def inject_table_apis(app: Flask):
 
         table_path = get_table_path(table_name)
         if os.path.exists(table_path):
-            return RESPONSE_DUPLICATE_TABLE_NAME
+            return RESPONSE_DUPLICATE_TABLE
 
         init_table(table_path)
         return RESPONSE_SUCCESS
@@ -73,10 +74,7 @@ def inject_table_apis(app: Flask):
         )
         for col in COLUMNS:
             if col in DATE_COLUMNS:
-                df_addition[col] = pd.to_datetime(
-                    df_addition[col],
-                    format=DATE_FORMAT,
-                )
+                df_addition[col] = convert_date(df_addition[col])
             else:
                 dtype = DTYPES[col]
                 df_addition[col] = df_addition[col].astype(dtype)

@@ -1,6 +1,8 @@
 # API Reference
 
-- GET `/api/list`
+## Table APIs
+
+- GET `/api/list/tables`
     - Returns an array of table names.
     - Response Body:
         - Type: JSON
@@ -30,5 +32,15 @@
         - Type: JSON
         - Format: `{ key -> value, ... }`
 
-- GET `/api/create/backup`
+## Backup APIs
+
+- GET `/api/list/backups`
+    - Returns an array of backup names.
+    - Response Body:
+        - Type: JSON
+        - Format: `[name0, name1, ...]`
+
+- GET `/api/create/backup/<backup_name>`
     - Creates a backup.
+
+TODO: load backup
