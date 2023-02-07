@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import type { RecordModalState } from '@/common/common';
-import {
-  recordModalCallback, recordModalState, recordModalVisible,
-  recordModalPending, recordModalTitle, recordModalForm,
-  recordModalBatchMode, recordModalBatchModeAvailable,
-} from '@/common/record/recordModal';
+import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalTitle, recordModalForm, recordModalBatchMode, recordModalBatchModeAvailable } from '@/common/record/recordModal';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
 import { computed } from 'vue';

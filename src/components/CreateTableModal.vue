@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { merge } from '3h-utils';
-import {
-  createTableModalCallback, createTableModalState, createTableModalVisible,
-  createTableModalPending, createTableModalForm,
-} from '@/common/table/createTableModal';
+import { createTableModalCallback, createTableModalState, createTableModalVisible, createTableModalPending, createTableModalForm } from '@/common/table/createTableModal';
 
 const onSubmit = () => {
   createTableModalCallback.value?.(merge(createTableModalState));

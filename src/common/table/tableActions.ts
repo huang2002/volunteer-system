@@ -1,9 +1,6 @@
 import { message } from 'ant-design-vue';
 import { ref } from 'vue';
-import {
-    createTableModalDefaults, createTableModalPending,
-    createTableModalVisible, inputTableName, type CreateTableModalState,
-} from './createTableModal';
+import { createTableModalDefaults, createTableModalPending, createTableModalVisible, inputTableName, type CreateTableModalState } from './createTableModal';
 import { updateTableNames } from './tableNames';
 
 export const tableActionDisabled = ref(false);

@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/common/table/tableNames';
-import {
-  CopyOutlined,
-  DeleteOutlined, EditOutlined, FormOutlined,
-  PlusSquareOutlined, ReloadOutlined, SyncOutlined,
-} from '@ant-design/icons-vue';
+import { CopyOutlined, DeleteOutlined, EditOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
-import { computed, ref, watch, inject } from 'vue';
+import { computed, ref, watch, inject, onBeforeMount } from 'vue';
 import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/common/record/recordActions';
 import { createTable } from '@/common/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
@@ -17,6 +13,8 @@ import RecordAction from '@/components/RecordAction.vue';
 import { merge } from '3h-utils';
 import TableToolbarButton from '@/components/TableToolbarButton.vue';
 import { KEY_GET_CONTENT_CONTAINER } from '@/common/common';
+
+onBeforeMount(updateTableNames);
 
 const getContentContainer = inject(KEY_GET_CONTENT_CONTAINER);
 
