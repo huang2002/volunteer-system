@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
-import { CopyOutlined, DeleteOutlined, EditOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { CopyOutlined, DeleteOutlined, EditOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, QuestionCircleOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch, inject, onBeforeMount } from 'vue';
 import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/shared/record/recordActions';
@@ -28,7 +28,7 @@ const tableNameOptions = computed((): RadioGroupProps['options'] => (
 ));
 
 const columns: TableColumnType[] = [
-  { title: '记录编号', dataIndex: 'record_id', ellipsis: true, fixed: 'left' },
+  { title: '记录编号', dataIndex: 'record_id', ellipsis: true, fixed: 'left', width: 120 },
   { title: '姓名', dataIndex: 'student_name', ellipsis: true, fixed: 'left' },
   { title: '学院', dataIndex: 'student_school', ellipsis: true },
   { title: '班级', dataIndex: 'student_class', ellipsis: true },
@@ -195,6 +195,20 @@ const createAndViewTable = () => {
       bordered: true,
       pagination: false,
     }">
+
+      <template #headerCell="{ column, title }">
+        <template v-if="(column as TableColumnType).dataIndex === 'record_id'">
+          {{ title }}
+          <sup title="">
+            <a-tooltip color="blue">
+              <template #title>
+                编号由后台程序根据记录的创建时间自动生成。
+              </template>
+              <QuestionCircleOutlined style="color: #19F;" />
+            </a-tooltip>
+          </sup>
+        </template>
+      </template>
 
       <template #bodyCell="{ column, text, record }">
 

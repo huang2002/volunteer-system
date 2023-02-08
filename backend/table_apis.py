@@ -83,7 +83,7 @@ def inject_table_apis(app: Flask):
 
         df_source = read_table(table_path)
 
-        record_id = int(time.time())
+        record_id = time.time_ns()
         if record_id in df_source.index:
             return RESPONSE_TOO_FREQUENT
 
