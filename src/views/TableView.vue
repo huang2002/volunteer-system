@@ -9,7 +9,7 @@ import RecordModal from '@/components/RecordModal.vue';
 import { recordModalDefaults, type ActivityRecord } from '@/shared/record/recordModal';
 import TableNameModal from '@/components/TableNameModal.vue';
 import { tableNameModalVisible } from '@/shared/table/tableNameModal';
-import TableToolbarButton from '@/components/TableToolbarButton.vue';
+import ToolbarButton from '@/components/ToolbarButton.vue';
 import { onRefreshSuccess } from '@/shared/common';
 import RecordTable from '@/components/RecordTable.vue';
 
@@ -98,7 +98,7 @@ const createAndViewTable = () => {
 
       </a-input-group>
 
-      <TableToolbarButton v-bind="{
+      <ToolbarButton v-bind="{
         loading: appendingRecord,
         disabled: !activeTableName,
         onClick: () => {
@@ -113,9 +113,9 @@ const createAndViewTable = () => {
           <PlusSquareOutlined style="color: #1C2;" />
         </template>
         添加记录
-      </TableToolbarButton>
+      </ToolbarButton>
 
-      <TableToolbarButton v-bind="{
+      <ToolbarButton v-bind="{
         loading: tableNameModalVisible,
         disabled: !activeTableName,
         onClick: () => {
@@ -126,9 +126,9 @@ const createAndViewTable = () => {
           <FormOutlined style="color: #F90;" />
         </template>
         重命名表
-      </TableToolbarButton>
+      </ToolbarButton>
 
-      <TableToolbarButton v-bind="{
+      <ToolbarButton v-bind="{
         loading: loadingDataSource,
         disabled: !activeTableName,
         onClick: () => {
@@ -139,9 +139,9 @@ const createAndViewTable = () => {
           <ReloadOutlined style="color: #19F;" />
         </template>
         刷新表格
-      </TableToolbarButton>
+      </ToolbarButton>
 
-      <TableToolbarButton v-bind="{
+      <ToolbarButton v-bind="{
         loading: tableNameModalVisible,
         onClick: createAndViewTable,
       }">
@@ -149,7 +149,7 @@ const createAndViewTable = () => {
           <FileAddOutlined style="color: #193;" />
         </template>
         新建表格
-      </TableToolbarButton>
+      </ToolbarButton>
 
     </div>
 
@@ -189,5 +189,9 @@ const createAndViewTable = () => {
 
 #toolbar-table-select {
   flex: 1 0;
+}
+
+.toolbar-button {
+  margin-left: 8px;
 }
 </style>

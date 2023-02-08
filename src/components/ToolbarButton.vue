@@ -1,16 +1,20 @@
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
+  type?: string,
   loading?: boolean;
   disabled?: boolean;
+  danger?: boolean;
   onClick: () => void;
 }>();
 </script>
 
 <template>
-  <a-button @click="props.onClick" v-bind="{
+  <a-button @click="onClick" v-bind="{
     class: 'toolbar-button',
-    loading: props.loading,
-    disabled: props.disabled,
+    type,
+    loading,
+    disabled,
+    danger,
   }">
     <template #icon>
       <slot name="icon"></slot>
@@ -18,9 +22,3 @@ const props = defineProps<{
     <slot>?</slot>
   </a-button>
 </template>
-
-<style scoped>
-.toolbar-button {
-  margin-left: 8px;
-}
-</style>

@@ -2,6 +2,7 @@ import os
 import time
 import re
 import pandas as pd
+from flask import Flask, request, jsonify
 from typing import NoReturn
 
 BACKEND_PATH = os.path.join(os.path.dirname(__file__), '..')
@@ -58,10 +59,8 @@ def create_record_id():
 
 
 def make_table_response(df: pd.DataFrame):
-    # convert date columns
     for col in DATE_COLUMNS:
         df[col] = df[col].dt.strftime(DATE_FORMAT)
-    # return index to a column
-    df.reset_index(inplace=True)
-    # make a json response
+    df.reset_index(inplace=True)  # return index to a column
+    df.fillna('', inplace=True)
     return jsonify(df.to_dict('records'))

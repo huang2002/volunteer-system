@@ -1,13 +1,155 @@
 <script setup lang="ts">
+import RecordTable from '@/components/RecordTable.vue';
+import ToolbarButton from '@/components/ToolbarButton.vue';
+import { importingTables } from '@/shared/import/importActions';
+import type { ActivityRecord } from '@/shared/record/recordModal';
+import { ArrowRightOutlined, CloudUploadOutlined, DeleteOutlined, FileSearchOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
+import type { UploadFile } from 'ant-design-vue';
+import { ref } from 'vue';
 
+const UPLOAD_ACCEPT = '.xlsx,.csv,.tsv,.gz';
+
+const previewData = ref<ActivityRecord[]>([]);
+const loadingPreview = ref(false);
+const fileList = ref<UploadFile[]>([]);
+
+const beforeUpload = (file: UploadFile) => {
+  fileList.value = [...fileList.value, file];
+  return false;
+};
+
+const onRemove = (file: UploadFile) => {
+  fileList.value = fileList.value.filter(
+    (f) => (f !== file)
+  );
+};
 </script>
 
 <template>
   <div id="import-view" class="view">
-    import-view
+
+    <div id="toolbar">
+
+      <h2 id="toolbar-title">
+        导入数据
+        <a-tooltip color="blue" placement="right">
+          <template #title>
+            提交待导入数据
+            <ArrowRightOutlined />
+            后台程序尝试识别并生成预览
+            <ArrowRightOutlined />
+            查看预览后确认
+            <ArrowRightOutlined />
+            系统自动导入对应表格
+          </template>
+          <QuestionCircleOutlined :style="{
+            color: '#19F',
+            fontSize: '0.8em',
+          }" />
+        </a-tooltip>
+      </h2>
+
+      <ToolbarButton v-bind="{
+        danger: true,
+        disabled: (
+          !fileList.length
+          || (previewData.length > 0)
+          || importingTables
+        ),
+        onClick: () => {
+          fileList = [];
+        },
+      }">
+        <template #icon>
+          <DeleteOutlined style="color: #F00;" />
+        </template>
+        清楚选择
+      </ToolbarButton>
+
+      <ToolbarButton v-bind="{
+        loading: loadingPreview,
+        disabled: !fileList.length || importingTables,
+        onClick: () => {
+      
+        },
+      }">
+        <template #icon>
+          <FileSearchOutlined style="color: #1C2;" />
+        </template>
+        生成预览
+      </ToolbarButton>
+
+      <ToolbarButton v-bind="{
+        type: 'primary',
+        loading: importingTables,
+        disabled: !previewData.length,
+        onClick: () => {
+      
+        },
+      }">
+        <template #icon>
+          <CloudUploadOutlined :style="{
+            color: previewData.length ? undefined : '#19F',
+          }" />
+        </template>
+        确认导入
+      </ToolbarButton>
+
+    </div>
+
+    <RecordTable v-if="previewData.length" v-bind="{
+      dataSource: previewData,
+      loading: loadingPreview,
+    }" />
+    <div id="upload-wrapper" v-else>
+      <a-upload-dragger @remove="onRemove" v-bind="{
+        fileList,
+        multiple: true,
+        accept: UPLOAD_ACCEPT,
+        beforeUpload,
+      }">
+        <a-empty id="upload-placeholder">
+          <template #description>
+            <p>
+              点击此处
+              <a-typography-text strong>选择文件</a-typography-text>
+              ，也可直接将文件拖拽至此。
+            </p>
+            <p>
+              （支持的文件类型：
+              {{ UPLOAD_ACCEPT.replace(/,/g, '/') }}
+              。）
+            </p>
+          </template>
+        </a-empty>
+      </a-upload-dragger>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
+#toolbar {
+  display: flex;
+  margin-bottom: 8px;
+}
 
+#toolbar-title {
+  margin: 0;
+  margin-right: auto;
+  padding-left: 0.2em;
+  font-weight: bold;
+}
+
+.toolbar-button {
+  margin-left: 8px;
+}
+
+#upload-wrapper {
+  padding-bottom: 1em;
+}
+
+#upload-placeholder {
+  padding: 24px 0;
+}
 </style>

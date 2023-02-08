@@ -1,7 +1,6 @@
-from flask import Flask
 from .table import inject_table_apis
 from .backup import inject_backup_apis
-from .common import *
+from .common import Flask, FRONTEND_PATH
 
 __all__ = [
     'PORT',

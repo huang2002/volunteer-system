@@ -14,7 +14,7 @@ const props = defineProps<{
   tableName?: string;
   loading: boolean;
   showActions?: boolean;
-  dataSourceUpdater: () => void;
+  dataSourceUpdater?: () => void;
 }>();
 
 const getContentContainer = inject(KEY_GET_CONTENT_CONTAINER);
@@ -57,14 +57,14 @@ if (props.showActions) {
     <template #headerCell="{ column, title }">
       <template v-if="(column as TableColumnType).dataIndex === 'record_id'">
         {{ title }}
-        <sup title="">
-          <a-tooltip color="blue">
+        <span title="">
+          <a-tooltip color="blue" placement="right">
             <template #title>
               编号由后台程序根据记录的创建时间自动生成。
             </template>
             <QuestionCircleOutlined style="color: #19F;" />
           </a-tooltip>
-        </sup>
+        </span>
       </template>
     </template>
 
@@ -141,11 +141,6 @@ if (props.showActions) {
 </template>
 
 <style scoped>
-.table-header-cell {
-  font-weight: bold;
-  white-space: nowrap;
-}
-
 :deep(th.ant-table-cell) {
   font-weight: bold;
 }

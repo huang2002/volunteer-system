@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { recordActionDisabled } from '@/shared/record/recordActions';
 
-const props = defineProps<{
+defineProps<{
   title: string;
   color: string;
   onClick: () => void;
@@ -9,9 +9,9 @@ const props = defineProps<{
 </script>
 
 <template>
-  <a-tooltip :title="props.title" :color="props.color">
-    <a-tag :color="props.color">
-      <a-button @click="props.onClick" v-bind="{
+  <a-tooltip :title="title" :color="color">
+    <a-tag :color="color">
+      <a-button @click="onClick" v-bind="{
         type: 'text',
         size: 'small',
         disabled: recordActionDisabled,
