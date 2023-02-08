@@ -86,6 +86,10 @@ onBeforeMount(updateBackupNames);
 </template>
 
 <style scoped>
+#backup-view {
+  padding: 32px;
+}
+
 #backup-list-header {
   display: flex;
   align-items: baseline;

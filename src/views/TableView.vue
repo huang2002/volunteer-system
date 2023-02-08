@@ -95,6 +95,7 @@ const createAndViewTable = () => {
     <div id="toolbar">
 
       <a-input-group id="toolbar-table-select" compact>
+
         <a-tooltip v-bind="{
           color: 'blue',
           title: '刷新表格列表',
@@ -107,11 +108,14 @@ const createAndViewTable = () => {
             </template>
           </a-button>
         </a-tooltip>
+
         <a-radio-group v-model:value="activeTableName" v-bind="{
           optionType: 'button',
           buttonStyle: 'solid',
           options: tableNameOptions,
+          disabled: loadingTableNames || loadingDataSource,
         }" />
+
       </a-input-group>
 
       <TableToolbarButton v-bind="{
@@ -126,7 +130,7 @@ const createAndViewTable = () => {
         },
       }">
         <template #icon>
-          <PlusSquareOutlined style="color: #19F;" />
+          <PlusSquareOutlined style="color: #1C2;" />
         </template>
         添加记录
       </TableToolbarButton>
@@ -162,7 +166,7 @@ const createAndViewTable = () => {
         onClick: createAndViewTable,
       }">
         <template #icon>
-          <FileAddOutlined style="color: #1C3;" />
+          <FileAddOutlined style="color: #193;" />
         </template>
         新建表格
       </TableToolbarButton>
