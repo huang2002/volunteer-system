@@ -33,6 +33,7 @@ const columns: TableColumnType[] = [
   { title: '学院', dataIndex: 'student_school', ellipsis: true },
   { title: '班级', dataIndex: 'student_class', ellipsis: true },
   { title: '学号', dataIndex: 'student_id', ellipsis: true },
+  { title: '联系方式', dataIndex: 'student_contact', ellipsis: true },
   { title: '志愿时长', dataIndex: 'activity_length', ellipsis: true },
   { title: '服务日期', dataIndex: 'activity_date', ellipsis: true },
   { title: '项目名称', dataIndex: 'activity_name', ellipsis: true },
@@ -212,7 +213,13 @@ const createAndViewTable = () => {
 
       <template #bodyCell="{ column, text, record }">
 
-        <template v-if="(column as TableColumnType).dataIndex === 'activity_length'">
+        <template v-if="(column as TableColumnType).dataIndex === 'student_contact'">
+          <template v-if="!(record as ActivityRecord).student_contact">
+            <a-typography-text disabled>无</a-typography-text>
+          </template>
+        </template>
+
+        <template v-else-if="(column as TableColumnType).dataIndex === 'activity_length'">
           {{ text }}
           小时
         </template>

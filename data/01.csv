@@ -1,13 +1,13 @@
-record_id,student_school,student_class,student_name,student_id,activity_length,activity_date,activity_name,activity_type,activity_host,manager_name,manager_qq,notes
-584622684,数学学院,C班,林玲,0100,8.0,2023/02/05,活动名_2,活动类型_2,主办方_2,小帅,9517538426,<script>alert('oops')</script>
-648316753,物理学院,D班,凌衣,0101,1.0,2222/12/05,活动名_3,活动类型_3,主办方_3,小帅,9517538426,notes here
-1675739988000,AAA,aaaa,a,123456,2.33,2023/02/02,foo,bar,baz,Tom,987654321,/
-1675755441000,AAA,aa,b,654321,2.33,2023/02/02,foo,bar,baz,Tom,987654321,无
-1675755661000,BBB,bb,baby,1612543,2.33,2023/02/02,foo,bar,baz,Tom,987654321,
-1675755725000,BBB,bb,dd,1613451,2.33,2023/02/02,foo,bar,baz,Tom,987654321,
-1675756570000,AAA,aaa,aaaa,646742,2.33,2023/02/02,foo,bar,baz,Tom,987654321,
-1675757048000,AAA,aaaa,ba,157923,6.0,2023/02/07,foo,bar,baz,Jerry,157951467,
-1675757737000,AAA,aaaa,caa,166666,8.0,2023/02/06,ff,f,asd,Jerry,157951467,
-1675758034000,AAA,aa,baba,112233,8.0,2023/02/06,ff,f,asd,Jerry,157951467,
-1675758198000,BBB,bb,dd,1613451,2.0,2023/02/06,ff,f,asd,Jerry,157951467,
-1675758572000,AAA,aaaa,caa,166666,2.0,2023/02/06,ff,f,asd,Jerry,157951467,
+record_id,student_school,student_class,student_name,student_id,student_contact,activity_length,activity_date,activity_name,activity_type,activity_host,manager_name,manager_qq,notes
+584622684,数学学院,C班,林玲,0100,13888465218,8.0,2023/02/05,活动名_2,活动类型_2,主办方_2,小帅,9517538426,<script>alert('oops')</script>
+648316753,物理学院,D班,凌衣,0101,13999999999,1.0,2222/12/05,活动名_3,活动类型_3,主办方_3,小帅,9517538426,notes here
+1675739988000,AAA,aaaa,a,123456,,2.33,2023/02/02,foo,bar,baz,Tom,987654321,/
+1675755441000,AAA,aa,b,654321,,2.33,2023/02/02,foo,bar,baz,Tom,987654321,无
+1675755661000,BBB,bb,baby,1612543,,2.33,2023/02/02,foo,bar,baz,Tom,987654321,
+1675755725000,BBB,bb,dd,1613451,,2.33,2023/02/02,foo,bar,baz,Tom,987654321,
+1675756570000,AAA,aaa,aaaa,646742,,2.33,2023/02/02,foo,bar,baz,Tom,987654321,
+1675757048000,AAA,aaaa,ba,157923,,6.0,2023/02/07,foo,bar,baz,Jerry,157951467,
+1675757737000,AAA,aaaa,caa,166666,,8.0,2023/02/06,ff,f,asd,Jerry,157951467,
+1675758034000,AAA,aa,baba,112233,,8.0,2023/02/06,ff,f,asd,Jerry,157951467,
+1675758198000,BBB,bb,dd,1613451,,2.0,2023/02/06,ff,f,asd,Jerry,157951467,
+1675758572000,AAA,aaaa,caa,166666,,2.0,2023/02/06,ff,f,asd,Jerry,157951467,

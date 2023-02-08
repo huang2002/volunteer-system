@@ -14,6 +14,7 @@ export const recordModalStudentDefaults = {
     student_school: '',
     student_class: '',
     student_id: '',
+    student_contact: '',
 };
 
 export const recordModalDefaults: RecordModalState = {

@@ -29,6 +29,7 @@ const rules: Record<string, Rule[]> = {
   student_school: [{ type: 'string', required: true }],
   student_class: [{ type: 'string', required: true }],
   student_id: [{ type: 'string', required: true }],
+  student_contact: [{ type: 'string' }],
   activity_length: [{ type: 'number', required: true }],
   activity_date: [{ type: 'string', required: true, pattern: /^\d{4}\/\d{2}\/\d{2}$/ }],
   activity_name: [{ type: 'string', required: true }],
@@ -84,6 +85,10 @@ const studentNameSuggestions = generateSuggestions(
 const studentIdSuggestions = generateSuggestions(
   ['student_school', 'student_class', 'student_name'],
   'student_id',
+);
+const studentContactSuggestions = generateSuggestions(
+  ['student_school', 'student_class', 'student_name'],
+  'student_contact',
 );
 
 const activityColumns: (keyof RecordModalState)[] = [
@@ -186,6 +191,17 @@ const onCancel = () => {
           filterOption: true,
         }">
           <a-input name="student_id" />
+        </a-auto-complete>
+      </a-form-item>
+
+      <a-form-item name="student_contact" label="联系方式">
+        <a-auto-complete v-model:value="recordModalState.student_contact" v-bind="{
+          dataSource: studentContactSuggestions,
+          allowClear: true,
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="student_contact" />
         </a-auto-complete>
       </a-form-item>
 
