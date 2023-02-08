@@ -1,22 +1,19 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
-import { CopyOutlined, DeleteOutlined, EditOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, QuestionCircleOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
-import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
-import { computed, ref, watch, inject, onBeforeMount } from 'vue';
-import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/shared/record/recordActions';
+import { FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { message, type RadioGroupProps } from 'ant-design-vue';
+import { computed, ref, watch, onBeforeMount } from 'vue';
+import { appendRecord, appendingRecord } from '@/shared/record/recordActions';
 import { createTable, renameTable } from '@/shared/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
-import { recordModalDefaults, recordModalStudentDefaults, type ActivityRecord } from '@/shared/record/recordModal';
+import { recordModalDefaults, type ActivityRecord } from '@/shared/record/recordModal';
 import TableNameModal from '@/components/TableNameModal.vue';
 import { tableNameModalVisible } from '@/shared/table/tableNameModal';
-import RecordAction from '@/components/RecordAction.vue';
-import { merge } from '3h-utils';
 import TableToolbarButton from '@/components/TableToolbarButton.vue';
-import { KEY_GET_CONTENT_CONTAINER, onRefreshSuccess } from '@/shared/common';
+import { onRefreshSuccess } from '@/shared/common';
+import RecordTable from '@/components/RecordTable.vue';
 
 onBeforeMount(updateTableNames);
-
-const getContentContainer = inject(KEY_GET_CONTENT_CONTAINER);
 
 const activeTableName = ref('');
 
@@ -26,25 +23,6 @@ const tableNameOptions = computed((): RadioGroupProps['options'] => (
     value: name,
   }))
 ));
-
-const columns: TableColumnType[] = [
-  { title: '记录编号', dataIndex: 'record_id', ellipsis: true, fixed: 'left', width: 120 },
-  { title: '姓名', dataIndex: 'student_name', ellipsis: true, fixed: 'left' },
-  { title: '学院', dataIndex: 'student_school', ellipsis: true },
-  { title: '班级', dataIndex: 'student_class', ellipsis: true },
-  { title: '学号', dataIndex: 'student_id', ellipsis: true },
-  { title: '联系方式', dataIndex: 'student_contact', ellipsis: true },
-  { title: '志愿时长', dataIndex: 'activity_length', ellipsis: true },
-  { title: '服务日期', dataIndex: 'activity_date', ellipsis: true },
-  { title: '项目名称', dataIndex: 'activity_name', ellipsis: true },
-  { title: '项目类型', dataIndex: 'activity_type', ellipsis: true },
-  { title: '举办单位', dataIndex: 'activity_host', ellipsis: true },
-  { title: '项目负责人姓名', dataIndex: 'manager_name', ellipsis: true },
-  { title: '项目负责人联系方式', dataIndex: 'manager_contact', ellipsis: true },
-  { title: '项目负责人QQ', dataIndex: 'manager_qq', ellipsis: true },
-  { title: '备注', dataIndex: 'notes', ellipsis: true },
-  { title: '操作', key: 'actions', fixed: 'right' },
-];
 
 const dataSource = ref<ActivityRecord[]>([]);
 const loadingDataSource = ref(false);
@@ -187,97 +165,13 @@ const createAndViewTable = () => {
       message: '指定的表不存在，请重新选择，或刷新重试。',
     }" />
 
-    <a-table v-else v-bind="{
-      columns,
+    <RecordTable v-else v-bind="{
       dataSource,
+      tableName: activeTableName,
       loading: loadingDataSource,
-      rowKey: 'record_id',
-      scroll: { x: 'max-content' },
-      sticky: { getContainer: getContentContainer },
-      bordered: true,
-      pagination: false,
-    }">
-
-      <template #headerCell="{ column, title }">
-        <template v-if="(column as TableColumnType).dataIndex === 'record_id'">
-          {{ title }}
-          <sup title="">
-            <a-tooltip color="blue">
-              <template #title>
-                编号由后台程序根据记录的创建时间自动生成。
-              </template>
-              <QuestionCircleOutlined style="color: #19F;" />
-            </a-tooltip>
-          </sup>
-        </template>
-      </template>
-
-      <template #bodyCell="{ column, text, record }">
-
-        <template v-if="column.dataIndex && !record[column.dataIndex]">
-          <a-typography-text disabled>无</a-typography-text>
-        </template>
-
-        <template v-else-if="(column as TableColumnType).dataIndex === 'activity_length'">
-          {{ text }}
-          小时
-        </template>
-
-        <a-space v-else-if="(column as TableColumnType).key === 'actions'">
-
-          <RecordAction v-bind="{
-            title: '修改',
-            color: 'blue',
-            onClick: () => {
-              updateRecord(
-                activeTableName,
-                (record as ActivityRecord),
-                updateDataSource,
-              );
-            },
-          }">
-            <template #icon>
-              <EditOutlined />
-            </template>
-          </RecordAction>
-
-          <RecordAction v-bind="{
-            title: '添加此项目的其他记录',
-            color: 'green',
-            onClick: () => {
-              appendRecord(
-                activeTableName,
-                merge(record as ActivityRecord, recordModalStudentDefaults),
-                updateDataSource,
-              );
-            },
-          }">
-            <template #icon>
-              <CopyOutlined />
-            </template>
-          </RecordAction>
-
-          <RecordAction v-bind="{
-            title: '删除',
-            color: 'red',
-            onClick: () => {
-              deleteRecord(
-                activeTableName,
-                (record as ActivityRecord).record_id,
-                updateDataSource,
-              );
-            },
-          }">
-            <template #icon>
-              <DeleteOutlined />
-            </template>
-          </RecordAction>
-
-        </a-space>
-
-      </template>
-
-    </a-table>
+      showActions: true,
+      dataSourceUpdater: updateDataSource,
+    }" />
 
     <TableNameModal />
     <RecordModal :suggestion-source="dataSource" />
@@ -295,18 +189,5 @@ const createAndViewTable = () => {
 
 #toolbar-table-select {
   flex: 1 0;
-}
-
-.table-header-cell {
-  font-weight: bold;
-  white-space: nowrap;
-}
-
-:deep(th.ant-table-cell) {
-  font-weight: bold;
-}
-
-:deep(.ant-table-cell) {
-  min-width: 100px;
 }
 </style>

@@ -25,6 +25,7 @@ export const recordModalDefaults: RecordModalState = {
     activity_type: '',
     activity_host: '',
     manager_name: '',
+    manager_contact: '',
     manager_qq: '',
     notes: '',
 };

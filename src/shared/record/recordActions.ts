@@ -2,7 +2,7 @@ import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { CONTENT_TYPE_JSON, type RecordModalState } from '../common';
-import { finishRecord, inputRecord, type ActivityRecord } from './recordModal';
+import { finishRecord, inputRecord, recordModalPending, type ActivityRecord } from './recordModal';
 
 export const recordActionDisabled = ref(false);
 
@@ -37,8 +37,10 @@ export const updateRecord = async (
 
     if (response.status === 200) {
         message.success('修改成功');
+        finishRecord();
         onSuccess?.();
     } else {
+        recordModalPending.value = false;
         try {
             const errorText = await response.text();
             message.error(errorText);
@@ -48,7 +50,6 @@ export const updateRecord = async (
     }
 
     recordActionDisabled.value = false;
-    finishRecord();
 
 };
 
@@ -91,8 +92,10 @@ export const appendRecord = async (
 
     if (response.status === 200) {
         message.success('添加成功');
+        finishRecord();
         onSuccess?.();
     } else {
+        recordModalPending.value = false;
         try {
             const errorText = await response.text();
             message.error(errorText);
@@ -103,7 +106,6 @@ export const appendRecord = async (
 
     recordActionDisabled.value = false;
     appendingRecord.value = false;
-    finishRecord();
 
 };
 
