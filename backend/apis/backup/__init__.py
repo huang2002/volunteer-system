@@ -1,7 +1,7 @@
 import shutil
 from flask import Flask, jsonify
-from common import *
-from common_backup import *
+from ..common import *
+from .common import *
 
 
 def inject_backup_apis(app: Flask):

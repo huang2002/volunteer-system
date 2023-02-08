@@ -1,5 +1,5 @@
-from common import *
 from werkzeug.utils import safe_join
+from ..common import *
 
 __all__ = [
     'RESPONSE_DUPLICATE_BACKUP',

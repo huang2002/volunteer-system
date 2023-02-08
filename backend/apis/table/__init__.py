@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
-from common import *
-from common_table import *
+from ..common import *
+from .common import *
 
 
 def inject_table_apis(app: Flask):

@@ -1,4 +1,4 @@
-from common import *
+from ..common import *
 
 __all__ = [
     'RESPONSE_INVALID_TABLE_NAME',
