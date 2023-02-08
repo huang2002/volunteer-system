@@ -60,5 +60,7 @@ const REPO_URL = 'https://github.com/huang2002/volunteer-system';
 </template>
 
 <style scoped>
-
+#home-view {
+  padding: 32px;
+}
 </style>

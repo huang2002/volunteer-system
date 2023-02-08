@@ -3,7 +3,7 @@ import { RouterView, useRoute } from 'vue-router';
 import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, GithubOutlined, HomeOutlined, ImportOutlined, TableOutlined } from '@ant-design/icons-vue';
 import { provide, ref, watch, type Component } from 'vue';
 import locale from 'ant-design-vue/es/locale/zh_CN';
-import { KEY_GET_CONTENT_CONTAINER } from '@/common/common';
+import { KEY_GET_CONTENT_CONTAINER } from '@/shared/common';
 
 const CONTENT_ID = 'content';
 const getContentContainer = () => (

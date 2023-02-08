@@ -11,6 +11,9 @@
 - GET `/api/create/table/<table_name>`
     - Creates a new table.
 
+- GET `/api/rename/table/<source>/<destination>`
+    - Renames specific table.
+
 - GET `/api/view/table/<table_name>`
     - Returns data in specific table.
     - Response Body:
@@ -43,4 +46,10 @@
 - GET `/api/create/backup/<backup_name>`
     - Creates a backup.
 
+- GET `/api/rename/backup/<source>/<destination>`
+    - Renames specific backup.
+
 TODO: load backup
+
+- GET `/api/delete/backup/<backup_name>`
+    - Deletes specific backup.

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { backupNames, updateBackupNames, loadingBackupNames } from '@/common/backup/backupNames';
-import CreateBackupModal from '@/components/CreateBackupModal.vue';
-import { FolderAddOutlined, SyncOutlined } from '@ant-design/icons-vue';
-import { createBackup } from '@/common/backup/backupActions';
+import { backupNames, updateBackupNames, loadingBackupNames } from '@/shared/backup/backupNames';
+import CreateBackupModal from '@/components/BackupNameModal.vue';
+import { FolderAddOutlined, SyncOutlined, FolderOutlined } from '@ant-design/icons-vue';
+import { createBackup, renameBackup, deleteBackup } from '@/shared/backup/backupActions';
 import { onBeforeMount } from 'vue';
+import { onRefreshSuccess } from '@/shared/common';
 
 onBeforeMount(updateBackupNames);
 </script>
@@ -20,21 +21,22 @@ onBeforeMount(updateBackupNames);
       <template #header>
         <div id="backup-list-header">
 
-          <div id="backup-list-title">
+          <h2 id="backup-list-title">
             备份列表
-            <a-tooltip color="blue" title="刷新备份列表">
-              <a-button @click="updateBackupNames" v-bind="{
-                type: 'link',
-                size: 'small',
-              }">
-                <template #icon>
-                  <SyncOutlined />
-                </template>
-              </a-button>
-            </a-tooltip>
-          </div>
+          </h2>
 
-          <a-button @click="createBackup" v-bind="{
+          <a-button @click="updateBackupNames(onRefreshSuccess)" v-bind="{
+            id: 'backup-list-refresh',
+            type: 'link',
+            size: 'small',
+          }">
+            <template #icon>
+              <SyncOutlined />
+            </template>
+            刷新
+          </a-button>
+
+          <a-button @click="createBackup()" v-bind="{
             type: 'primary',
           }">
             <template #icon>
@@ -51,8 +53,15 @@ onBeforeMount(updateBackupNames);
 
           <template #actions>
 
-            <a-button v-bind="{
-              type: 'text',
+            <a-button @click="renameBackup(item as string)" v-bind="{
+              type: 'link',
+              size: 'small',
+            }">
+              重命名
+            </a-button>
+
+            <a-button @click="deleteBackup(item as string)" v-bind="{
+              type: 'link',
               size: 'small',
               danger: true,
             }">
@@ -61,7 +70,10 @@ onBeforeMount(updateBackupNames);
 
           </template>
 
-          {{ item }}
+          <a-space :title="item">
+            <FolderOutlined style="color: #F90;" />
+            {{ item }}
+          </a-space>
 
         </a-list-item>
       </template>
@@ -76,12 +88,17 @@ onBeforeMount(updateBackupNames);
 <style scoped>
 #backup-list-header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   overflow-x: auto;
 }
 
 #backup-list-title {
-  flex: 1 0;
+  margin: 0;
+  margin-right: 10px;
   font-weight: bold;
+}
+
+#backup-list-refresh {
+  margin-right: auto;
 }
 </style>

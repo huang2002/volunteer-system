@@ -7,11 +7,13 @@ def inject_table_apis(app: Flask):
 
     @app.get('/api/list/tables')
     def list_tables():
-        return jsonify([
-            os.path.splitext(table_path)[0]
-            for table_path in os.listdir(DATA_DIR)
-            if table_path.endswith('.csv')
-        ])
+        return jsonify(
+            sorted(
+                os.path.splitext(table_filename)[0]
+                for table_filename in os.listdir(DATA_DIR)
+                if table_filename.endswith('.csv')
+            )
+        )
 
     @app.get('/api/create/table/<table_name>')
     def create_table(table_name: str):
@@ -24,6 +26,26 @@ def inject_table_apis(app: Flask):
             return RESPONSE_DUPLICATE_TABLE
 
         init_table(table_path)
+        return RESPONSE_SUCCESS
+
+    @app.get('/api/rename/table/<source>/<destination>')
+    def rename_table(source: str, destination: str):
+
+        if not (
+            is_valid_table_name(source)
+            and is_valid_table_name(destination)
+        ):
+            return RESPONSE_INVALID_TABLE_NAME
+
+        source_path = get_table_path(source)
+        if not os.path.exists(source_path):
+            return RESPONSE_TABLE_NOT_FOUND
+
+        destination_path = get_table_path(destination)
+        if os.path.exists(destination_path):
+            return RESPONSE_DUPLICATE_TABLE
+
+        os.rename(source_path, destination_path)
         return RESPONSE_SUCCESS
 
     @app.get('/api/view/table/<table_name>')

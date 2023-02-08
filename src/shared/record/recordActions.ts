@@ -107,7 +107,7 @@ export const appendRecord = async (
 
 };
 
-export const deleteRecord = async (
+export const deleteRecord = (
     tableName: string,
     recordId: number,
     onSuccess?: () => void,
@@ -128,7 +128,9 @@ export const deleteRecord = async (
         cancelText: '取消',
         autoFocusButton: 'cancel',
         async onOk() {
-            const response = await fetch(`/api/delete/${tableName}/${recordId}`);
+            const response = await fetch(
+                `/api/delete/${tableName}/${recordId}`
+            );
             if (response.status === 200) {
                 message.success('删除成功');
                 onSuccess?.();

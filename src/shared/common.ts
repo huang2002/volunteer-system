@@ -1,3 +1,4 @@
+import { message } from 'ant-design-vue';
 import type { InjectionKey } from 'vue';
 
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
@@ -19,3 +20,7 @@ export interface RecordModalState {
     manager_qq: string;
     notes: string;
 }
+
+export const onRefreshSuccess = () => {
+    message.success('刷新成功');
+};

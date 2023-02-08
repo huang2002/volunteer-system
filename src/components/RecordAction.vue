@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { recordActionDisabled } from '@/common/record/recordActions';
+import { recordActionDisabled } from '@/shared/record/recordActions';
 
 const props = defineProps<{
   title: string;

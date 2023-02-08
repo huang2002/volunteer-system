@@ -40,12 +40,14 @@ declare module '@vue/runtime-core' {
     ATypographyParagraph: typeof import('ant-design-vue/es')['TypographyParagraph']
     ATypographyText: typeof import('ant-design-vue/es')['TypographyText']
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
+    BackupNameModal: typeof import('./src/components/BackupNameModal.vue')['default']
     CreateBackupModal: typeof import('./src/components/CreateBackupModal.vue')['default']
     CreateTableModal: typeof import('./src/components/CreateTableModal.vue')['default']
     RecordAction: typeof import('./src/components/RecordAction.vue')['default']
     RecordModal: typeof import('./src/components/RecordModal.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TableNameModal: typeof import('./src/components/TableNameModal.vue')['default']
     TableToolbarButton: typeof import('./src/components/TableToolbarButton.vue')['default']
   }
 }

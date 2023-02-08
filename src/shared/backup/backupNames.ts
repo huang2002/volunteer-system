@@ -28,10 +28,10 @@ export const updateBackupNames = async (
                 backupNames.value = result;
                 onSuccess?.();
             } else {
-                message.error('后台返回的备份名称格式有误');
+                message.error('后台返回的备份列表格式有误');
             }
         } catch {
-            message.error('更新表名时出错');
+            message.error('更新备份列表时出错');
         }
 
     } else {
@@ -40,7 +40,7 @@ export const updateBackupNames = async (
             const errorText = await response.text();
             message.error(errorText);
         } catch {
-            message.error('获取表名时出错');
+            message.error('获取备份列表时出错');
         }
 
     }

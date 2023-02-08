@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { RecordModalState } from '@/common/common';
-import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalTitle, recordModalForm, recordModalBatchMode, recordModalBatchModeAvailable } from '@/common/record/recordModal';
+import type { RecordModalState } from '@/shared/common';
+import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalTitle, recordModalForm, recordModalBatchMode, recordModalBatchModeAvailable } from '@/shared/record/recordModal';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
 import { computed } from 'vue';
@@ -130,7 +130,7 @@ const onCancel = () => {
 </script>
 
 <template>
-  <a-modal v-model:visible="recordModalVisible" @ok="onSubmit" @cancel="onCancel" v-bind="{
+  <a-modal v-model:visible="recordModalVisible" @ok="onSubmit()" @cancel="onCancel()" v-bind="{
     style: { top: '2em' },
     title: recordModalTitle,
     footer: null,
@@ -138,7 +138,7 @@ const onCancel = () => {
     confirmLoading: recordModalPending,
   }">
 
-    <a-form ref="recordModalForm" @finish="onSubmit" v-bind="{
+    <a-form ref="recordModalForm" @finish="onSubmit()" v-bind="{
       id: 'record-form',
       model: recordModalState,
       rules,
@@ -304,7 +304,7 @@ const onCancel = () => {
       <a-form-item v-bind="formTailLayout">
         <a-space>
           <a-button type="primary" html-type="submit">确认</a-button>
-          <a-button @click="onCancel">取消</a-button>
+          <a-button @click="onCancel()">取消</a-button>
           <a-button danger @click="recordModalForm?.resetFields()">重置</a-button>
         </a-space>
       </a-form-item>

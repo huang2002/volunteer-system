@@ -9,9 +9,11 @@ FRONTEND_PATH = os.path.join(BACKEND_PATH, '../frontend')
 DATA_DIR = os.path.join(BACKEND_PATH, '../data')
 BACKUP_DIR = os.path.join(BACKEND_PATH, '../backup')
 
+RESPONSE_SUCCESS = ('success', 200)
+RESPONSE_TOO_FREQUENT = ('操作太频繁，请稍后重试', 403)
+
 DATE_DTYPE = 'datetime64'
 DATE_FORMAT = '%Y/%m/%d'
-PATTERN_TABLE_NAME = re.compile(r'^\d{2}$')
 
 INDEX_NAME = 'record_id'
 DTYPES: dict[str, str] = {
@@ -41,6 +43,3 @@ CONVERTERS = dict(
     (col, convert_date)
     for col in DATE_COLUMNS
 )
-
-RESPONSE_SUCCESS = ('success', 200)
-RESPONSE_TOO_FREQUENT = ('操作太频繁，请稍后重试', 403)

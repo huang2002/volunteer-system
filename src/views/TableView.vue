@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { tableNames, updateTableNames, loadingTableNames } from '@/common/table/tableNames';
-import { CopyOutlined, DeleteOutlined, EditOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
+import { CopyOutlined, DeleteOutlined, EditOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message, type TableColumnType, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch, inject, onBeforeMount } from 'vue';
-import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/common/record/recordActions';
-import { createTable } from '@/common/table/tableActions';
+import { updateRecord, deleteRecord, appendRecord, appendingRecord } from '@/shared/record/recordActions';
+import { createTable, renameTable } from '@/shared/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
-import { recordModalDefaults, recordModalStudentDefaults, type ActivityRecord } from '@/common/record/recordModal';
-import CreateTableModal from '@/components/CreateTableModal.vue';
-import { createTableModalVisible } from '@/common/table/createTableModal';
+import { recordModalDefaults, recordModalStudentDefaults, type ActivityRecord } from '@/shared/record/recordModal';
+import TableNameModal from '@/components/TableNameModal.vue';
+import { tableNameModalVisible } from '@/shared/table/tableNameModal';
 import RecordAction from '@/components/RecordAction.vue';
 import { merge } from '3h-utils';
 import TableToolbarButton from '@/components/TableToolbarButton.vue';
-import { KEY_GET_CONTENT_CONTAINER } from '@/common/common';
+import { KEY_GET_CONTENT_CONTAINER, onRefreshSuccess } from '@/shared/common';
 
 onBeforeMount(updateTableNames);
 
@@ -87,10 +87,6 @@ const createAndViewTable = () => {
     activeTableName.value = newTable.name;
   });
 };
-
-const onRefreshSuccess = () => {
-  message.success('刷新成功');
-};
 </script>
 
 <template>
@@ -130,9 +126,22 @@ const onRefreshSuccess = () => {
         },
       }">
         <template #icon>
-          <FormOutlined style="color: #F90;" />
+          <PlusSquareOutlined style="color: #19F;" />
         </template>
         添加记录
+      </TableToolbarButton>
+
+      <TableToolbarButton v-bind="{
+        loading: tableNameModalVisible,
+        disabled: !activeTableName,
+        onClick: () => {
+          renameTable(activeTableName);
+        },
+      }">
+        <template #icon>
+          <FormOutlined style="color: #F90;" />
+        </template>
+        重命名表
       </TableToolbarButton>
 
       <TableToolbarButton v-bind="{
@@ -149,11 +158,11 @@ const onRefreshSuccess = () => {
       </TableToolbarButton>
 
       <TableToolbarButton v-bind="{
-        loading: createTableModalVisible,
+        loading: tableNameModalVisible,
         onClick: createAndViewTable,
       }">
         <template #icon>
-          <PlusSquareOutlined style="color: #1C3;" />
+          <FileAddOutlined style="color: #1C3;" />
         </template>
         新建表格
       </TableToolbarButton>
@@ -252,7 +261,7 @@ const onRefreshSuccess = () => {
 
     </a-table>
 
-    <CreateTableModal />
+    <TableNameModal />
     <RecordModal :suggestion-source="dataSource" />
 
   </div>
