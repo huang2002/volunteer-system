@@ -40,6 +40,7 @@ const columns: TableColumnType[] = [
   { title: '项目类型', dataIndex: 'activity_type', ellipsis: true },
   { title: '举办单位', dataIndex: 'activity_host', ellipsis: true },
   { title: '项目负责人姓名', dataIndex: 'manager_name', ellipsis: true },
+  { title: '项目负责人联系方式', dataIndex: 'manager_contact', ellipsis: true },
   { title: '项目负责人QQ', dataIndex: 'manager_qq', ellipsis: true },
   { title: '备注', dataIndex: 'notes', ellipsis: true },
   { title: '操作', key: 'actions', fixed: 'right' },
@@ -213,21 +214,13 @@ const createAndViewTable = () => {
 
       <template #bodyCell="{ column, text, record }">
 
-        <template v-if="(column as TableColumnType).dataIndex === 'student_contact'">
-          <template v-if="!(record as ActivityRecord).student_contact">
-            <a-typography-text disabled>无</a-typography-text>
-          </template>
+        <template v-if="column.dataIndex && !record[column.dataIndex]">
+          <a-typography-text disabled>无</a-typography-text>
         </template>
 
         <template v-else-if="(column as TableColumnType).dataIndex === 'activity_length'">
           {{ text }}
           小时
-        </template>
-
-        <template v-else-if="(column as TableColumnType).dataIndex === 'notes'">
-          <template v-if="!(record as ActivityRecord).notes">
-            <a-typography-text disabled>无</a-typography-text>
-          </template>
         </template>
 
         <a-space v-else-if="(column as TableColumnType).key === 'actions'">

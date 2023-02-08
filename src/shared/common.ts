@@ -18,6 +18,7 @@ export interface RecordModalState {
     activity_type: string;
     activity_host: string;
     manager_name: string;
+    manager_contact: string;
     manager_qq: string;
     notes: string;
 }

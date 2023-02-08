@@ -1,1 +1,1 @@
-record_id,activity_date,student_school,student_class,student_name,student_id,activity_length,activity_name,activity_type,activity_host,manager_name,manager_qq,notes
+record_id,activity_date,student_school,student_class,student_name,student_id,student_contact,activity_length,activity_name,activity_type,activity_host,manager_name,manager_contact,manager_qq,notes

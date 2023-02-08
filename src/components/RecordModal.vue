@@ -24,7 +24,7 @@ const formTailLayout = {
   },
 };
 
-const rules: Record<string, Rule[]> = {
+const rules: Record<keyof RecordModalState, Rule[]> = {
   student_name: [{ type: 'string', required: true }],
   student_school: [{ type: 'string', required: true }],
   student_class: [{ type: 'string', required: true }],
@@ -36,7 +36,8 @@ const rules: Record<string, Rule[]> = {
   activity_type: [{ type: 'string', required: true }],
   activity_host: [{ type: 'string', required: true }],
   manager_name: [{ type: 'string', required: true }],
-  manager_qq: [{ type: 'string', required: true }],
+  manager_contact: [{ type: 'string' }],
+  manager_qq: [{ type: 'string' }],
   notes: [{ type: 'string' }],
 };
 
@@ -90,32 +91,28 @@ const studentContactSuggestions = generateSuggestions(
   ['student_school', 'student_class', 'student_name'],
   'student_contact',
 );
-
-const activityColumns: (keyof RecordModalState)[] = [
+const activityNameSuggestions = generateSuggestions(
+  ['activity_host', 'activity_type'],
   'activity_name',
-  'activity_type',
-  'activity_host',
-];
-const generateActivitySuggestions = (
-  valueKey: keyof RecordModalState,
-) => (
-  generateSuggestions(
-    activityColumns.filter(
-      (key) => (key !== valueKey)
-    ),
-    valueKey,
-  )
 );
-const activityNameSuggestions = generateActivitySuggestions('activity_name');
-const activityTypeSuggestions = generateActivitySuggestions('activity_type');
-const activityHostSuggestions = generateActivitySuggestions('activity_host');
-
+const activityTypeSuggestions = generateSuggestions(
+  ['activity_name', 'activity_host'],
+  'activity_type',
+);
+const activityHostSuggestions = generateSuggestions(
+  ['activity_name', 'activity_type'],
+  'activity_host',
+);
 const managerNameSuggestions = generateSuggestions(
-  ['manager_qq'],
+  ['manager_qq', 'manager_contact'],
   'manager_name',
 );
+const managerContactSuggestions = generateSuggestions(
+  ['manager_name', 'manager_qq'],
+  'manager_contact',
+);
 const managerQQSuggestions = generateSuggestions(
-  ['manager_name'],
+  ['manager_name', 'manager_contact'],
   'manager_qq',
 );
 const notesSuggestions = generateSuggestions(
@@ -268,6 +265,17 @@ const onCancel = () => {
       <a-form-item name="manager_name" label="项目负责人姓名">
         <a-auto-complete v-model:value="recordModalState.manager_name" v-bind="{
           dataSource: managerNameSuggestions,
+          allowClear: true,
+          backfill: true,
+          filterOption: true,
+        }">
+          <a-input name="manager_name" />
+        </a-auto-complete>
+      </a-form-item>
+
+      <a-form-item name="manager_contact" label="项目负责人联系方式">
+        <a-auto-complete v-model:value="recordModalState.manager_contact" v-bind="{
+          dataSource: managerContactSuggestions,
           allowClear: true,
           backfill: true,
           filterOption: true,
