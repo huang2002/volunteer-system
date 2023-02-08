@@ -41,7 +41,7 @@ def read_table(path: str) -> pd.DataFrame:
         path,
         index_col=INDEX_NAME,
         infer_datetime_format=True,
-        dtype=DTYPES,
+        dtype=NON_DATE_DTYPES,
         converters=CONVERTERS,
         parse_dates=DATE_COLUMNS,
     )

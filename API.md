@@ -35,6 +35,17 @@
         - Type: JSON
         - Format: `{ key -> value, ... }`
 
+## Export APIs
+
+TODO:
+
+## Import APIs
+
+- POST `/api/import/tables`
+    - Imports the uploaded files.
+    - Request Body: table files
+        - Type: `multipart/form-data`
+
 ## Backup APIs
 
 - GET `/api/list/backups`

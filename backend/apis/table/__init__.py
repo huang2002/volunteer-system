@@ -59,11 +59,7 @@ def inject_table_apis(app: Flask):
             return RESPONSE_TABLE_NOT_FOUND
 
         df = read_table(table_path)
-        for col in DATE_COLUMNS:
-            df[col] = df[col].dt.strftime(DATE_FORMAT)
-        df.fillna('', inplace=True)
-        df.reset_index(inplace=True)
-        return jsonify(df.to_dict('records'))
+        return make_table_response(df)
 
     @app.post('/api/append/<table_name>')
     def append_record(table_name: str):
@@ -83,7 +79,7 @@ def inject_table_apis(app: Flask):
 
         df_source = read_table(table_path)
 
-        record_id = time.time_ns()
+        record_id = create_record_id()
         if record_id in df_source.index:
             return RESPONSE_TOO_FREQUENT
 
@@ -98,7 +94,7 @@ def inject_table_apis(app: Flask):
             if col in DATE_COLUMNS:
                 df_addition[col] = convert_date(df_addition[col])
             else:
-                dtype = DTYPES[col]
+                dtype = NON_DATE_DTYPES[col]
                 df_addition[col] = df_addition[col].astype(dtype)
 
         df_result = df_source.append(df_addition)
@@ -144,7 +140,7 @@ def inject_table_apis(app: Flask):
             if not key in COLUMNS:
                 return RESPONSE_INVALID_RECORD
             raw_value = addition[key]
-            dtype = DATE_DTYPE if key in DATE_COLUMNS else DTYPES[key]
+            dtype = DATE_DTYPE if key in DATE_COLUMNS else NON_DATE_DTYPES[key]
             if dtype == 'string':
                 value = str(raw_value)
             elif dtype.startswith('float'):

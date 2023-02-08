@@ -16,5 +16,7 @@ app = Flask(
     static_folder=FRONTEND_PATH,
 )
 
+app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # bytes
+
 inject_table_apis(app)
 inject_backup_apis(app)

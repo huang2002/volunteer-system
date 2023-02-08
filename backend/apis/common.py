@@ -16,7 +16,7 @@ DATE_DTYPE = 'datetime64'
 DATE_FORMAT = '%Y/%m/%d'
 
 INDEX_NAME = 'record_id'
-DTYPES: dict[str, str] = {
+NON_DATE_DTYPES: dict[str, str] = {
     'student_school': 'string',
     'student_class': 'string',
     'student_name': 'string',
@@ -34,7 +34,13 @@ DTYPES: dict[str, str] = {
 DATE_COLUMNS = [
     'activity_date',
 ]
-COLUMNS: list[str] = DATE_COLUMNS + list(DTYPES.keys())
+COLUMNS: list[str] = DATE_COLUMNS + list(NON_DATE_DTYPES.keys())
+OPTIONAL_COLUMNS = [
+    'student_contact',
+    'manager_contact',
+    'manager_qq',
+    'notes',
+]
 
 
 def convert_date(x):
@@ -45,3 +51,17 @@ CONVERTERS = dict(
     (col, convert_date)
     for col in DATE_COLUMNS
 )
+
+
+def create_record_id():
+    return time.time_ns()
+
+
+def make_table_response(df: pd.DataFrame):
+    # convert date columns
+    for col in DATE_COLUMNS:
+        df[col] = df[col].dt.strftime(DATE_FORMAT)
+    # return index to a column
+    df.reset_index(inplace=True)
+    # make a json response
+    return jsonify(df.to_dict('records'))
