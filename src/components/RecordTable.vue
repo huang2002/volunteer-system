@@ -9,8 +9,6 @@ import { recordModalStudentDefaults, type ActivityRecord } from '@/shared/record
 import { updateRecord, appendRecord, deleteRecord } from '@/shared/record/recordActions';
 import RecordIndex from './RecordIndex.vue';
 
-// TODO: add large table support
-
 const props = defineProps<{
   dataSource: ActivityRecord[];
   tableName?: string;
@@ -51,10 +49,20 @@ if (props.showActions) {
     dataSource,
     loading,
     rowKey: 'record_id',
+    size: 'small',
     scroll: { x: 'max-content' },
     sticky: { getContainer: getContentContainer },
     bordered: true,
-    pagination: false,
+    pagination: {
+      defaultPageSize: 10,
+      pageSizeOptions: ['10', '15', '20', '25', '30'],
+      showLessItems: true,
+      showQuickJumper: true,
+      showSizeChanger: true,
+      showTotal: (total: number, range: [number, number]) => (
+        `第${range[0]}条到第${range[1]}条 （共${total}条记录）`
+      )
+    },
   }">
 
     <template #headerCell="{ column, title }">
