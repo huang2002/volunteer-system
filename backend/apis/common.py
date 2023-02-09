@@ -14,7 +14,7 @@ BACKUP_DIR = os.path.join(BACKEND_PATH, '../backup')
 RESPONSE_SUCCESS = ('success', 200)
 RESPONSE_TOO_FREQUENT = ('操作太频繁，请稍后重试', 403)
 
-DATE_DTYPE = 'datetime64'
+DATE_DTYPE = 'datetime64[ns]'
 DATE_FORMAT = '%Y/%m/%d'
 
 INDEX_NAME = 'record_id'
