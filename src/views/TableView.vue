@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
-import { FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { DownOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch, onBeforeMount } from 'vue';
 import { appendRecord, appendingRecord } from '@/shared/record/recordActions';
@@ -67,6 +67,10 @@ const createAndViewTable = () => {
     activeTableName.value = newTable.name;
   });
 };
+
+const renameActiveTable = () => {
+  renameTable(activeTableName.value);
+};
 </script>
 
 <template>
@@ -99,6 +103,7 @@ const createAndViewTable = () => {
       </a-input-group>
 
       <ToolbarButton v-bind="{
+        type: 'primary',
         loading: appendingRecord,
         disabled: !activeTableName,
         onClick: () => {
@@ -110,22 +115,9 @@ const createAndViewTable = () => {
         },
       }">
         <template #icon>
-          <PlusSquareOutlined style="color: #1C2;" />
+          <PlusSquareOutlined />
         </template>
         添加记录
-      </ToolbarButton>
-
-      <ToolbarButton v-bind="{
-        loading: tableNameModalVisible,
-        disabled: !activeTableName,
-        onClick: () => {
-          renameTable(activeTableName);
-        },
-      }">
-        <template #icon>
-          <FormOutlined style="color: #F90;" />
-        </template>
-        重命名表
       </ToolbarButton>
 
       <ToolbarButton v-bind="{
@@ -136,20 +128,40 @@ const createAndViewTable = () => {
         },
       }">
         <template #icon>
-          <ReloadOutlined style="color: #19F;" />
+          <ReloadOutlined />
         </template>
         刷新表格
       </ToolbarButton>
 
-      <ToolbarButton v-bind="{
-        loading: tableNameModalVisible,
-        onClick: createAndViewTable,
-      }">
-        <template #icon>
-          <FileAddOutlined style="color: #193;" />
+      <a-dropdown>
+        <a-button type="link">
+          更多操作
+          <DownOutlined />
+        </a-button>
+        <template #overlay>
+          <a-menu>
+
+            <a-menu-item @click="renameActiveTable" v-bind="{
+              disabled: !activeTableName || tableNameModalVisible,
+            }">
+              <a-space>
+                <FormOutlined style="color: #F90;" />
+                重命名表
+              </a-space>
+            </a-menu-item>
+
+            <a-menu-item @click="createAndViewTable" v-bind="{
+              disabled: tableNameModalVisible,
+            }">
+              <a-space>
+                <FileAddOutlined style="color: #192;" />
+                新建表格
+              </a-space>
+            </a-menu-item>
+
+          </a-menu>
         </template>
-        新建表格
-      </ToolbarButton>
+      </a-dropdown>
 
     </div>
 

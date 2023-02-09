@@ -11,7 +11,7 @@ const props = defineProps<{
 const hover = ref(false);
 const copied = ref(false);
 const color = computed(() => (
-  hover.value ? (copied.value ? '#1C2' : '#FC0') : '#19F'
+  hover.value ? (copied.value ? '#1C2' : '#FB0') : '#19F'
 ));
 const text = computed(() => (
   hover.value ? (copied.value ? '复制成功' : '复制编号') : '查看编号'
