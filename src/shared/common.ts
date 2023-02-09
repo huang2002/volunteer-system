@@ -39,7 +39,10 @@ export const displayErrorMessage = async (
 ) => {
     try {
         const errorMessage = await response.text();
-        if (errorMessage && !errorMessage.includes('DOCTYPE')) {
+        if (
+            errorMessage
+            && !errorMessage.toLowerCase().includes('doctype')
+        ) {
             message.error(errorMessage);
         } else {
             message.error(fallbackMessage);
