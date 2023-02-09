@@ -32,9 +32,6 @@ docs/*
 !docs/documentation.tex
 !docs/documentation.pdf
 
-# python
-__pycache__
-
 # custom
 /output/
 /backup/
