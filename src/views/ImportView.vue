@@ -3,7 +3,7 @@ import RecordTable from '@/components/RecordTable.vue';
 import ToolbarButton from '@/components/ToolbarButton.vue';
 import { type FileType, importActionDisabled, previewImport } from '@/shared/import/importActions';
 import type { ActivityRecord } from '@/shared/record/recordModal';
-import { ArrowRightOutlined, CloudUploadOutlined, DeleteOutlined, FileSearchOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { ArrowRightOutlined, CloseOutlined, CloudUploadOutlined, DeleteOutlined, FileSearchOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
 import type { UploadProps } from 'ant-design-vue';
 import { ref } from 'vue';
 
@@ -26,11 +26,19 @@ const onRemove: UploadProps['onRemove'] = (file) => {
 };
 
 const loadPreview = () => {
+  if (loadingPreview.value) {
+    return;
+  }
+  loadingPreview.value = true;
   previewImport(
     fileList.value,
     (data) => {
+      loadingPreview.value = false;
       previewData.value = data;
       fileList.value = [];
+    },
+    () => {
+      loadingPreview.value = false;
     },
   );
 };
@@ -63,13 +71,13 @@ const loadPreview = () => {
       <template v-if="previewData.length">
         <ToolbarButton v-bind="{
           danger: true,
-          disabled: !fileList.length || importActionDisabled,
+          disabled: importActionDisabled,
           onClick: () => {
             previewData = [];
           },
         }">
           <template #icon>
-            <DeleteOutlined />
+            <CloseOutlined />
           </template>
           取消预览
         </ToolbarButton>
@@ -116,7 +124,7 @@ const loadPreview = () => {
 
     </div>
 
-    <RecordTable v-if="previewData.length" v-bind="{
+    <RecordTable v-if="previewData.length || loadingPreview" v-bind="{
       dataSource: previewData,
       loading: loadingPreview,
     }" />

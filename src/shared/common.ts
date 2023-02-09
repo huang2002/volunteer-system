@@ -2,7 +2,6 @@ import { message } from 'ant-design-vue';
 import type { InjectionKey } from 'vue';
 
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
-export const ERROR_MESSAGE_THRESHOLD = 50;
 
 export const KEY_GET_CONTENT_CONTAINER =
     Symbol('KEY_GET_CONTENT_CONTAINER') as InjectionKey<() => HTMLElement>;
@@ -31,7 +30,7 @@ export const onRefreshSuccess = () => {
 
 /**
  * Display the error message from response
- * if it is neither empty nor longer than `ERROR_MESSAGE_THRESHOLD`.
+ * if it is neither empty nor containing "DOCTYPE".
  * Otherwise, display `fallbackMessage`.
  */
 export const displayErrorMessage = async (
@@ -40,7 +39,7 @@ export const displayErrorMessage = async (
 ) => {
     try {
         const errorMessage = await response.text();
-        if (errorMessage.length <= ERROR_MESSAGE_THRESHOLD) {
+        if (errorMessage && !errorMessage.includes('DOCTYPE')) {
             message.error(errorMessage);
         } else {
             message.error(fallbackMessage);

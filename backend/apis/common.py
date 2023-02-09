@@ -56,7 +56,7 @@ CONVERTERS = dict(
 )
 
 
-def create_record_id():
+def create_record_id() -> int:
     return time.time_ns()
 
 

@@ -1,45 +1,48 @@
 from ..common import *
 from .common import *
 
+# TODO: handle missing years
+
 WHITESPACE_PATTERN = re.compile(r'\s+')
 DATE_IGNORE_PATTERN_CN = re.compile(r'（[^）]*）')
 DATE_IGNORE_PATTERN_EN = re.compile(r'\([^)]*\)')
 DATE_SEP_EN = '-'
-EXCEL_DATE_ORIGIN = pd.to_datetime('1900/1/1')
+EXCEL_DATE_ORIGIN = pd.to_datetime('1900/1/1') \
+    - pd.DateOffset(days=2)  # manual fix
 
 DATE_PATTERN_CN = re.compile(r'''(?x)  # verbose mode
     (\d{4})年
     (\d{1,2})月
-    (\d{1,2})日
+    (\d{1,2})(?:日|号)
 ''')
 
 DATE_RANGE_PATTERN_CN_DOUBLE_YEARS = re.compile(r'''(?x)  # verbose mode
     # from
     (\d{4})年
     (\d{1,2})月
-    (\d{1,2})日
+    (\d{1,2})(?:日|号)
     # separate
     (?:|到|至|-|~)
     # to
     (\d{4})年
     (\d{1,2})月
-    (\d{1,2})日
+    (\d{1,2})(?:日|号)
 ''')
 
 DATE_RANGE_PATTERN_CN_SINGLE_YEAR = re.compile(r'''(?x)  # verbose mode
     # from
     (\d{4})年
     (\d{1,2})月
-    (\d{1,2})日
+    (\d{1,2})(?:日|号)
     # separate
     (?:|到|至|-|~)
     # to
     (\d{1,2})月
-    (\d{1,2})日
+    (\d{1,2})(?:日|号)
 ''')
 
 
-def expand_activity_date(
+def handle_activity_date(
     df_result: pd.DataFrame,
     series_raw: pd.Series,
 ) -> NoReturn:

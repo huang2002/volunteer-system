@@ -2,10 +2,10 @@ from ..common import *
 from .common import *
 from .detect_skiprows import detect_skiprows
 from .load_dataframe import load_dataframe
-from .expand_activity_date import expand_activity_date
+from .handle_activity_date import handle_activity_date
 
 SPECIAL_COLUMNS = {
-    'activity_date': expand_activity_date,
+    'activity_date': handle_activity_date,
 }
 
 
@@ -70,14 +70,5 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
             raise ImportTableError(
                 f'缺少必须的列：{col}，文件：{filename}'
             )
-
-    # set indices
-    index_count = len(df_result.index)
-    init_index = create_record_id()
-    new_index = pd.Index(
-        [init_index + i for i in range(index_count)],
-        name=INDEX_NAME,
-    )
-    df_result.index = new_index
 
     return df_result

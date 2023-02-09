@@ -12,6 +12,7 @@ export const importActionDisabled = ref(false);
 export const previewImport = async (
     fileList: FileType[],
     onSuccess?: (previewData: ActivityRecord[]) => void,
+    onFailure?: () => void,
 ) => {
 
     if (importActionDisabled.value) {
@@ -40,9 +41,11 @@ export const previewImport = async (
             message.success('预览加载成功');
         } catch {
             message.error('预览加载失败');
+            onFailure?.();
         }
     } else {
         await displayErrorMessage(response, '预览生成失败');
+        onFailure?.();
     }
 
     importActionDisabled.value = false;

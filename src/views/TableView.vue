@@ -26,6 +26,7 @@ const tableNameOptions = computed((): RadioGroupProps['options'] => (
 
 const dataSource = ref<ActivityRecord[]>([]);
 const loadingDataSource = ref(false);
+// TODO: move `updateDataSource` to `tableActions`
 const updateDataSource = async (
   onSuccess?: () => void,
 ) => {
