@@ -11,9 +11,9 @@ class ImportTableError(Exception):
 
 
 # all extensions will be in lower case
-ACCEPTABLE_EXCEL_EXTENSIONS = ['.xlsx']
-ACCEPTABLE_CSV_EXTENSIONS = ['.csv', '.csv.gz']
-ACCEPTABLE_TSV_EXTENSIONS = ['.tsv', '.tsv.gz']
+ACCEPTABLE_EXCEL_EXTENSIONS = ('.xlsx')
+ACCEPTABLE_CSV_EXTENSIONS = ('.csv', '.csv.gz')
+ACCEPTABLE_TSV_EXTENSIONS = ('.tsv', '.tsv.gz')
 
 
 def load_dataframe(
@@ -25,20 +25,20 @@ def load_dataframe(
     filename = str(file.filename)
     filename_lower = filename.lower()
     if filename_lower.endswith(ACCEPTABLE_EXCEL_EXTENSIONS):
-        df = pd.read_excel(
-            file.stream,
+        return pd.read_excel(
+            file,
             skiprows=skiprows,
             nrows=nrows,
         )
     elif filename_lower.endswith(ACCEPTABLE_CSV_EXTENSIONS):
-        df = pd.read_csv(
-            file.stream,
+        return pd.read_csv(
+            file,
             skiprows=skiprows,
             nrows=nrows,
         )
     elif filename_lower.endswith(ACCEPTABLE_TSV_EXTENSIONS):
-        df = pd.read_csv(
-            file.stream,
+        return pd.read_csv(
+            file,
             sep='\t',
             skiprows=skiprows,
             nrows=nrows,
@@ -67,11 +67,15 @@ COLUMN_MAP: dict[str, str] = {
     '备注': 'notes',
 }
 
+IGNORED_COLUMNS = [
+    '序号',
+]
+
 # A row is recognized as a header row
 # if it contains at least `RECOGNIZE_THRESHOLD`
 # words listed in `RECOGNIZABLE_COLUMNS`.
 RECOGNIZE_THRESHOLD = 5
-RECOGNIZABLE_COLUMNS = COLUMN_MAP.keys()
+RECOGNIZABLE_COLUMNS = list(COLUMN_MAP.keys()) + IGNORED_COLUMNS
 RECOGNIZE_NROWS = 5
 MAX_SKIPROWS = 3
 
@@ -80,7 +84,7 @@ def detect_skiprows(file: FileStorage) -> int:
     for n in range(MAX_SKIPROWS + 1):
         df = load_dataframe(
             file,
-            nrows=nrows,
+            nrows=RECOGNIZE_NROWS,
             skiprows=n,
         )
         recognized_count = 0
@@ -108,6 +112,8 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
     # copy data
     df_result = pd.DataFrame()
     for col_raw in df_raw.columns:
+        if col_raw in IGNORED_COLUMNS:
+            continue
         if not col_raw in COLUMN_MAP:
             raise ImportTableError(
                 f'无法识别的列：{col_raw}，文件：{filename}'

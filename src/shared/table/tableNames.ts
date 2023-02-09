@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { message } from 'ant-design-vue';
+import { displayErrorMessage } from '../common';
 
 const validateTableNames = (names: unknown): names is string[] => (
     Array.isArray(names)
@@ -19,9 +20,7 @@ export const updateTableNames = async (
     loadingTableNames.value = true;
 
     const response = await fetch('/api/list/tables');
-
     if (response.status === 200) {
-
         try {
             const result = await response.json();
             if (validateTableNames(result)) {
@@ -33,16 +32,8 @@ export const updateTableNames = async (
         } catch {
             message.error('更新表名时出错');
         }
-
     } else {
-
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('获取表名时出错');
-        }
-
+        await displayErrorMessage(response, '获取表名时出错');
     }
 
     loadingTableNames.value = false;

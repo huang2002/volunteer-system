@@ -41,10 +41,18 @@ TODO:
 
 ## Import APIs
 
-- POST `/api/import/tables`
-    - Imports the uploaded files.
+- POST `/api/import/preview`
+    - Gets the import preview of uploaded files.
     - Request Body: table files
         - Type: `multipart/form-data`
+    - Response Body: preview data
+        - Type: JSON
+        - Format: `[{ key -> value, ...}, ...]`
+
+- POST `/api/import/records`
+    - Imports the given records.
+    - Request Body: records to import
+        - Type: JSON
 
 ## Backup APIs
 

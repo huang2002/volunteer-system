@@ -1,5 +1,6 @@
 import { ref } from 'vue';
 import { message } from 'ant-design-vue';
+import { displayErrorMessage } from '../common';
 
 const validateBackupNames = (names: unknown): names is string[] => (
     Array.isArray(names)
@@ -19,9 +20,7 @@ export const updateBackupNames = async (
     loadingBackupNames.value = true;
 
     const response = await fetch('/api/list/backups');
-
     if (response.status === 200) {
-
         try {
             const result = await response.json();
             if (validateBackupNames(result)) {
@@ -33,16 +32,8 @@ export const updateBackupNames = async (
         } catch {
             message.error('更新备份列表时出错');
         }
-
     } else {
-
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('获取备份列表时出错');
-        }
-
+        await displayErrorMessage(response, '获取备份列表时出错');
     }
 
     loadingBackupNames.value = false;

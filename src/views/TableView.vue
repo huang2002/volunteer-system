@@ -10,7 +10,7 @@ import { recordModalDefaults, type ActivityRecord } from '@/shared/record/record
 import TableNameModal from '@/components/TableNameModal.vue';
 import { tableNameModalVisible } from '@/shared/table/tableNameModal';
 import ToolbarButton from '@/components/ToolbarButton.vue';
-import { onRefreshSuccess } from '@/shared/common';
+import { displayErrorMessage, onRefreshSuccess } from '@/shared/common';
 import RecordTable from '@/components/RecordTable.vue';
 
 onBeforeMount(updateTableNames);
@@ -48,12 +48,7 @@ const updateDataSource = async (
       message.error('更新数据时出错');
     }
   } else {
-    try {
-      const errorText = await response.text();
-      message.error(errorText);
-    } catch {
-      message.error('获取数据时出错');
-    }
+    await displayErrorMessage(response, '获取数据时出错');
   }
   loadingDataSource.value = false;
 };

@@ -1,26 +1,37 @@
 <script setup lang="ts">
 import RecordTable from '@/components/RecordTable.vue';
 import ToolbarButton from '@/components/ToolbarButton.vue';
-import { importingTables } from '@/shared/import/importActions';
+import { type FileType, importActionDisabled, previewImport } from '@/shared/import/importActions';
 import type { ActivityRecord } from '@/shared/record/recordModal';
 import { ArrowRightOutlined, CloudUploadOutlined, DeleteOutlined, FileSearchOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
-import type { UploadFile } from 'ant-design-vue';
+import type { UploadProps } from 'ant-design-vue';
 import { ref } from 'vue';
 
 const UPLOAD_ACCEPT = '.xlsx,.csv,.tsv,.gz';
 
 const previewData = ref<ActivityRecord[]>([]);
 const loadingPreview = ref(false);
-const fileList = ref<UploadFile[]>([]);
+const fileList = ref<FileType[]>([]);
 
-const beforeUpload = (file: UploadFile) => {
+const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   fileList.value = [...fileList.value, file];
   return false;
 };
 
-const onRemove = (file: UploadFile) => {
-  fileList.value = fileList.value.filter(
-    (f) => (f !== file)
+const onRemove: UploadProps['onRemove'] = (file) => {
+  fileList.value = fileList.value.filter((f) => (
+    (f !== file)
+    && (f !== file.originFileObj)
+  ));
+};
+
+const loadPreview = () => {
+  previewImport(
+    fileList.value,
+    (data) => {
+      previewData.value = data;
+      fileList.value = [];
+    },
   );
 };
 </script>
@@ -49,51 +60,59 @@ const onRemove = (file: UploadFile) => {
         </a-tooltip>
       </h2>
 
-      <ToolbarButton v-bind="{
-        danger: true,
-        disabled: (
-          !fileList.length
-          || (previewData.length > 0)
-          || importingTables
-        ),
-        onClick: () => {
-          fileList = [];
-        },
-      }">
-        <template #icon>
-          <DeleteOutlined style="color: #F00;" />
-        </template>
-        清楚选择
-      </ToolbarButton>
+      <template v-if="previewData.length">
+        <ToolbarButton v-bind="{
+          danger: true,
+          disabled: !fileList.length || importActionDisabled,
+          onClick: () => {
+            previewData = [];
+          },
+        }">
+          <template #icon>
+            <DeleteOutlined />
+          </template>
+          取消预览
+        </ToolbarButton>
+        <ToolbarButton v-bind="{
+          type: 'primary',
+          loading: importActionDisabled,
+          disabled: !previewData.length,
+          onClick: () => {
+            // TODO:
+          },
+        }">
+          <template #icon>
+            <CloudUploadOutlined />
+          </template>
+          确认导入
+        </ToolbarButton>
+      </template>
 
-      <ToolbarButton v-bind="{
-        loading: loadingPreview,
-        disabled: !fileList.length || importingTables,
-        onClick: () => {
-      
-        },
-      }">
-        <template #icon>
-          <FileSearchOutlined style="color: #1C2;" />
-        </template>
-        生成预览
-      </ToolbarButton>
-
-      <ToolbarButton v-bind="{
-        type: 'primary',
-        loading: importingTables,
-        disabled: !previewData.length,
-        onClick: () => {
-      
-        },
-      }">
-        <template #icon>
-          <CloudUploadOutlined :style="{
-            color: previewData.length ? undefined : '#19F',
-          }" />
-        </template>
-        确认导入
-      </ToolbarButton>
+      <template v-else>
+        <ToolbarButton v-bind="{
+          danger: true,
+          disabled: !fileList.length || importActionDisabled,
+          onClick: () => {
+            fileList = [];
+          },
+        }">
+          <template #icon>
+            <DeleteOutlined />
+          </template>
+          清楚选择
+        </ToolbarButton>
+        <ToolbarButton v-bind="{
+          type: 'primary',
+          loading: loadingPreview,
+          disabled: !fileList.length || importActionDisabled,
+          onClick: loadPreview,
+        }">
+          <template #icon>
+            <FileSearchOutlined />
+          </template>
+          生成预览
+        </ToolbarButton>
+      </template>
 
     </div>
 
@@ -102,11 +121,12 @@ const onRemove = (file: UploadFile) => {
       loading: loadingPreview,
     }" />
     <div id="upload-wrapper" v-else>
-      <a-upload-dragger @remove="onRemove" v-bind="{
+      <a-upload-dragger v-bind="{
         fileList,
         multiple: true,
         accept: UPLOAD_ACCEPT,
         beforeUpload,
+        onRemove,
       }">
         <a-empty id="upload-placeholder">
           <template #description>

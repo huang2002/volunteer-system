@@ -1,5 +1,6 @@
 import { message } from 'ant-design-vue';
 import { ref } from 'vue';
+import { displayErrorMessage } from '../common';
 import { tableNameModalDefaults, tableNameModalPending, tableNameModalVisible, inputTableName, type TableNameModalState } from './tableNameModal';
 import { updateTableNames } from './tableNames';
 
@@ -31,12 +32,7 @@ export const createTable = async (
         await updateTableNames();
         onSuccess?.(submitted);
     } else {
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('新建表格时出错');
-        }
+        await displayErrorMessage(response, '新建表格时出错');
     }
 
     tableNameModalPending.value = false;
@@ -72,12 +68,7 @@ export const renameTable = async (
         await updateTableNames();
         onSuccess?.(submitted);
     } else {
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('重命名表格时出错');
-        }
+        await displayErrorMessage(response, '重命名表格时出错');
     }
 
     tableNameModalPending.value = false;

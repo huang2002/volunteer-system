@@ -1,7 +1,7 @@
 import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
-import { CONTENT_TYPE_JSON, type RecordModalState } from '../common';
+import { CONTENT_TYPE_JSON, displayErrorMessage, type RecordModalState } from '../common';
 import { finishRecord, inputRecord, recordModalPending, type ActivityRecord } from './recordModal';
 
 export const recordActionDisabled = ref(false);
@@ -41,12 +41,7 @@ export const updateRecord = async (
         onSuccess?.();
     } else {
         recordModalPending.value = false;
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('更新数据时出错');
-        }
+        await displayErrorMessage(response, '更新数据时出错');
     }
 
     recordActionDisabled.value = false;
@@ -96,12 +91,7 @@ export const appendRecord = async (
         onSuccess?.();
     } else {
         recordModalPending.value = false;
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('添加记录时出错');
-        }
+        await displayErrorMessage(response, '添加记录时出错');
     }
 
     recordActionDisabled.value = false;
@@ -137,12 +127,7 @@ export const deleteRecord = (
                 message.success('删除成功');
                 onSuccess?.();
             } else {
-                try {
-                    const errorText = await response.text();
-                    message.error(errorText);
-                } catch {
-                    message.error('删除数据时出错');
-                }
+                await displayErrorMessage(response, '删除数据时出错');
             }
             recordActionDisabled.value = false;
         },

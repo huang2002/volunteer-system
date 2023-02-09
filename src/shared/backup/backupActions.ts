@@ -4,6 +4,7 @@ import { backupNameModalDefaults, backupNameModalPending, backupNameModalVisible
 import { updateBackupNames } from './backupNames';
 import dayjs from 'dayjs';
 import { WarningOutlined } from '@ant-design/icons-vue';
+import { displayErrorMessage } from '../common';
 
 export const backupActionDisabled = ref(false);
 
@@ -37,12 +38,7 @@ export const createBackup = async (
         await updateBackupNames();
         onSuccess?.(submitted);
     } else {
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('新建备份时出错');
-        }
+        await displayErrorMessage(response, '新建备份时出错');
     }
 
     backupNameModalPending.value = false;
@@ -78,12 +74,7 @@ export const renameBackup = async (
         await updateBackupNames();
         onSuccess?.(submitted);
     } else {
-        try {
-            const errorText = await response.text();
-            message.error(errorText);
-        } catch {
-            message.error('重命名备份时出错');
-        }
+        await displayErrorMessage(response, '重命名备份时出错');
     }
 
     backupNameModalPending.value = false;
@@ -120,12 +111,7 @@ export const deleteBackup = (
                 await updateBackupNames();
                 onSuccess?.();
             } else {
-                try {
-                    const errorText = await response.text();
-                    message.error(errorText);
-                } catch {
-                    message.error('删除备份时出错');
-                }
+                await displayErrorMessage(response, '删除备份时出错');
             }
             backupActionDisabled.value = false;
         },
