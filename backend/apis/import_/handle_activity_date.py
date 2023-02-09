@@ -1,38 +1,41 @@
 from ..common import *
 from .common import *
 
-DATE_SEP_EN = '-'
 FILENAME_DATE_PATTERN = re.compile(r'(?<=\D)\d{4}(?=\D)')
+DATE_SEP_EN = '-'
+DATE_SEP_COMPACT = r'-—－、，,'
 REPLACEMENT_PATTERNS = {
     '': WHITESPACE_PATTERN,
-    '': re.compile(r'（[^）]*）'),
-    '': re.compile(r'\([^)]*\)'),
-    '-': re.compile(r'[、-—](?:[^、]+、)*'),
+    '': re.compile(r'[\(（][^)]*[\)）]'),
+    DATE_SEP_EN: re.compile(f'''(?x)  # verbose mode
+        [{DATE_SEP_COMPACT}]
+        (?:[^{DATE_SEP_COMPACT}]+[{DATE_SEP_COMPACT}])*
+    '''),
 }
 EXCEL_DATE_ORIGIN = pd.to_datetime('1900/1/1') \
     - pd.DateOffset(days=2)  # manual fix
 DATE_PATTERN = re.compile(r'''(?x)  # verbose mode
     # date
-    (?:(\d{4})(?:年|/))?
-    (\d{1,2})(?:月|/|年)  # HACK
+    (?:(\d{4})(?:年|/|\.))?
+    (\d{1,2})(?:月|/|\.|年|-)  # HACK
     (\d{1,2})(?:日|号)?
     # optional time
     (?:\d{1,2}(?::|：|\.)\d{1,2})?
-    (?:(?:—|——|-|~)\d{1,2}(?::|：|\.)\d{1,2})?
+    (?:(?:—|——|-|－|~)\d{1,2}(?::|：|\.)\d{1,2})?
 ''')
 DATE_RANGE_PATTERN = re.compile(r'''(?x)  # verbose mode
     # from
-    (?:(\d{4})(?:年|/))?
-    (\d{1,2})(?:月|/|年)  # HACK
+    (?:(\d{4})(?:年|/|\.))?
+    (\d{1,2})(?:月|/|\.|年)  # HACK
     (\d{1,2})(?:日|号)?
     # separate
-    (?:—|——|-|~|到|至)
+    (?:—|——|-|－|~|到|至|及)  # HACK
     # to
-    (?:(\d{4})(?:年|/))?
-    (?:(\d{1,2})(?:月|/|年))?  # HACK
+    (?:(\d{4})(?:年|/|\.))?
+    (?:(\d{1,2})(?:月|/|\.|年))?  # HACK
     (\d{1,2})(?:日|号)?
     # optional time
-    (?:\d{1,2}(?::|：|\.)\d{1,2}(?:—|——|-|~))?
+    (?:\d{1,2}(?::|：|\.)\d{1,2}(?:—|——|-|－|~))?
     (?:\d{1,2}(?::|：|\.)\d{1,2})?
 ''')
 

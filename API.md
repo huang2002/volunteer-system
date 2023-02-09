@@ -45,6 +45,7 @@ TODO:
     - Gets the import preview of uploaded files.
     - Request Body: table files
         - Type: `multipart/form-data`
+        - Name of the file entries: `files[]`
     - Response Body: preview data
         - Type: JSON
         - Format: `[{ key -> value, ...}, ...]`

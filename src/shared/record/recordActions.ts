@@ -2,7 +2,7 @@ import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { CONTENT_TYPE_JSON, displayErrorMessage, type RecordModalState } from '../common';
-import { finishRecord, inputRecord, recordModalPending, type ActivityRecord } from './recordModal';
+import { finishRecord, inputRecord, recordModalPending, type ActivityRecord, type RecordIndex } from './recordModal';
 
 export const recordActionDisabled = ref(false);
 
@@ -101,7 +101,7 @@ export const appendRecord = async (
 
 export const deleteRecord = (
     tableName: string,
-    recordId: number,
+    recordId: RecordIndex,
     onSuccess?: () => void,
 ) => {
 

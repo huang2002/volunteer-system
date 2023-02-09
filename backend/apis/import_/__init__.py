@@ -11,7 +11,7 @@ def inject_import_apis(app: Flask):
         try:
             dataframes = [
                 convert_table(file)
-                for file in request.files.values()
+                for file in request.files.getlist('files[]')
             ]
         except ImportTableError as error:
             return error.message, 400

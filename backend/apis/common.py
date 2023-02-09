@@ -40,6 +40,9 @@ DATE_COLUMNS = [
 COLUMNS: list[str] = DATE_COLUMNS + list(NON_DATE_DTYPES.keys())
 OPTIONAL_COLUMNS = [
     'student_contact',
+    'activity_type',
+    'activity_host',
+    'manager_name',
     'manager_contact',
     'manager_qq',
     'notes',
@@ -61,8 +64,26 @@ def create_record_id() -> int:
 
 
 def make_table_response(df: pd.DataFrame):
+
+    # Stringify dates.
     for col in DATE_COLUMNS:
         df[col] = df[col].dt.strftime(DATE_FORMAT)
-    df.reset_index(inplace=True)  # return index to a column
+
+    # Fill NAs to make data JSON-serializable.
     df.fillna('', inplace=True)
+
+    # Return indices to a column for serialization.
+    df.reset_index(inplace=True)
+
+    # Convert indices to strings because int64 values
+    # could be too large for JS numbers.
+    df[INDEX_NAME] = df[INDEX_NAME].astype('string')
+
+    # HACK
+    # Excel may store QQ numbers as numerics,
+    # which leads to this extra suffix.
+    # (The numerics have been transformed
+    # into strings when being copied.)
+    df['manager_qq'] = df['manager_qq'].str.removesuffix('.0')
+
     return jsonify(df.to_dict('records'))

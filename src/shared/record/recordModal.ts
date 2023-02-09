@@ -2,8 +2,10 @@ import type { FormInstance } from 'ant-design-vue';
 import { reactive, ref } from 'vue';
 import type { RecordModalState } from '../common';
 
+export type RecordIndex = string;
+
 export interface ActivityRecord extends RecordModalState {
-    record_id: number;
+    record_id: string;
 }
 
 export type RecordModalCallback =

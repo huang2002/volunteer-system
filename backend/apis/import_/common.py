@@ -29,6 +29,7 @@ COLUMN_MAP: dict[str, str] = {
     '学号': 'student_id',
     '联系方式': 'student_contact',
     '联系方式（电话）': 'student_contact',
+    '联系电话': 'student_contact',
     '志愿时长（小时）': 'activity_length',
     '服务开始日期': 'activity_begin',
     '服务结束日期': 'activity_end',
@@ -37,6 +38,8 @@ COLUMN_MAP: dict[str, str] = {
     '服务日期（xxxx/xx/xx）': 'activity_date',
     '志愿项目名称（全称）': 'activity_name',
     '志愿项目类别': 'activity_type',
+    '志愿类别': 'activity_type',
+    '志愿服务类别': 'activity_type',
     '举办单位': 'activity_host',
     '项目负责人姓名': 'manager_name',
     '项目负责人电话': 'manager_contact',
@@ -44,4 +47,5 @@ COLUMN_MAP: dict[str, str] = {
     '备注': 'notes',
 }
 
-IGNORED_COLUMN_PATTERN = re.compile(r'^(?:序号|Unnamed: \d+)$', re.I)
+# whitespaces will be striped before test
+IGNORED_COLUMN_PATTERN = re.compile(r'^(?:序号|Unnamed:\d+)$', re.I)

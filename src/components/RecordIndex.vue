@@ -18,7 +18,7 @@ const text = computed(() => (
 ));
 
 const onClick = () => {
-  const data = props.value.toFixed();
+  const data = props.value;
   navigator.clipboard.writeText(data)
     .then(() => {
       copied.value = true;
