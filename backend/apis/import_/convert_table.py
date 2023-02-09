@@ -4,7 +4,8 @@ from .detect_skiprows import detect_skiprows
 from .load_dataframe import load_dataframe
 from .handle_activity_date import handle_activity_date
 
-SPECIAL_COLUMNS = {
+SpecialColumnHandler = Callable[[pd.DataFrame, pd.Series], NoReturn]
+SPECIAL_COLUMNS: dict[str, SpecialColumnHandler] = {
     'activity_date': handle_activity_date,
 }
 
@@ -24,35 +25,40 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
 
     # copy data
     df_result = pd.DataFrame()
-    for col_raw in df_raw.columns:
-        if col_raw in IGNORED_COLUMNS:
+    for col_src in df_raw.columns:
+        col_raw = WHITESPACE_PATTERN.sub('', col_src)
+        if IGNORED_COLUMN_PATTERN.match(col_raw):
             continue
         if not col_raw in COLUMN_MAP:
             raise ImportTableError(
-                f'无法识别的列：{col_raw}，文件：{filename}'
+                f'无法识别的列：{col_src}，文件：{filename}'
             )
         col = COLUMN_MAP[col_raw]
         if col in df_result.columns:
             raise ImportTableError(
-                f'多余的列：{col_raw}，文件：{filename}'
+                f'多余的列：{col_src}，文件：{filename}'
             )
         try:
             if col in SPECIAL_COLUMNS:
-                SPECIAL_COLUMNS[col](df_result, df_raw[col_raw])
+                SPECIAL_COLUMNS[col](
+                    df_result,
+                    df_raw[col_src],
+                    filename=filename,
+                )
             elif col in DATE_COLUMNS:
                 # Don't use `convert_date` here
                 # since the date format needs to be inferred.
-                df_result[col] = pd.to_datetime(df_raw[col_raw])
+                df_result[col] = pd.to_datetime(df_raw[col_src])
             else:
                 dtype = NON_DATE_DTYPES[col]
-                df_result[col] = df_raw[col_raw].astype(dtype)
+                df_result[col] = df_raw[col_src].astype(dtype)
         except ImportTableError as error:
             raise ImportTableError(
                 f'{error.message}，文件：{filename}'
             )
         except:
             raise ImportTableError(
-                f'未能转换的列：{col_raw}，文件：{filename}'
+                f'未能转换的列：{col_src}，文件：{filename}'
             )
 
     # check missing columns

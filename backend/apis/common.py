@@ -4,7 +4,7 @@ import datetime
 import re
 import pandas as pd
 from flask import Flask, request, jsonify
-from typing import NoReturn
+from typing import NoReturn, Any, Optional, Callable
 
 BACKEND_PATH = os.path.join(os.path.dirname(__file__), '..')
 FRONTEND_PATH = os.path.join(BACKEND_PATH, '../frontend')

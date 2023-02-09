@@ -6,7 +6,7 @@ from .load_dataframe import load_dataframe
 # if it contains at least `RECOGNIZE_THRESHOLD`
 # words listed in `RECOGNIZABLE_COLUMNS`.
 RECOGNIZE_THRESHOLD = 5
-RECOGNIZABLE_COLUMNS = IGNORED_COLUMNS + list(COLUMN_MAP.keys())
+RECOGNIZABLE_COLUMNS = list(COLUMN_MAP.keys())
 RECOGNIZE_NROWS = 5
 MAX_SKIPROWS = 3
 

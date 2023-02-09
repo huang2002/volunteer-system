@@ -21,10 +21,11 @@ def inject_import_apis(app: Flask):
         # set indices
         index_count = len(df_result.index)
         init_index = create_record_id()
-        df_result.set_index([
+        new_index = pd.Index([
             (init_index + i)
             for i in range(index_count)
         ])
+        df_result.set_index(new_index, inplace=True)
         df_result.index.name = INDEX_NAME
 
         return make_table_response(df_result)

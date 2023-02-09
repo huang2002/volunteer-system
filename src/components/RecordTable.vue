@@ -9,6 +9,8 @@ import { recordModalStudentDefaults, type ActivityRecord } from '@/shared/record
 import { updateRecord, appendRecord, deleteRecord } from '@/shared/record/recordActions';
 import RecordIndex from './RecordIndex.vue';
 
+// TODO: add large table support
+
 const props = defineProps<{
   dataSource: ActivityRecord[];
   tableName?: string;

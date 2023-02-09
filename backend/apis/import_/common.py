@@ -3,10 +3,13 @@ from ..common import *
 
 __all__ = [
     'FileStorage',
+    'WHITESPACE_PATTERN',
     'ImportTableError',
     'COLUMN_MAP',
-    'IGNORED_COLUMNS',
+    'IGNORED_COLUMN_PATTERN',
 ]
+
+WHITESPACE_PATTERN = re.compile(r'\s+')
 
 
 class ImportTableError(Exception):
@@ -16,6 +19,7 @@ class ImportTableError(Exception):
         super().__init__(message)
 
 
+# TODO: add more aliases
 # whitespace characters will be ignored automatically
 COLUMN_MAP: dict[str, str] = {
     **dict((col, col) for col in COLUMNS),
@@ -24,6 +28,7 @@ COLUMN_MAP: dict[str, str] = {
     '姓名': 'student_name',
     '学号': 'student_id',
     '联系方式': 'student_contact',
+    '联系方式（电话）': 'student_contact',
     '志愿时长（小时）': 'activity_length',
     '服务开始日期': 'activity_begin',
     '服务结束日期': 'activity_end',
@@ -39,6 +44,4 @@ COLUMN_MAP: dict[str, str] = {
     '备注': 'notes',
 }
 
-IGNORED_COLUMNS = [
-    '序号',
-]
+IGNORED_COLUMN_PATTERN = re.compile(r'^(?:序号|Unnamed: \d+)$', re.I)
