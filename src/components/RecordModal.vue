@@ -31,7 +31,8 @@ const rules: Record<keyof RecordModalState, Rule[]> = {
   student_id: [{ type: 'string', required: true }],
   student_contact: [{ type: 'string' }],
   activity_length: [{ type: 'number', required: true }],
-  activity_date: [{ type: 'string', required: true, pattern: /^\d{4}\/\d{2}\/\d{2}$/ }],
+  activity_begin: [{ type: 'string', required: true, pattern: /^\d{4}\/\d{2}\/\d{2}$/ }],
+  activity_end: [{ type: 'string', required: true, pattern: /^\d{4}\/\d{2}\/\d{2}$/ }],
   activity_name: [{ type: 'string', required: true }],
   activity_type: [{ type: 'string', required: true }],
   activity_host: [{ type: 'string', required: true }],
@@ -213,9 +214,9 @@ const onCancel = () => {
         }" />
       </a-form-item>
 
-      <a-form-item name="activity_date" label="服务日期">
-        <a-date-picker v-model:value="recordModalState.activity_date" v-bind="{
-          name: 'activity_date',
+      <a-form-item name="activity_begin" label="开始日期">
+        <a-date-picker v-model:value="recordModalState.activity_begin" v-bind="{
+          name: 'activity_begin',
           allowClear: false,
           mode: 'date',
           valueFormat: 'YYYY/MM/DD',
@@ -228,6 +229,24 @@ const onCancel = () => {
           style: { width: '100%' },
         }" />
       </a-form-item>
+
+      <a-form-item name="activity_end" label="结束日期">
+        <a-date-picker v-model:value="recordModalState.activity_end" v-bind="{
+          name: 'activity_end',
+          allowClear: false,
+          mode: 'date',
+          valueFormat: 'YYYY/MM/DD',
+          format: [ // for parsing
+            'YYYY/MM/DD',
+            'YYYY-MM-DD',
+            'YYYY.MM.DD',
+            'YYYYMMDD',
+          ],
+          style: { width: '100%' },
+        }" />
+      </a-form-item>
+
+      <!-- TODO: improve date experience here -->
 
       <a-form-item name="activity_name" label="项目名称（全称）">
         <a-auto-complete v-model:value="recordModalState.activity_name" v-bind="{

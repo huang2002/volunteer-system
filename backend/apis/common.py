@@ -1,5 +1,6 @@
 import os
 import time
+import datetime
 import re
 import pandas as pd
 from flask import Flask, request, jsonify
@@ -33,7 +34,8 @@ NON_DATE_DTYPES: dict[str, str] = {
     'notes': 'string',
 }
 DATE_COLUMNS = [
-    'activity_date',
+    'activity_begin',
+    'activity_end',
 ]
 COLUMNS: list[str] = DATE_COLUMNS + list(NON_DATE_DTYPES.keys())
 OPTIONAL_COLUMNS = [

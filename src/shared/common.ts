@@ -14,7 +14,8 @@ export interface RecordModalState {
     student_id: string;
     student_contact: string;
     activity_length: number;
-    activity_date: string;
+    activity_begin: string;
+    activity_end: string;
     activity_name: string;
     activity_type: string;
     activity_host: string;

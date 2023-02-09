@@ -20,7 +20,8 @@ export const recordModalStudentDefaults = {
 export const recordModalDefaults: RecordModalState = {
     ...recordModalStudentDefaults,
     activity_length: 0,
-    activity_date: '',
+    activity_begin: '',
+    activity_end: '',
     activity_name: '',
     activity_type: '',
     activity_host: '',

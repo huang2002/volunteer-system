@@ -27,13 +27,14 @@ const columns: TableColumnType[] = [
   { title: '学号', dataIndex: 'student_id', ellipsis: true },
   { title: '联系方式', dataIndex: 'student_contact', ellipsis: true },
   { title: '志愿时长', dataIndex: 'activity_length', ellipsis: true },
-  { title: '服务日期', dataIndex: 'activity_date', ellipsis: true },
+  { title: '开始日期', dataIndex: 'activity_begin', ellipsis: true },
+  { title: '结束日期', dataIndex: 'activity_end', ellipsis: true },
   { title: '项目名称', dataIndex: 'activity_name', ellipsis: true },
   { title: '项目类型', dataIndex: 'activity_type', ellipsis: true },
   { title: '举办单位', dataIndex: 'activity_host', ellipsis: true },
-  { title: '项目负责人姓名', dataIndex: 'manager_name', ellipsis: true },
-  { title: '项目负责人联系方式', dataIndex: 'manager_contact', ellipsis: true },
-  { title: '项目负责人QQ', dataIndex: 'manager_qq', ellipsis: true },
+  { title: '负责人姓名', dataIndex: 'manager_name', ellipsis: true },
+  { title: '负责人联系方式', dataIndex: 'manager_contact', ellipsis: true },
+  { title: '负责人QQ', dataIndex: 'manager_qq', ellipsis: true },
   { title: '备注', dataIndex: 'notes', ellipsis: true },
 ];
 if (props.showActions) {
