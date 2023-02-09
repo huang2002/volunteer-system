@@ -4,11 +4,8 @@ from .import_ import inject_import_apis
 from .common import Flask, FRONTEND_PATH
 
 __all__ = [
-    'PORT',
     'app',
 ]
-
-PORT = 2023
 
 app = Flask(
     __name__,

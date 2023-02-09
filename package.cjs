@@ -61,12 +61,12 @@ fs.copyFileSync(
     targetPath('启动（MacOS/Linux）.bash'),
 );
 fs.copyFileSync(
-    sourcePath('scripts/install-deps.bat'),
-    targetPath('安装依赖（Windows）.bat'),
+    sourcePath('scripts/init.bat'),
+    targetPath('初始化（Windows）.bat'),
 );
 fs.copyFileSync(
-    sourcePath('scripts/install-deps.bash'),
-    targetPath('安装依赖（MacOS/Linux）.bash'),
+    sourcePath('scripts/init.bash'),
+    targetPath('初始化（MacOS/Linux）.bash'),
 );
 fs.copyFileSync(
     sourcePath('docs/documentation.pdf'),

@@ -1,1 +1,1 @@
-python ./backend/app.py -o || pause
+python ./backend/app.py || pause
