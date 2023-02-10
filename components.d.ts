@@ -15,7 +15,6 @@ declare module '@vue/runtime-core' {
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
     ADropdown: typeof import('ant-design-vue/es')['Dropdown']
-    ADropdownButton: typeof import('ant-design-vue/es')['DropdownButton']
     AEmpty: typeof import('ant-design-vue/es')['Empty']
     AForm: typeof import('ant-design-vue/es')['Form']
     AFormItem: typeof import('ant-design-vue/es')['FormItem']
@@ -24,7 +23,6 @@ declare module '@vue/runtime-core' {
     AInputNumber: typeof import('ant-design-vue/es')['InputNumber']
     ALayout: typeof import('ant-design-vue/es')['Layout']
     ALayoutContent: typeof import('ant-design-vue/es')['LayoutContent']
-    ALayoutFooter: typeof import('ant-design-vue/es')['LayoutFooter']
     ALayoutHeader: typeof import('ant-design-vue/es')['LayoutHeader']
     ALayoutSider: typeof import('ant-design-vue/es')['LayoutSider']
     AList: typeof import('ant-design-vue/es')['List']
@@ -52,7 +50,6 @@ declare module '@vue/runtime-core' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     TableNameModal: typeof import('./src/components/TableNameModal.vue')['default']
-    TableToolbarButton: typeof import('./src/components/TableToolbarButton.vue')['default']
     ToolbarButton: typeof import('./src/components/ToolbarButton.vue')['default']
   }
 }
