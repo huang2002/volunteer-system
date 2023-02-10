@@ -37,6 +37,7 @@ __pycache__
 .venv
 
 # custom
+/data/
 /output/
 /backup/
 /releases/
