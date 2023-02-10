@@ -63,6 +63,8 @@ def append_table(
     df_addition: pd.DataFrame,
 ) -> NoReturn:
 
+    assert all((key in record) for key in COLUMNS)
+
     for col in COLUMNS:
         if col in DATE_COLUMNS:
             df_addition[col] = convert_date(df_addition[col])

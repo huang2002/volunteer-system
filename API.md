@@ -20,22 +20,23 @@
         - Type: JSON
         - Format: `[{ key -> value, ... }, ...]`
 
-- POST `/api/append/<table_name>`
+- POST `/api/append/table/<table_name>`
     - Append the given data to specific table.
     - Request Body: data to append
         - Type: JSON
         - Format: `{ key -> value, ... }`
 
-- GET `/api/delete/<table_name>/<record_id>`
+- GET `/api/delete/record/<table_name>/<record_id>`
     - Deletes specific record.
 
-- POST `/api/update/<table_name>/<record_id>`
+- POST `/api/update/record/<table_name>/<record_id>`
     - Updates the specific record.
     - Request Body: data to update
         - Type: JSON
         - Format: `{ key -> value, ... }`
 
-TODO: delete
+- GET `/api/delete/table/<table_name>`
+    - Deletes entire table.
 
 ## Export APIs
 

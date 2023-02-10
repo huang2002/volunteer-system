@@ -60,7 +60,7 @@ def inject_table_apis(app: Flask):
         df = read_table(table_path)
         return make_table_response(df)
 
-    @app.post('/api/append/<table_name>')
+    @app.post('/api/append/table/<table_name>')
     def append_record(table_name: str):
 
         if not is_valid_table_name(table_name):
@@ -73,7 +73,7 @@ def inject_table_apis(app: Flask):
         record = request.get_json()
         if not isinstance(record, dict):
             return RESPONSE_INVALID_RECORD
-        if any(not key in record for key in COLUMNS):
+        if any((not key in record) for key in COLUMNS):
             return RESPONSE_INVALID_RECORD
 
         record_id = create_record_id()
@@ -88,7 +88,7 @@ def inject_table_apis(app: Flask):
 
         return RESPONSE_SUCCESS
 
-    @app.get('/api/delete/<table_name>/<int:record_id>')
+    @app.get('/api/delete/record/<table_name>/<int:record_id>')
     def delete_record(table_name: str, record_id: int):
 
         if not is_valid_table_name(table_name):
@@ -106,7 +106,7 @@ def inject_table_apis(app: Flask):
         save_table(df, table_path)
         return RESPONSE_SUCCESS
 
-    @app.post('/api/update/<table_name>/<int:record_id>')
+    @app.post('/api/update/record/<table_name>/<int:record_id>')
     def update_record(table_name: str, record_id: int):
 
         if not is_valid_table_name(table_name):
@@ -145,4 +145,17 @@ def inject_table_apis(app: Flask):
             df.loc[record_id, key] = value
 
         save_table(df, table_path)
+        return RESPONSE_SUCCESS
+
+    @app.get('/api/delete/table/<table_name>')
+    def delete_table(table_name: str):
+
+        if not is_valid_table_name(table_name):
+            return RESPONSE_INVALID_TABLE_NAME
+
+        table_path = get_table_path(table_name)
+        if not os.path.exists(table_path):
+            return RESPONSE_TABLE_NOT_FOUND
+
+        os.remove(table_path)
         return RESPONSE_SUCCESS

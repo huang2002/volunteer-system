@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
-import { DownOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { DeleteOutlined, DownOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message, type RadioGroupProps } from 'ant-design-vue';
 import { computed, ref, watch, onBeforeMount } from 'vue';
 import { appendRecord, appendingRecord } from '@/shared/record/recordActions';
-import { createTable, renameTable } from '@/shared/table/tableActions';
+import { createTable, deleteTable, renameTable } from '@/shared/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
 import { recordModalDefaults, type ActivityRecord } from '@/shared/record/recordModal';
 import TableNameModal from '@/components/TableNameModal.vue';
@@ -16,6 +16,10 @@ import RecordTable from '@/components/RecordTable.vue';
 onBeforeMount(updateTableNames);
 
 const activeTableName = ref('');
+
+const tableNotFound = computed(() => (
+  !tableNames.value.includes(activeTableName.value)
+));
 
 const tableNameOptions = computed((): RadioGroupProps['options'] => (
   tableNames.value.map((name) => ({
@@ -66,6 +70,10 @@ const createAndViewTable = () => {
 const renameActiveTable = () => {
   renameTable(activeTableName.value);
 };
+
+const deleteActiveTable = () => {
+  deleteTable(activeTableName.value);
+};
 </script>
 
 <template>
@@ -103,7 +111,7 @@ const renameActiveTable = () => {
       <ToolbarButton v-bind="{
         type: 'primary',
         loading: appendingRecord,
-        disabled: !activeTableName,
+        disabled: !activeTableName || tableNotFound,
         onClick: () => {
           appendRecord(
             activeTableName,
@@ -120,7 +128,7 @@ const renameActiveTable = () => {
 
       <ToolbarButton v-bind="{
         loading: loadingDataSource,
-        disabled: !activeTableName,
+        disabled: !activeTableName || tableNotFound,
         onClick: () => {
           updateDataSource(onRefreshSuccess);
         },
@@ -139,8 +147,17 @@ const renameActiveTable = () => {
         <template #overlay>
           <a-menu>
 
+            <a-menu-item @click="createAndViewTable" v-bind="{
+              disabled: tableNameModalVisible,
+            }">
+              <a-space>
+                <FileAddOutlined style="color: #192;" />
+                新建表格
+              </a-space>
+            </a-menu-item>
+
             <a-menu-item @click="renameActiveTable" v-bind="{
-              disabled: !activeTableName || tableNameModalVisible,
+              disabled: !activeTableName || tableNotFound,
             }">
               <a-space>
                 <FormOutlined style="color: #F90;" />
@@ -148,12 +165,12 @@ const renameActiveTable = () => {
               </a-space>
             </a-menu-item>
 
-            <a-menu-item @click="createAndViewTable" v-bind="{
-              disabled: tableNameModalVisible,
+            <a-menu-item @click="deleteActiveTable" v-bind="{
+              disabled: !activeTableName || tableNotFound,
             }">
               <a-space>
-                <FileAddOutlined style="color: #192;" />
-                新建表格
+                <DeleteOutlined style="color: #F31;" />
+                删除表格
               </a-space>
             </a-menu-item>
 
@@ -169,7 +186,7 @@ const renameActiveTable = () => {
       message: '请在上方选择想要查看/编辑的表格名称。',
     }" />
 
-    <a-alert v-else-if="!tableNames.includes(activeTableName)" v-bind="{
+    <a-alert v-else-if="tableNotFound" v-bind="{
       type: 'warning',
       showIcon: true,
       message: '指定的表不存在，请重新选择，或刷新重试。',

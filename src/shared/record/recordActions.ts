@@ -27,7 +27,7 @@ export const updateRecord = (
                 return;
             }
 
-            const url = `/api/update/${tableName}/${oldRecord.record_id}`;
+            const url = `/api/update/record/${tableName}/${oldRecord.record_id}`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -79,7 +79,7 @@ export const appendRecord = async (
                 return;
             }
 
-            const url = `/api/append/${tableName}`;
+            const url = `/api/append/table/${tableName}`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {
@@ -128,7 +128,7 @@ export const deleteRecord = (
         autoFocusButton: 'cancel',
         async onOk() {
             const response = await fetch(
-                `/api/delete/${tableName}/${recordId}`
+                `/api/delete/record/${tableName}/${recordId}`
             );
             if (response.status === 200) {
                 message.success('删除成功');
