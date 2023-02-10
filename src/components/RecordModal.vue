@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { RecordModalState } from '@/shared/common';
+import { DATE_PATTERN, type RecordModalState } from '@/shared/common';
 import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalTitle, recordModalForm, recordModalBatchMode, recordModalBatchModeAvailable } from '@/shared/record/recordModal';
 import { InfoCircleOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
-import { computed } from 'vue';
+import { computed, watch } from 'vue';
 import { merge, unique } from '3h-utils';
 
 const props = defineProps<{
@@ -31,16 +31,31 @@ const rules: Record<keyof RecordModalState, Rule[]> = {
   student_id: [{ type: 'string', required: true }],
   student_contact: [{ type: 'string' }],
   activity_length: [{ type: 'number', required: true }],
-  activity_begin: [{ type: 'string', required: true, pattern: /^\d{4}\/\d{2}\/\d{2}$/ }],
-  activity_end: [{ type: 'string', required: true, pattern: /^\d{4}\/\d{2}\/\d{2}$/ }],
+  activity_begin: [{ type: 'string', required: true, pattern: DATE_PATTERN }],
+  activity_end: [{ type: 'string', required: true, pattern: DATE_PATTERN }],
   activity_name: [{ type: 'string', required: true }],
-  activity_type: [{ type: 'string', required: true }],
-  activity_host: [{ type: 'string', required: true }],
-  manager_name: [{ type: 'string', required: true }],
+  activity_type: [{ type: 'string' }],
+  activity_host: [{ type: 'string' }],
+  manager_name: [{ type: 'string' }],
   manager_contact: [{ type: 'string' }],
   manager_qq: [{ type: 'string' }],
   notes: [{ type: 'string' }],
 };
+
+watch(recordModalState, () => {
+  if (
+    recordModalState.activity_begin
+    && !recordModalState.activity_end
+  ) {
+    recordModalState.activity_end = recordModalState.activity_begin;
+  }
+  if (
+    recordModalState.activity_end
+    && !recordModalState.activity_begin
+  ) {
+    recordModalState.activity_begin = recordModalState.activity_end;
+  }
+});
 
 const generateSuggestions = (
   filterKey: (keyof RecordModalState)[],
@@ -246,8 +261,6 @@ const onCancel = () => {
         }" />
       </a-form-item>
 
-      <!-- TODO: improve date experience here -->
-
       <a-form-item name="activity_name" label="项目名称（全称）">
         <a-auto-complete v-model:value="recordModalState.activity_name" v-bind="{
           dataSource: activityNameSuggestions,
@@ -346,7 +359,13 @@ const onCancel = () => {
 
       <a-form-item v-bind="formTailLayout">
         <a-space>
-          <a-button type="primary" html-type="submit">确认</a-button>
+          <a-button v-bind="{
+            type: 'primary',
+            htmlType: 'submit',
+            loading: recordModalPending,
+          }">
+            确认
+          </a-button>
           <a-button @click="onCancel()">取消</a-button>
           <a-button danger @click="recordModalForm?.resetFields()">重置</a-button>
         </a-space>

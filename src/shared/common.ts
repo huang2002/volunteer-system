@@ -6,6 +6,8 @@ export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
 export const KEY_GET_CONTENT_CONTAINER =
     Symbol('KEY_GET_CONTENT_CONTAINER') as InjectionKey<() => HTMLElement>;
 
+export const DATE_PATTERN = /^\d{4}\/\d{2}\/\d{2}$/;
+
 export interface RecordModalState {
     student_name: string;
     student_school: string;

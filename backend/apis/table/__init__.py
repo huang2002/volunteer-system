@@ -76,28 +76,16 @@ def inject_table_apis(app: Flask):
         if any(not key in record for key in COLUMNS):
             return RESPONSE_INVALID_RECORD
 
-        df_source = read_table(table_path)
-
         record_id = create_record_id()
-        if record_id in df_source.index:
-            return RESPONSE_TOO_FREQUENT
-
-        record_index = pd.Index([record_id], name=INDEX_NAME)
+        index = pd.Index([record_id], name=INDEX_NAME)
         data = [[record[key] for key in COLUMNS]]
         df_addition = pd.DataFrame(
-            columns=COLUMNS,
-            index=record_index,
             data=data,
+            columns=COLUMNS,
+            index=index,
         )
-        for col in COLUMNS:
-            if col in DATE_COLUMNS:
-                df_addition[col] = convert_date(df_addition[col])
-            else:
-                dtype = NON_DATE_DTYPES[col]
-                df_addition[col] = df_addition[col].astype(dtype)
+        append_table(table_path, df_addition)
 
-        df_result = df_source.append(df_addition)
-        save_table(df_result, table_path)
         return RESPONSE_SUCCESS
 
     @app.get('/api/delete/<table_name>/<int:record_id>')

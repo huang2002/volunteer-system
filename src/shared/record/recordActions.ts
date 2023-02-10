@@ -6,7 +6,7 @@ import { finishRecord, inputRecord, recordModalPending, type ActivityRecord, typ
 
 export const recordActionDisabled = ref(false);
 
-export const updateRecord = async (
+export const updateRecord = (
     tableName: string,
     oldRecord: ActivityRecord,
     onSuccess?: () => void,
@@ -17,35 +17,38 @@ export const updateRecord = async (
     }
     recordActionDisabled.value = true;
 
-    const submitted = await inputRecord(
+    inputRecord(
         `修改记录（记录编号：${oldRecord.record_id}）`,
         oldRecord,
-    );
-    if (!submitted) { // canceled
-        recordActionDisabled.value = false;
-        return;
-    }
+        async (submitted) => {
 
-    const url = `/api/update/${tableName}/${oldRecord.record_id}`;
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': CONTENT_TYPE_JSON,
+            if (!submitted) { // canceled
+                recordActionDisabled.value = false;
+                return;
+            }
+
+            const url = `/api/update/${tableName}/${oldRecord.record_id}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': CONTENT_TYPE_JSON,
+                },
+                body: JSON.stringify(submitted),
+            });
+
+            if (response.status === 200) {
+                message.success('修改成功');
+                finishRecord();
+                onSuccess?.();
+            } else {
+                recordModalPending.value = false;
+                await displayErrorMessage(response, '更新数据时出错');
+            }
+
+            recordActionDisabled.value = false;
+
         },
-        body: JSON.stringify(submitted),
-    });
-
-    if (response.status === 200) {
-        message.success('修改成功');
-        finishRecord();
-        onSuccess?.();
-    } else {
-        recordModalPending.value = false;
-        await displayErrorMessage(response, '更新数据时出错');
-    }
-
-    recordActionDisabled.value = false;
-
+    );
 };
 
 export const appendingRecord = ref(false);
@@ -65,37 +68,41 @@ export const appendRecord = async (
     recordActionDisabled.value = true;
     appendingRecord.value = true;
 
-    const submitted = await inputRecord(
+    inputRecord(
         '添加记录',
         init,
+        async (submitted) => {
+
+            if (!submitted) { // canceled
+                recordActionDisabled.value = false;
+                appendingRecord.value = false;
+                return;
+            }
+
+            const url = `/api/append/${tableName}`;
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': CONTENT_TYPE_JSON,
+                },
+                body: JSON.stringify(submitted),
+            });
+
+            if (response.status === 200) {
+                message.success('添加成功');
+                finishRecord();
+                onSuccess?.();
+            } else {
+                recordModalPending.value = false;
+                await displayErrorMessage(response, '添加记录时出错');
+            }
+
+            recordActionDisabled.value = false;
+            appendingRecord.value = false;
+
+        },
         true,
     );
-    if (!submitted) { // canceled
-        recordActionDisabled.value = false;
-        appendingRecord.value = false;
-        return;
-    }
-
-    const url = `/api/append/${tableName}`;
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': CONTENT_TYPE_JSON,
-        },
-        body: JSON.stringify(submitted),
-    });
-
-    if (response.status === 200) {
-        message.success('添加成功');
-        finishRecord();
-        onSuccess?.();
-    } else {
-        recordModalPending.value = false;
-        await displayErrorMessage(response, '添加记录时出错');
-    }
-
-    recordActionDisabled.value = false;
-    appendingRecord.value = false;
 
 };
 

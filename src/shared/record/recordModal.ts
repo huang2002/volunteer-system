@@ -47,21 +47,20 @@ export const recordModalBatchModeAvailable = ref(false);
 export const inputRecord = (
     title: string,
     init: RecordModalState,
+    callback: (submitted: RecordModalState | null) => void,
     batchModeAvailable = false,
-) => (
-    new Promise<RecordModalState | null>((resolve) => {
-        for (const key in recordModalState) {
-            if (key in init) {
-                (recordModalState as any)[key] = (init as any)[key];
-            }
+) => {
+    for (const key in recordModalState) {
+        if (key in init) {
+            (recordModalState as any)[key] = (init as any)[key];
         }
-        recordModalForm.value?.clearValidate();
-        recordModalTitle.value = title;
-        recordModalBatchModeAvailable.value = batchModeAvailable;
-        recordModalCallback.value = resolve;
-        recordModalVisible.value = true;
-    })
-);
+    }
+    recordModalForm.value?.clearValidate();
+    recordModalTitle.value = title;
+    recordModalBatchModeAvailable.value = batchModeAvailable;
+    recordModalCallback.value = callback;
+    recordModalVisible.value = true;
+};
 
 export const finishRecord = () => {
 

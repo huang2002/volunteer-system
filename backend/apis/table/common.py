@@ -11,6 +11,7 @@ __all__ = [
     'init_table',
     'read_table',
     'save_table',
+    'append_table',
 ]
 
 RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
@@ -55,3 +56,23 @@ def save_table(df: pd.DataFrame, path: str) -> NoReturn:
         path,
         date_format=DATE_FORMAT,
     )
+
+
+def append_table(
+    table_path: str,
+    df_addition: pd.DataFrame,
+) -> NoReturn:
+
+    for col in COLUMNS:
+        if col in DATE_COLUMNS:
+            df_addition[col] = convert_date(df_addition[col])
+        else:
+            dtype = NON_DATE_DTYPES[col]
+            df_addition[col] = df_addition[col].astype(dtype)
+
+    df_source = read_table(table_path)
+    df_result = pd.concat(
+        [df_source, df_addition],
+        verify_integrity=True,
+    )
+    save_table(df_result, table_path)
