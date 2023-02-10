@@ -54,7 +54,6 @@ const copyFileWithPlaceholders = (src, dest) => {
     fs.writeFileSync(dest, content);
 };
 
-// init directories
 if (!fs.existsSync(RELEASE_DIR)) {
     fs.mkdirSync(RELEASE_DIR);
 }
@@ -67,6 +66,9 @@ copyDirSync(
     sourcePath('backend'),
     targetPath('backend'),
 );
+// TODO: zipapp backend
+// TODO: remove __pycache__
+
 copyDirSync(
     sourcePath('dist'),
     targetPath('frontend'),

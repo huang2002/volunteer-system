@@ -63,16 +63,33 @@ def append_table(
     df_addition: pd.DataFrame,
 ) -> NoReturn:
 
+    init_id = create_record_id()
+    n = len(df_addition.index)
+    index = pd.Index(
+        [(init_id + i) for i in range(n)],
+        name=INDEX_NAME,
+    )
+    df_addition.index = index
+
     for col in COLUMNS:
         if col in DATE_COLUMNS:
-            df_addition[col] = convert_date(df_addition[col])
+            if df_addition[col].dtype != DATE_DTYPE:
+                df_addition[col] = convert_date(df_addition[col])
         else:
             dtype = NON_DATE_DTYPES[col]
-            df_addition[col] = df_addition[col].astype(dtype)
+            if df_addition[col].dtype != dtype:
+                df_addition[col] = df_addition[col].astype(dtype)
 
     df_source = read_table(table_path)
     df_result = pd.concat(
         [df_source, df_addition],
+        # Indices must be unique,
+        # so this verification is a must.
         verify_integrity=True,
     )
+
+    # TODO: this doesn't seem to function properly
+    # Keep only first occurrances to avoid duplicates.
+    df_result.drop_duplicates(inplace=True)
+
     save_table(df_result, table_path)

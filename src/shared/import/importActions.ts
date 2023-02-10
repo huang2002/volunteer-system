@@ -100,13 +100,13 @@ export const createImport = async (
 
         message.success('导入成功');
         onSuccess?.();
-        importConfirmModalVisible.value = false;
 
     } catch {
         // pass
     }
 
     importConfirmModalPending.value = false;
+    importConfirmModalVisible.value = false;
     importActionDisabled.value = false;
 
 };

@@ -100,6 +100,8 @@ export const deleteTable = (
         cancelButtonProps: { type: 'primary' },
         cancelText: '取消',
         autoFocusButton: 'cancel',
+        closable: true,
+        maskClosable: true,
         async onOk() {
             const response = await fetch(
                 `/api/delete/table/${tableName}`

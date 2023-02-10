@@ -29,10 +29,3 @@ def inject_import_apis(app: Flask):
         df_result.index.name = INDEX_NAME
 
         return make_table_response(df_result)
-
-    @app.post('/api/import/records')
-    def api_import_records():
-
-        # TODO:
-
-        return RESPONSE_SUCCESS

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { backupNames, updateBackupNames, loadingBackupNames } from '@/shared/backup/backupNames';
 import CreateBackupModal from '@/components/BackupNameModal.vue';
-import { FolderAddOutlined, SyncOutlined, FolderOutlined } from '@ant-design/icons-vue';
-import { createBackup, renameBackup, deleteBackup } from '@/shared/backup/backupActions';
+import { FolderAddOutlined, SyncOutlined, FolderOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { createBackup, renameBackup, deleteBackup, loadBackup } from '@/shared/backup/backupActions';
 import { onBeforeMount } from 'vue';
 import { onRefreshSuccess } from '@/shared/common';
 
@@ -53,10 +53,26 @@ onBeforeMount(updateBackupNames);
 
           <template #actions>
 
-            <a-button @click="renameBackup(item as string)" v-bind="{
+            <a-button @click="loadBackup(item as string)" v-bind="{
               type: 'link',
               size: 'small',
             }">
+              <template #icon>
+                <SyncOutlined />
+              </template>
+              加载
+            </a-button>
+
+            <a-button @click="renameBackup(item as string)" v-bind="{
+              type: 'link',
+              size: 'small',
+              style: {
+                color: '#F90',
+              },
+            }">
+              <template #icon>
+                <EditOutlined />
+              </template>
               重命名
             </a-button>
 
@@ -65,6 +81,9 @@ onBeforeMount(updateBackupNames);
               size: 'small',
               danger: true,
             }">
+              <template #icon>
+                <DeleteOutlined />
+              </template>
               删除
             </a-button>
 

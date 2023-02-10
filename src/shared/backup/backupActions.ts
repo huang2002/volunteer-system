@@ -1,4 +1,4 @@
-import { message, Modal } from 'ant-design-vue';
+import { message, Modal, TypographyText } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { backupNameModalDefaults, backupNameModalPending, backupNameModalVisible, inputBackupName, type BackupNameModalState } from './backupNameModal';
 import { updateBackupNames } from './backupNames';
@@ -83,6 +83,53 @@ export const renameBackup = async (
 
 };
 
+export const loadBackup = (
+    backupName: string,
+    onSuccess?: () => void,
+) => {
+
+    if (backupActionDisabled.value) {
+        return;
+    }
+    backupActionDisabled.value = true;
+
+    Modal.confirm({
+        title: `加载备份“${backupName}”`,
+        content: h('div', null, [
+            '确定要加载此备份吗？',
+            h('br'),
+            h(TypographyText, { type: 'danger' }, () => (
+                '（将会清空当前所有数据！）' // default slot
+            )),
+        ]),
+        icon: h(WarningOutlined, { style: { color: '#F90' } }),
+        okButtonProps: { danger: true },
+        okText: '确认',
+        cancelButtonProps: { type: 'primary' },
+        cancelText: '取消',
+        autoFocusButton: 'cancel',
+        closable: true,
+        maskClosable: true,
+        async onOk() {
+            const response = await fetch(
+                `/api/load/backup/${backupName}`
+            );
+            if (response.status === 200) {
+                message.success('加载成功');
+                await updateBackupNames();
+                onSuccess?.();
+            } else {
+                await displayErrorMessage(response, '加载备份时出错');
+            }
+            backupActionDisabled.value = false;
+        },
+        onCancel() {
+            backupActionDisabled.value = false;
+        },
+    });
+
+};
+
 export const deleteBackup = (
     backupName: string,
     onSuccess?: () => void,
@@ -102,6 +149,8 @@ export const deleteBackup = (
         cancelButtonProps: { type: 'primary' },
         cancelText: '取消',
         autoFocusButton: 'cancel',
+        closable: true,
+        maskClosable: true,
         async onOk() {
             const response = await fetch(
                 `/api/delete/backup/${backupName}`

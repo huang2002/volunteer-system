@@ -46,12 +46,18 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
                     filename=filename,
                 )
             elif col in DATE_COLUMNS:
-                # Don't use `convert_date` here
-                # since the date format needs to be inferred.
-                df_result[col] = pd.to_datetime(df_raw[col_src])
+                if df_raw[col_src].dtype == DATE_DTYPE:
+                    df_result[col] = df_raw[col_src]
+                else:
+                    # Don't use `convert_date` here
+                    # since the date format needs to be inferred.
+                    df_result[col] = pd.to_datetime(df_raw[col_src])
             else:
                 dtype = NON_DATE_DTYPES[col]
-                df_result[col] = df_raw[col_src].astype(dtype)
+                if df_raw[col_src].dtype == dtype:
+                    df_result[col] = df_raw[col_src]
+                else:
+                    df_result[col] = df_raw[col_src].astype(dtype)
         except ImportTableError as error:
             raise ImportTableError(
                 f'{error.message}，文件：{filename}'

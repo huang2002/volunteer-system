@@ -80,7 +80,8 @@ TODO:
 - GET `/api/rename/backup/<source>/<destination>`
     - Renames specific backup.
 
-TODO: load backup
+- GET `/api/load/backup/<backup_name>`
+    - Loads specific backup.
 
 - GET `/api/delete/backup/<backup_name>`
     - Deletes specific backup.

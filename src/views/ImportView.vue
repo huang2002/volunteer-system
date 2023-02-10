@@ -91,6 +91,9 @@ const loadPreview = () => {
           onClick: () => {
             createImport(
               previewData,
+              () => {
+                previewData = [];
+              },
             );
           },
         }">
@@ -132,6 +135,7 @@ const loadPreview = () => {
     <RecordTable v-if="previewData.length || loadingPreview" v-bind="{
       dataSource: previewData,
       loading: loadingPreview,
+      importPreviewMode: true,
     }" />
     <div id="upload-wrapper" v-else>
       <a-upload-dragger v-bind="{

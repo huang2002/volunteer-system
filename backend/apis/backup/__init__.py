@@ -44,6 +44,20 @@ def inject_backup_apis(app: Flask):
         os.rename(source_path, destination_path)
         return RESPONSE_SUCCESS
 
+    @app.get('/api/load/backup/<backup_name>')
+    def api_load_backup(backup_name: str):
+
+        if not is_valid_backup_name(backup_name):
+            return RESPONSE_INVALID_BACKUP_NAME
+
+        backup_path = get_backup_path(backup_name)
+        if not os.path.exists(backup_path):
+            return RESPONSE_BACKUP_NOT_FOUND
+
+        shutil.rmtree(DATA_DIR)
+        shutil.copytree(backup_path, DATA_DIR)
+        return RESPONSE_SUCCESS
+
     @app.get('/api/delete/backup/<backup_name>')
     def api_delete_backup(backup_name: str):
 

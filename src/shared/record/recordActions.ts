@@ -126,6 +126,8 @@ export const deleteRecord = (
         cancelButtonProps: { type: 'primary' },
         cancelText: '取消',
         autoFocusButton: 'cancel',
+        closable: true,
+        maskClosable: true,
         async onOk() {
             const response = await fetch(
                 `/api/delete/record/${tableName}/${recordId}`

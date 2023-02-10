@@ -55,6 +55,8 @@ const rejected = computed(() => (
         来自 {{ fileCount }} 个文件的 {{ recordCount }} 条数据。
         <br />
         对应的表格：{{ targetTableNames.join('、') }}。
+        <br />
+        （导入后，所有重复数据只会保留第一条。）
       </template>
     </a-alert>
 

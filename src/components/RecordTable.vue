@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CopyOutlined, DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons-vue';
+import { CopyOutlined, DeleteOutlined, EditOutlined, InfoCircleOutlined, WarningOutlined } from '@ant-design/icons-vue';
 import RecordAction from '@/components/RecordAction.vue';
 import { merge } from '3h-utils';
 import { KEY_GET_CONTENT_CONTAINER } from '@/shared/common';
@@ -14,6 +14,7 @@ const props = defineProps<{
   tableName?: string;
   loading: boolean;
   showActions?: boolean;
+  importPreviewMode?: boolean;
   dataSourceUpdater?: () => void;
 }>();
 
@@ -69,11 +70,20 @@ if (props.showActions) {
       <template v-if="(column as TableColumnType).dataIndex === 'record_id'">
         {{ title }}
         <span title="">
-          <a-tooltip color="blue" placement="right">
+          <a-tooltip v-bind="{
+            color: (importPreviewMode ? 'orange' : 'blue'),
+            placement: 'right',
+          }">
             <template #title>
-              编号由后台程序根据记录的创建时间自动生成。
+              <template v-if="importPreviewMode">
+                此处编号仅为预览，真实编号将在正式导入时生成。
+              </template>
+              <template v-else>
+                编号由后台程序根据记录的创建时间自动生成。
+              </template>
             </template>
-            <InfoCircleOutlined style="color: #19F;" />
+            <WarningOutlined v-if="importPreviewMode" style="color: #F90;" />
+            <InfoCircleOutlined v-else style="color: #19F;" />
           </a-tooltip>
         </span>
       </template>
