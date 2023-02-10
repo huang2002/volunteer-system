@@ -88,12 +88,15 @@ const renameActiveTable = () => {
           </a-button>
         </a-tooltip>
 
-        <a-radio-group v-model:value="activeTableName" v-bind="{
+        <a-radio-group v-if="tableNames.length" v-model:value="activeTableName" v-bind="{
           optionType: 'button',
           buttonStyle: 'solid',
           options: tableNameOptions,
           disabled: loadingTableNames || loadingDataSource,
         }" />
+        <a-button v-else disabled>
+          暂无表格
+        </a-button>
 
       </a-input-group>
 
