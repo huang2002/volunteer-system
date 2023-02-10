@@ -16,9 +16,8 @@ const onCancel = () => {
 <template>
   <a-modal v-model:visible="tableNameModalVisible" @ok="onSubmit()" @cancel="onCancel()" v-bind="{
     title: tableNameModalTitle,
-    footer: null,
     width: 400,
-    confirmLoading: tableNameModalPending,
+    footer: null,
   }">
 
     <a-alert type="info" show-icon>
@@ -43,9 +42,15 @@ const onCancel = () => {
         <a-input v-model:value="tableNameModalState.name" />
       </a-form-item>
 
-      <div id="table-name-form-actions">
+      <div class="flex-centered">
         <a-space>
-          <a-button type="primary" html-type="submit">确认</a-button>
+          <a-button v-bind="{
+            type: 'primary',
+            htmlType: 'submit',
+            loading: tableNameModalPending,
+          }">
+            确认
+          </a-button>
           <a-button @click="onCancel()">取消</a-button>
         </a-space>
       </div>
@@ -58,11 +63,5 @@ const onCancel = () => {
 <style scoped>
 #table-name-form {
   margin-top: 2em;
-}
-
-#table-name-form-actions {
-  display: flex;
-  margin-top: 1em;
-  justify-content: center;
 }
 </style>

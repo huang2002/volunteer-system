@@ -24,7 +24,7 @@
     - Append the given data to specific table.
     - Request Body: data to append
         - Type: JSON
-        - Format: `{ key -> value, ... }`
+        - Format: `[{ key -> value, ... }, ...]`
 
 - GET `/api/delete/record/<table_name>/<record_id>`
     - Deletes specific record.
@@ -55,8 +55,16 @@ TODO:
 
 - POST `/api/import/records`
     - Imports the given records.
-    - Request Body: records to import
+    - Request Body: import information
         - Type: JSON
+        - Format:
+
+            ```json5
+            {
+                "allowTableCreation": true,
+                "records": [/* ... */],
+            }
+            ```
 
 ## Backup APIs
 

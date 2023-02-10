@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import ImportConfirmModal from '@/components/ImportConfirmModal.vue';
 import RecordTable from '@/components/RecordTable.vue';
 import ToolbarButton from '@/components/ToolbarButton.vue';
-import { type FileType, importActionDisabled, previewImport } from '@/shared/import/importActions';
+import { type FileType, importActionDisabled, previewImport, createImport } from '@/shared/import/importActions';
 import type { ActivityRecord } from '@/shared/record/recordModal';
 import { ArrowRightOutlined, CloseOutlined, CloudUploadOutlined, DeleteOutlined, FileSearchOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
 import type { UploadProps } from 'ant-design-vue';
@@ -12,6 +13,7 @@ const UPLOAD_ACCEPT = '.xlsx,.csv,.tsv,.gz';
 const previewData = ref<ActivityRecord[]>([]);
 const loadingPreview = ref(false);
 const fileList = ref<FileType[]>([]);
+const fileCount = ref(0);
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {
   fileList.value = [...fileList.value, file];
@@ -35,6 +37,7 @@ const loadPreview = () => {
     (data) => {
       loadingPreview.value = false;
       previewData.value = data;
+      fileCount.value = fileList.value.length;
       fileList.value = [];
     },
     () => {
@@ -86,13 +89,15 @@ const loadPreview = () => {
           loading: importActionDisabled,
           disabled: !previewData.length,
           onClick: () => {
-            // TODO:
+            createImport(
+              previewData,
+            );
           },
         }">
           <template #icon>
             <CloudUploadOutlined />
           </template>
-          确认导入
+          提交导入
         </ToolbarButton>
       </template>
 
@@ -152,6 +157,11 @@ const loadPreview = () => {
         </a-empty>
       </a-upload-dragger>
     </div>
+
+    <ImportConfirmModal v-bind="{
+      fileCount: fileCount,
+      recordCount: previewData.length,
+    }" />
 
   </div>
 </template>

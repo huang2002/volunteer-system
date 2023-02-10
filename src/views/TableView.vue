@@ -62,7 +62,8 @@ watch(activeTableName, () => {
 });
 
 const createAndViewTable = () => {
-  createTable((newTable) => {
+  createTable(null, (newTable) => {
+    message.success('新建表格成功');
     activeTableName.value = newTable.name;
   });
 };

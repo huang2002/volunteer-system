@@ -5,7 +5,7 @@ from .common import *
 def inject_table_apis(app: Flask):
 
     @app.get('/api/list/tables')
-    def list_tables():
+    def api_list_tables():
         return jsonify(
             sorted(
                 os.path.splitext(table_filename)[0]
@@ -15,7 +15,7 @@ def inject_table_apis(app: Flask):
         )
 
     @app.get('/api/create/table/<table_name>')
-    def create_table(table_name: str):
+    def api_create_table(table_name: str):
 
         if not is_valid_table_name(table_name):
             return RESPONSE_INVALID_TABLE_NAME
@@ -28,7 +28,7 @@ def inject_table_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.get('/api/rename/table/<source>/<destination>')
-    def rename_table(source: str, destination: str):
+    def api_rename_table(source: str, destination: str):
 
         if not (
             is_valid_table_name(source)
@@ -48,7 +48,7 @@ def inject_table_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.get('/api/view/table/<table_name>')
-    def view_table(table_name: str):
+    def api_view_table(table_name: str):
 
         if not is_valid_table_name(table_name):
             return RESPONSE_INVALID_TABLE_NAME
@@ -61,7 +61,7 @@ def inject_table_apis(app: Flask):
         return make_table_response(df)
 
     @app.post('/api/append/table/<table_name>')
-    def append_record(table_name: str):
+    def api_append_table(table_name: str):
 
         if not is_valid_table_name(table_name):
             return RESPONSE_INVALID_TABLE_NAME
@@ -70,15 +70,31 @@ def inject_table_apis(app: Flask):
         if not os.path.exists(table_path):
             return RESPONSE_TABLE_NOT_FOUND
 
-        record = request.get_json()
-        if not isinstance(record, dict):
-            return RESPONSE_INVALID_RECORD
-        if any((not key in record) for key in COLUMNS):
-            return RESPONSE_INVALID_RECORD
+        records = request.get_json()
+        if not (
+            isinstance(records, list)
+            and all(
+                all((key in record) for key in COLUMNS)
+                for record in records
+            )
+        ):
+            return RESPONSE_INVALID_DATA
 
-        record_id = create_record_id()
-        index = pd.Index([record_id], name=INDEX_NAME)
-        data = [[record[key] for key in COLUMNS]]
+        n = len(records)
+        if n == 0:
+            return RESPONSE_SUCCESS
+
+        if INDEX_NAME in records[0]:
+            indices = [record[INDEX_NAME] for record in records]
+        else:
+            init_id = create_record_id()
+            indices = [(init_id + i) for i in range(n)]
+        index = pd.Index(indices, name=INDEX_NAME)
+
+        data = [
+            [record[key] for key in COLUMNS]
+            for record in records
+        ]
         df_addition = pd.DataFrame(
             data=data,
             columns=COLUMNS,
@@ -89,7 +105,7 @@ def inject_table_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.get('/api/delete/record/<table_name>/<int:record_id>')
-    def delete_record(table_name: str, record_id: int):
+    def api_delete_record(table_name: str, record_id: int):
 
         if not is_valid_table_name(table_name):
             return RESPONSE_INVALID_TABLE_NAME
@@ -107,7 +123,7 @@ def inject_table_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.post('/api/update/record/<table_name>/<int:record_id>')
-    def update_record(table_name: str, record_id: int):
+    def api_update_record(table_name: str, record_id: int):
 
         if not is_valid_table_name(table_name):
             return RESPONSE_INVALID_TABLE_NAME
@@ -122,10 +138,10 @@ def inject_table_apis(app: Flask):
 
         addition = request.get_json()
         if not isinstance(addition, dict):
-            return RESPONSE_INVALID_RECORD
+            return RESPONSE_INVALID_DATA
         for key, value in addition.items():
             if not key in COLUMNS:
-                return RESPONSE_INVALID_RECORD
+                return RESPONSE_INVALID_DATA
             raw_value = addition[key]
             dtype = DATE_DTYPE if key in DATE_COLUMNS else NON_DATE_DTYPES[key]
             if dtype == 'string':
@@ -134,12 +150,12 @@ def inject_table_apis(app: Flask):
                 try:
                     value = float(raw_value)
                 except:
-                    return RESPONSE_INVALID_RECORD
+                    return RESPONSE_INVALID_DATA
             elif dtype == DATE_DTYPE:
                 try:
                     value = pd.to_datetime(raw_value, format=DATE_FORMAT)
                 except:
-                    return RESPONSE_INVALID_RECORD
+                    return RESPONSE_INVALID_DATA
             else:
                 raise Exception(f'failed to set value of type: {dtype}')
             df.loc[record_id, key] = value
@@ -148,7 +164,7 @@ def inject_table_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.get('/api/delete/table/<table_name>')
-    def delete_table(table_name: str):
+    def api_delete_table(table_name: str):
 
         if not is_valid_table_name(table_name):
             return RESPONSE_INVALID_TABLE_NAME

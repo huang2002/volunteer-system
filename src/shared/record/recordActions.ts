@@ -85,7 +85,7 @@ export const appendRecord = async (
                 headers: {
                     'Content-Type': CONTENT_TYPE_JSON,
                 },
-                body: JSON.stringify(submitted),
+                body: JSON.stringify([submitted]),
             });
 
             if (response.status === 200) {

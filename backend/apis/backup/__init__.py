@@ -5,7 +5,7 @@ from .common import *
 def inject_backup_apis(app: Flask):
 
     @app.get('/api/list/backups')
-    def list_backups():
+    def api_list_backups():
         return jsonify(
             sorted(
                 backup_name
@@ -15,7 +15,7 @@ def inject_backup_apis(app: Flask):
         )
 
     @app.get('/api/create/backup/<backup_name>')
-    def create_backup(backup_name: str):
+    def api_create_backup(backup_name: str):
         if not is_valid_backup_name(backup_name):
             return RESPONSE_INVALID_BACKUP_NAME
         target_path = get_backup_path(backup_name)
@@ -25,7 +25,7 @@ def inject_backup_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.get('/api/rename/backup/<source>/<destination>')
-    def rename_backup(source: str, destination: str):
+    def api_rename_backup(source: str, destination: str):
 
         if not (
             is_valid_backup_name(source)
@@ -45,7 +45,7 @@ def inject_backup_apis(app: Flask):
         return RESPONSE_SUCCESS
 
     @app.get('/api/delete/backup/<backup_name>')
-    def delete_backup(backup_name: str):
+    def api_delete_backup(backup_name: str):
 
         if not is_valid_backup_name(backup_name):
             return RESPONSE_INVALID_BACKUP_NAME

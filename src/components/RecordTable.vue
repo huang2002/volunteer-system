@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CopyOutlined, DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { CopyOutlined, DeleteOutlined, EditOutlined, InfoCircleOutlined } from '@ant-design/icons-vue';
 import RecordAction from '@/components/RecordAction.vue';
 import { merge } from '3h-utils';
 import { KEY_GET_CONTENT_CONTAINER } from '@/shared/common';
@@ -73,7 +73,7 @@ if (props.showActions) {
             <template #title>
               编号由后台程序根据记录的创建时间自动生成。
             </template>
-            <QuestionCircleOutlined style="color: #19F;" />
+            <InfoCircleOutlined style="color: #19F;" />
           </a-tooltip>
         </span>
       </template>

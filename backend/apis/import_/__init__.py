@@ -6,7 +6,7 @@ from .convert_table import convert_table
 def inject_import_apis(app: Flask):
 
     @app.post('/api/import/preview')
-    def import_preview():
+    def api_import_preview():
 
         try:
             dataframes = [
@@ -31,7 +31,7 @@ def inject_import_apis(app: Flask):
         return make_table_response(df_result)
 
     @app.post('/api/import/records')
-    def import_records():
+    def api_import_records():
 
         # TODO:
 

@@ -4,7 +4,7 @@ __all__ = [
     'RESPONSE_INVALID_TABLE_NAME',
     'RESPONSE_DUPLICATE_TABLE',
     'RESPONSE_TABLE_NOT_FOUND',
-    'RESPONSE_INVALID_RECORD',
+    'RESPONSE_INVALID_DATA',
     'RESPONSE_RECORD_NOT_FOUND',
     'is_valid_table_name',
     'get_table_path',
@@ -17,7 +17,7 @@ __all__ = [
 RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
 RESPONSE_DUPLICATE_TABLE = ('指定的表已经存在', 403)
 RESPONSE_TABLE_NOT_FOUND = ('指定的表不存在', 404)
-RESPONSE_INVALID_RECORD = ('记录不符合要求', 400)
+RESPONSE_INVALID_DATA = ('数据不符合要求', 400)
 RESPONSE_RECORD_NOT_FOUND = ('指定的记录不存在', 404)
 
 PATTERN_TABLE_NAME = re.compile(r'^\d{2}$')
@@ -62,8 +62,6 @@ def append_table(
     table_path: str,
     df_addition: pd.DataFrame,
 ) -> NoReturn:
-
-    assert all((key in record) for key in COLUMNS)
 
     for col in COLUMNS:
         if col in DATE_COLUMNS:

@@ -8,6 +8,7 @@ import { updateTableNames } from './tableNames';
 export const tableActionDisabled = ref(false);
 
 export const createTable = async (
+    init?: TableNameModalState | null,
     onSuccess?: (newTableName: TableNameModalState) => void,
 ) => {
 
@@ -16,20 +17,22 @@ export const createTable = async (
     }
     tableActionDisabled.value = true;
 
-    const submitted = await inputTableName(
-        '新建表格',
-        tableNameModalDefaults,
-    );
-    if (!submitted) { // canceled
-        tableActionDisabled.value = false;
-        return;
+    let submitted = init;
+    if (!submitted) {
+        submitted = await inputTableName(
+            '新建表格',
+            tableNameModalDefaults,
+        );
+        if (!submitted) { // canceled
+            tableActionDisabled.value = false;
+            return;
+        }
     }
 
     const response = await fetch(
         `/api/create/table/${submitted.name}`
     );
     if (response.status === 200) {
-        message.success('新建表格成功');
         await updateTableNames();
         onSuccess?.(submitted);
     } else {

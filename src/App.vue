@@ -160,11 +160,4 @@ const links: LinkInfo[] = [
   min-height: 100%;
   padding: 20px;
 }
-
-.view {
-  width: 100%;
-  min-height: 100%;
-  padding: 20px;
-  background-color: #FFF;
-}
 </style>

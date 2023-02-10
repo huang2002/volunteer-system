@@ -2,9 +2,14 @@ import { ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { displayErrorMessage } from '../common';
 
-const validateTableNames = (names: unknown): names is string[] => (
+export const TABLE_NAME_PATTERN = /^\d{2}$/;
+export const validateTableName = (name: unknown): name is string => (
+    (typeof name === 'string')
+    && TABLE_NAME_PATTERN.test(name)
+);
+export const validateTableNames = (names: unknown): names is string[] => (
     Array.isArray(names)
-    && names.every(v => (typeof v === 'string'))
+    && names.every(validateTableName)
 );
 
 export const tableNames = ref<string[]>([]);

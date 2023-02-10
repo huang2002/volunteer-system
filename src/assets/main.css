@@ -6,6 +6,18 @@
     height: 100%;
 }
 
+.view {
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+    background-color: #FFF;
+}
+
+.flex-centered {
+    display: flex;
+    justify-content: center;
+}
+
 .ant-modal-mask {
     backdrop-filter: blur(2px);
 }
