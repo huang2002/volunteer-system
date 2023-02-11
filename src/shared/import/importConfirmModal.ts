@@ -26,7 +26,7 @@ export const importConfirmModalForm = ref<FormInstance>();
 export const constructedImport = shallowRef<ConstructedImport | null>(null);
 
 export const guessTableName = (
-    record: RecordModalState,
+    record: Readonly<RecordModalState>,
 ): string => {
 
     let guess: string;
@@ -55,7 +55,7 @@ export const guessTableName = (
 };
 
 export const constructImport = (
-    data: ActivityRecord[],
+    data: Readonly<ActivityRecord>[],
 ) => {
     const result: ConstructedImport = Object.create(null);
     data.forEach((record) => {
@@ -70,10 +70,10 @@ export const constructImport = (
 };
 
 export const inputImportConfirm = (
-    data: ActivityRecord[],
+    data: Readonly<ActivityRecord>[],
     init = importConfirmModalDefaults,
 ) => (
-    new Promise<ConstructedImport | null>((resolve) => {
+    new Promise<Readonly<ConstructedImport> | null>((resolve) => {
 
         for (const key in importConfirmModalState) {
             if (key in init) {

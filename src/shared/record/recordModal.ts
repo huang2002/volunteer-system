@@ -47,8 +47,8 @@ export const recordModalMode = ref<RecordModalMode>('append');
 
 export const inputRecord = (
     mode: RecordModalMode,
-    init: RecordModalState,
-    callback: (submitted: RecordModalState | null) => void,
+    init: Readonly<RecordModalState>,
+    callback: (submitted: Readonly<RecordModalState> | null) => void,
 ) => {
     for (const key in recordModalState) {
         if (key in init) {

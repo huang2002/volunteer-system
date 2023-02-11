@@ -23,9 +23,9 @@ export const tableNameModalForm = ref<FormInstance>();
 
 export const inputTableName = (
     title: string,
-    init: TableNameModalState,
+    init: Readonly<TableNameModalState>,
 ) => (
-    new Promise<TableNameModalState | null>((resolve) => {
+    new Promise<Readonly<TableNameModalState> | null>((resolve) => {
         for (const key in tableNameModalState) {
             if (key in init) {
                 (tableNameModalState as any)[key] = (init as any)[key];
