@@ -54,6 +54,24 @@ const copyFileWithPlaceholders = (src, dest) => {
     fs.writeFileSync(dest, content);
 };
 
+const removeRecursively = (startPath, targetName) => {
+    fs.readdirSync(startPath).forEach((name) => {
+        const filePath = path.join(startPath, name);
+        const isDir = fs.statSync(filePath).isDirectory();
+        if (isDir) {
+            if (name === targetName) {
+                fs.rmSync(filePath, { recursive: true });
+            } else {
+                removeRecursively(filePath, targetName);
+            }
+        } else {
+            if (name === targetName) {
+                fs.rmSync(filePath);
+            }
+        }
+    });
+};
+
 if (!fs.existsSync(RELEASE_DIR)) {
     fs.mkdirSync(RELEASE_DIR);
 }
@@ -62,12 +80,15 @@ fs.mkdirSync(targetPath('data'));
 fs.mkdirSync(targetPath('backup'));
 fs.mkdirSync(targetPath('output'));
 
+// Keep backend unpacked for potential modification.
 copyDirSync(
     sourcePath('backend'),
     targetPath('backend'),
 );
-// TODO: zipapp backend
-// TODO: remove __pycache__
+removeRecursively(
+    targetPath('backend'),
+    '__pycache__',
+);
 
 copyDirSync(
     sourcePath('dist'),
