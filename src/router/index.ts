@@ -1,9 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
-import TableView from '@/views/TableView.vue';
-import ExportView from '@/views/ExportView.vue';
-import ImportView from '@/views/ImportView.vue';
-import BackupView from '@/views/BackupView.vue';
 import { Modal } from 'ant-design-vue';
 
 const router = createRouter({
@@ -15,19 +11,19 @@ const router = createRouter({
   }, {
     path: '/table',
     name: 'table',
-    component: TableView,
+    component: () => import('@/views/TableView.vue'),
   }, {
     path: '/export',
     name: 'export',
-    component: ExportView,
+    component: () => import('@/views/ExportView.vue'),
   }, {
     path: '/import',
     name: 'import',
-    component: ImportView,
+    component: () => import('@/views/ImportView.vue'),
   }, {
     path: '/backup',
     name: 'backup',
-    component: BackupView,
+    component: () => import('@/views/BackupView.vue'),
   }],
 });
 
