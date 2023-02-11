@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterView, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, GithubOutlined, HomeOutlined, ImportOutlined, TableOutlined } from '@ant-design/icons-vue';
 import { provide, ref, watch, type Component } from 'vue';
 import locale from 'ant-design-vue/es/locale/zh_CN';
@@ -83,7 +83,7 @@ const links: LinkInfo[] = [
 
         <a-layout-content :id="CONTENT_ID">
           <div id="view-wrapper">
-            <RouterView />
+            <router-view />
           </div>
           <a-back-top v-bind="{
             target: getContentContainer,
