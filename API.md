@@ -55,6 +55,8 @@ TODO:
 
 ## Backup APIs
 
+TODO: add file info to backups
+
 - GET `/api/list/backups`
     - Returns an array of backup names.
     - Response Body:
@@ -72,3 +74,8 @@ TODO:
 
 - GET `/api/delete/backup/<backup_name>`
     - Deletes specific backup.
+
+## Miscellaneous
+
+- GET `/api/close`
+    - Close the backend.
