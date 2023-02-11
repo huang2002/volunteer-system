@@ -2,7 +2,7 @@
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
 import { DeleteOutlined, DownOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message, type RadioGroupProps } from 'ant-design-vue';
-import { computed, ref, watch, onBeforeMount } from 'vue';
+import { computed, ref, watch, onBeforeMount, shallowRef } from 'vue';
 import { appendRecord, appendingRecord } from '@/shared/record/recordActions';
 import { createTable, deleteTable, renameTable } from '@/shared/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
@@ -28,7 +28,7 @@ const tableNameOptions = computed((): RadioGroupProps['options'] => (
   }))
 ));
 
-const dataSource = ref<ActivityRecord[]>([]);
+const dataSource = shallowRef<ActivityRecord[]>([]);
 const loadingDataSource = ref(false);
 const updateDataSource = async (
   onSuccess?: () => void,

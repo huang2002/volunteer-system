@@ -18,7 +18,7 @@ export const updateRecord = (
     recordActionDisabled.value = true;
 
     inputRecord(
-        `修改记录（记录编号：${oldRecord.record_id}）`,
+        'update',
         oldRecord,
         async (submitted) => {
 
@@ -69,7 +69,7 @@ export const appendRecord = async (
     appendingRecord.value = true;
 
     inputRecord(
-        '添加记录',
+        'append',
         init,
         async (submitted) => {
 
@@ -101,7 +101,6 @@ export const appendRecord = async (
             appendingRecord.value = false;
 
         },
-        true,
     );
 
 };

@@ -6,13 +6,13 @@ import { type FileType, importActionDisabled, previewImport, createImport } from
 import type { ActivityRecord } from '@/shared/record/recordModal';
 import { ArrowRightOutlined, CloseOutlined, CloudUploadOutlined, DeleteOutlined, FileSearchOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
 import type { UploadProps } from 'ant-design-vue';
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 
 const UPLOAD_ACCEPT = '.xlsx,.csv,.tsv,.gz';
 
-const previewData = ref<ActivityRecord[]>([]);
+const previewData = shallowRef<ActivityRecord[]>([]);
 const loadingPreview = ref(false);
-const fileList = ref<FileType[]>([]);
+const fileList = shallowRef<FileType[]>([]);
 const fileCount = ref(0);
 
 const beforeUpload: UploadProps['beforeUpload'] = (file) => {

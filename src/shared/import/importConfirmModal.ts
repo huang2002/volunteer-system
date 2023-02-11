@@ -1,5 +1,5 @@
 import { message, type FormInstance } from 'ant-design-vue';
-import { reactive, ref } from 'vue';
+import { reactive, ref, shallowRef } from 'vue';
 import type { RecordModalState } from '../common';
 import type { ActivityRecord } from '../record/recordModal';
 import { TABLE_NAME_PATTERN_SEARCH, validateTableName } from '../table/tableNames';
@@ -23,7 +23,7 @@ export const importConfirmModalState =
     reactive<ImportConfirmModalState>({ ...importConfirmModalDefaults });
 export const importConfirmModalPending = ref(false);
 export const importConfirmModalForm = ref<FormInstance>();
-export const constructedImport = ref<ConstructedImport | null>(null);
+export const constructedImport = shallowRef<ConstructedImport | null>(null);
 
 export const guessTableName = (
     record: RecordModalState,

@@ -33,8 +33,9 @@ export const recordModalDefaults: RecordModalState = {
     notes: '',
 };
 
+export type RecordModalMode = 'append' | 'update';
+
 export const recordModalVisible = ref(false);
-export const recordModalTitle = ref('?');
 export const recordModalCallback =
     ref<null | RecordModalCallback>(null);
 export const recordModalState =
@@ -42,13 +43,12 @@ export const recordModalState =
 export const recordModalPending = ref(false);
 export const recordModalForm = ref<FormInstance>();
 export const recordModalBatchMode = ref(true);
-export const recordModalBatchModeAvailable = ref(false);
+export const recordModalMode = ref<RecordModalMode>('append');
 
 export const inputRecord = (
-    title: string,
+    mode: RecordModalMode,
     init: RecordModalState,
     callback: (submitted: RecordModalState | null) => void,
-    batchModeAvailable = false,
 ) => {
     for (const key in recordModalState) {
         if (key in init) {
@@ -56,8 +56,7 @@ export const inputRecord = (
         }
     }
     recordModalForm.value?.clearValidate();
-    recordModalTitle.value = title;
-    recordModalBatchModeAvailable.value = batchModeAvailable;
+    recordModalMode.value = mode;
     recordModalCallback.value = callback;
     recordModalVisible.value = true;
 };
@@ -67,7 +66,7 @@ export const finishRecord = () => {
     recordModalPending.value = false;
 
     if (
-        recordModalBatchModeAvailable.value
+        (recordModalMode.value === 'append')
         && recordModalBatchMode.value
     ) {
         Object.assign(recordModalState, recordModalStudentDefaults);
