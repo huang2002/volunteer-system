@@ -5,7 +5,7 @@ import { isValidTableName } from '../table/tableNames';
 
 export interface BackupListItem {
     name: string;
-    content: string[];
+    tables: string[];
 }
 
 const isValidBackupList = (list: unknown): list is BackupListItem[] => (
@@ -14,8 +14,8 @@ const isValidBackupList = (list: unknown): list is BackupListItem[] => (
         item
         && (typeof item === 'object')
         && (typeof item.name === 'string')
-        && Array.isArray(item.content)
-        && item.content.every(isValidTableName)
+        && Array.isArray(item.tables)
+        && item.tables.every(isValidTableName)
     ))
 );
 

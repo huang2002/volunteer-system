@@ -9,8 +9,8 @@ import { onRefreshSuccess } from '@/shared/common';
 onBeforeMount(updateBackupNames);
 
 const formatBackupDescription = (item: BackupListItem) => (
-  item.content.length
-    ? `包含的表格：${item.content.join('、')}。`
+  item.tables.length
+    ? `包含的表格：${item.tables.join('、')}。`
     : '不包含任何表格。'
 );
 </script>

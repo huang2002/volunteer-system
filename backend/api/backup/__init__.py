@@ -9,7 +9,7 @@ def api_backup_list():
     return jsonify([
         {
             'name': backup_name,
-            'content': [
+            'tables': [
                 filename[:-4]
                 for filename in os.listdir(
                     get_backup_path(backup_name)
