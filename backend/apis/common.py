@@ -88,3 +88,10 @@ def make_table_response(df: pd.DataFrame):
     df['manager_qq'] = df['manager_qq'].str.removesuffix('.0')
 
     return jsonify(df.to_dict('records'))
+
+
+def trimWhitespaces(df: pd.DataFrame):
+    for col, dtype in NON_DATE_DTYPES.items():
+        if dtype != 'string':
+            continue
+        df[col] = df[col].str.strip()

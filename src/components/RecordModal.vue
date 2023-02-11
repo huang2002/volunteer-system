@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DATE_PATTERN, type RecordModalState } from '@/shared/common';
 import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalMode, recordModalForm, recordModalBatchMode, type RecordModalMode } from '@/shared/record/recordModal';
-import { InfoCircleOutlined } from '@ant-design/icons-vue';
+import { CopyOutlined, FilterOutlined, InfoCircleOutlined, ScissorOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
 import { computed, watch } from 'vue';
 import { merge, unique } from '3h-utils';
@@ -172,8 +172,14 @@ const onCancel = () => {
           系统提醒
         </template>
         <template #description>
+          <FilterOutlined />
           后台程序添加记录时会自动检查，遇到除编号外完全相同的记录将只保留第一条。
-          如需添加雷同记录，请填写不同的备注加以区分。
+          <br />
+          <CopyOutlined />
+          如需添加雷同记录，请填写不同的备注加以区分，例如：1、2、……。
+          <br />
+          <ScissorOutlined />
+          首尾空格会被自动删除。
         </template>
       </a-alert>
 
