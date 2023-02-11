@@ -1,7 +1,7 @@
 import { message, Modal, TypographyText } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { backupNameModalDefaults, backupNameModalPending, backupNameModalVisible, inputBackupName, type BackupNameModalState } from './backupNameModal';
-import { updateBackupNames } from './backupNames';
+import { updateBackupNames } from './backupList';
 import dayjs from 'dayjs';
 import { WarningOutlined } from '@ant-design/icons-vue';
 import { displayErrorMessage } from '../common';

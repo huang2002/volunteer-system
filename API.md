@@ -55,13 +55,11 @@ TODO:
 
 ## Backup APIs
 
-TODO: add file info to backups
-
 - GET `/api/backup/list`
-    - Returns an array of backup names.
+    - Returns an array of backups.
     - Response Body:
         - Type: JSON
-        - Format: `[name0, name1, ...]`
+        - Format: `[{ "name": "foo", "tables": [...] }, ...]`
 
 - GET `/api/backup/create/<backup_name>`
     - Creates a backup.

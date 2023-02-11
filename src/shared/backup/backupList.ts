@@ -1,13 +1,25 @@
 import { ref } from 'vue';
 import { message } from 'ant-design-vue';
 import { displayErrorMessage } from '../common';
+import { isValidTableName } from '../table/tableNames';
 
-const validateBackupNames = (names: unknown): names is string[] => (
-    Array.isArray(names)
-    && names.every(v => (typeof v === 'string'))
+export interface BackupListItem {
+    name: string;
+    content: string[];
+}
+
+const isValidBackupList = (list: unknown): list is BackupListItem[] => (
+    Array.isArray(list)
+    && list.every((item) => (
+        item
+        && (typeof item === 'object')
+        && (typeof item.name === 'string')
+        && Array.isArray(item.content)
+        && item.content.every(isValidTableName)
+    ))
 );
 
-export const backupNames = ref<string[]>([]);
+export const backupList = ref<BackupListItem[]>([]);
 export const loadingBackupNames = ref(false);
 
 export const updateBackupNames = async (
@@ -23,8 +35,8 @@ export const updateBackupNames = async (
     if (response.status === 200) {
         try {
             const result = await response.json();
-            if (validateBackupNames(result)) {
-                backupNames.value = result;
+            if (isValidBackupList(result)) {
+                backupList.value = result;
                 onSuccess?.();
             } else {
                 message.error('后台返回的备份列表格式有误');

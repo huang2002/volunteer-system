@@ -1,19 +1,25 @@
 <script setup lang="ts">
-import { backupNames, updateBackupNames, loadingBackupNames } from '@/shared/backup/backupNames';
+import { backupList, updateBackupNames, loadingBackupNames, type BackupListItem } from '@/shared/backup/backupList';
 import CreateBackupModal from '@/components/BackupNameModal.vue';
-import { FolderAddOutlined, SyncOutlined, FolderOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
+import { FolderAddOutlined, SyncOutlined, DeleteOutlined, EditOutlined, FolderTwoTone } from '@ant-design/icons-vue';
 import { createBackup, renameBackup, deleteBackup, loadBackup } from '@/shared/backup/backupActions';
 import { onBeforeMount } from 'vue';
 import { onRefreshSuccess } from '@/shared/common';
 
 onBeforeMount(updateBackupNames);
+
+const formatBackupDescription = (item: BackupListItem) => (
+  item.content.length
+    ? `包含的表格：${item.content.join('、')}。`
+    : '不包含任何表格。'
+);
 </script>
 
 <template>
   <div id="backup-view" class="view">
 
     <a-list v-bind="{
-      dataSource: backupNames,
+      dataSource: backupList,
       bordered: true,
       loading: loadingBackupNames,
     }">
@@ -53,7 +59,7 @@ onBeforeMount(updateBackupNames);
 
           <template #actions>
 
-            <a-button @click="loadBackup(item as string)" v-bind="{
+            <a-button @click="loadBackup((item as BackupListItem).name)" v-bind="{
               type: 'link',
               size: 'small',
             }">
@@ -63,7 +69,7 @@ onBeforeMount(updateBackupNames);
               加载
             </a-button>
 
-            <a-button @click="renameBackup(item as string)" v-bind="{
+            <a-button @click="renameBackup((item as BackupListItem).name)" v-bind="{
               type: 'link',
               size: 'small',
               style: {
@@ -76,7 +82,7 @@ onBeforeMount(updateBackupNames);
               重命名
             </a-button>
 
-            <a-button @click="deleteBackup(item as string)" v-bind="{
+            <a-button @click="deleteBackup((item as BackupListItem).name)" v-bind="{
               type: 'link',
               size: 'small',
               danger: true,
@@ -89,10 +95,14 @@ onBeforeMount(updateBackupNames);
 
           </template>
 
-          <a-space :title="item">
-            <FolderOutlined style="color: #F90;" />
-            {{ item }}
-          </a-space>
+          <a-list-item-meta v-bind="{
+            title: (item as BackupListItem).name,
+            description: formatBackupDescription(item as BackupListItem),
+          }">
+            <template #avatar>
+              <FolderTwoTone two-tone-color="#F90" style="font-size: 2em;" />
+            </template>
+          </a-list-item-meta>
 
         </a-list-item>
       </template>

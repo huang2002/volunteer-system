@@ -1,18 +1,28 @@
 from ..common import *
 from .common import *
 
-backup_blueprint = Blueprint('backup', __name__)
+backup_blueprint = Blueprint('backup', __name__, url_prefix='/backup')
 
 
 @backup_blueprint.get('/list')
 def api_backup_list():
-    return jsonify(
-        sorted(
+    return jsonify([
+        {
+            'name': backup_name,
+            'content': [
+                filename[:-4]
+                for filename in os.listdir(
+                    get_backup_path(backup_name)
+                )
+                if filename.endswith('.csv')
+            ],
+        }
+        for backup_name in sorted(
             backup_name
             for backup_name in os.listdir(BACKUP_DIR)
             if os.path.isdir(get_backup_path(backup_name))
         )
-    )
+    ])
 
 
 @backup_blueprint.get('/create/<backup_name>')

@@ -1,7 +1,7 @@
 from ..common import *
 from .common import *
 
-table_blueprint = Blueprint('table', __name__)
+table_blueprint = Blueprint('table', __name__, url_prefix='/table')
 
 
 @table_blueprint.get('/list')

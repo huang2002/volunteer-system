@@ -4,13 +4,14 @@ import { displayErrorMessage } from '../common';
 
 export const TABLE_NAME_PATTERN = /^\d{2}$/;
 export const TABLE_NAME_PATTERN_SEARCH = /\d{2}/;
-export const validateTableName = (name: unknown): name is string => (
+export const isValidTableName = (name: unknown): name is string => (
     (typeof name === 'string')
     && TABLE_NAME_PATTERN.test(name)
 );
-export const validateTableNames = (names: unknown): names is string[] => (
+
+const isValidTableNames = (names: unknown): names is string[] => (
     Array.isArray(names)
-    && names.every(validateTableName)
+    && names.every(isValidTableName)
 );
 
 export const tableNames = ref<string[]>([]);
@@ -29,7 +30,7 @@ export const updateTableNames = async (
     if (response.status === 200) {
         try {
             const result = await response.json();
-            if (validateTableNames(result)) {
+            if (isValidTableNames(result)) {
                 tableNames.value = result;
                 onSuccess?.();
             } else {

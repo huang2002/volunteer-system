@@ -2,7 +2,7 @@ import { message, type FormInstance } from 'ant-design-vue';
 import { reactive, ref, shallowRef } from 'vue';
 import type { RecordModalState } from '../common';
 import type { ActivityRecord } from '../record/recordModal';
-import { TABLE_NAME_PATTERN_SEARCH, validateTableName } from '../table/tableNames';
+import { TABLE_NAME_PATTERN_SEARCH, isValidTableName } from '../table/tableNames';
 
 export interface ImportConfirmModalState {
     allowTableCreation: boolean;
@@ -35,14 +35,14 @@ export const guessTableName = (
         .match(TABLE_NAME_PATTERN_SEARCH);
     if (matchResult) {
         guess = matchResult[0];
-        if (validateTableName(guess)) {
+        if (isValidTableName(guess)) {
             return guess;
         }
     }
 
     guess = record.student_id.trim()
         .slice(0, 2);
-    if (validateTableName(guess)) {
+    if (isValidTableName(guess)) {
         return guess;
     }
 

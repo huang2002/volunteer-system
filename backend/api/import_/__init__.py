@@ -2,7 +2,7 @@ from ..common import *
 from .common import *
 from .convert_table import convert_table
 
-import_blueprint = Blueprint('import', __name__)
+import_blueprint = Blueprint('import', __name__, url_prefix='/import')
 
 
 @import_blueprint.post('/preview')

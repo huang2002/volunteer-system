@@ -2,7 +2,7 @@ from ..common import *
 from ..table.common import *
 from .common import *
 
-record_blueprint = Blueprint('record', __name__)
+record_blueprint = Blueprint('record', __name__, url_prefix='/record')
 
 
 @record_blueprint.get('/delete/<table_name>/<int:record_id>')
