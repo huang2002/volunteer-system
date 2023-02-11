@@ -28,6 +28,9 @@ def inject_import_apis(app: Flask):
         df_result.set_index(new_index, inplace=True)
         df_result.index.name = INDEX_NAME
 
+        # Keep only first occurrances to avoid duplicates.
+        df_result.drop_duplicates(inplace=True)
+
         trimWhitespaces(df_result)
 
         return make_table_response(df_result)

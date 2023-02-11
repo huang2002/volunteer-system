@@ -56,7 +56,9 @@ const rejected = computed(() => (
         <br />
         对应的表格：{{ targetTableNames.join('、') }}。
         <br />
-        （导入后，所有重复数据只会保留第一条。）
+        重复数据只会保留第一条。
+        <br />
+        首尾空格会被自动删除。
       </template>
     </a-alert>
 
@@ -64,7 +66,7 @@ const rejected = computed(() => (
       class: 'rejection-alert',
       type: 'error',
       showIcon: true,
-      message: `导入这些数据需要新建表格：${newTableNames.join('、')}。`,
+      message: `此次导入需要新建这些表格：${newTableNames.join('、')}。`,
     }" />
 
     <a-form ref="importConfirmModalForm" @finish="onSubmit()" v-bind="{
