@@ -61,7 +61,7 @@ if (props.showActions) {
       showQuickJumper: true,
       showSizeChanger: true,
       showTotal: (total: number, range: [number, number]) => (
-        `第${range[0]}条到第${range[1]}条 （共${total}条记录）`
+        `第 ${range[0]} 条到第 ${range[1]} 条 （共 ${total} 条记录）`
       )
     },
   }">
