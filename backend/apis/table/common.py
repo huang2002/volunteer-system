@@ -45,6 +45,10 @@ def read_table(path: str) -> pd.DataFrame:
         dtype=NON_DATE_DTYPES,
         converters=CONVERTERS,
         parse_dates=DATE_COLUMNS,
+        # Currently, no NAs should exist in saved data.
+        # So, pass `na_filter=False` to avoid empty strings
+        # being recognized as NAs.
+        na_filter=False,
     )
     for col in DATE_COLUMNS:
         df[col] = df[col].astype(DATE_DTYPE)
@@ -88,7 +92,6 @@ def append_table(
         verify_integrity=True,
     )
 
-    # TODO: this doesn't seem to function properly
     # Keep only first occurrances to avoid duplicates.
     df_result.drop_duplicates(inplace=True)
 
