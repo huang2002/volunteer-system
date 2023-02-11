@@ -53,19 +53,6 @@ TODO:
         - Type: JSON
         - Format: `[{ key -> value, ...}, ...]`
 
-- POST `/api/import/records`
-    - Imports the given records.
-    - Request Body: import information
-        - Type: JSON
-        - Format:
-
-            ```json5
-            {
-                "allowTableCreation": true,
-                "records": [/* ... */],
-            }
-            ```
-
 ## Backup APIs
 
 - GET `/api/list/backups`
