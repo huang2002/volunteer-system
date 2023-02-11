@@ -11,17 +11,13 @@ const props = defineProps<{
 }>();
 
 const formCommonLayout = {
-  labelCol: { span: 6, offset: 2 },
-  wrapperCol: { span: 11 },
+  labelCol: { span: 6, offset: 3 },
+  wrapperCol: { span: 9 },
 };
 
 const formTailLayout = {
-  wrapperCol: {
-    offset: (
-      formCommonLayout.labelCol.span
-      + formCommonLayout.labelCol.offset
-    ),
-  },
+  labelCol: { span: 0 },
+  wrapperCol: { span: 24 },
 };
 
 const rules: Record<keyof RecordModalState, Rule[]> = {
@@ -156,7 +152,7 @@ const onCancel = () => {
   <a-modal v-model:visible="recordModalVisible" @ok="onSubmit()" @cancel="onCancel()" v-bind="{
     style: { top: '2em' },
     title: titles[recordModalMode],
-    width: 650,
+    width: 700,
     footer: null,
   }">
     <a-space v-bind="{
@@ -172,14 +168,20 @@ const onCancel = () => {
           系统提醒
         </template>
         <template #description>
-          <FilterOutlined />
-          后台程序添加记录时会自动检查，遇到除编号外完全相同的记录将只保留第一条。
+          <a-space>
+            <FilterOutlined />
+            后台程序添加记录时会自动检查，遇到除编号外完全相同的记录将只保留第一条。
+          </a-space>
           <br />
-          <CopyOutlined />
-          如需添加雷同记录，请填写不同的备注加以区分，例如：1、2、……。
+          <a-space>
+            <CopyOutlined />
+            如需添加雷同记录，请填写不同的备注加以区分，例如：1、2、……。
+          </a-space>
           <br />
-          <ScissorOutlined />
-          首尾空格会被自动删除。
+          <a-space>
+            <ScissorOutlined />
+            首尾空格会被自动删除。
+          </a-space>
         </template>
       </a-alert>
 
@@ -373,18 +375,20 @@ const onCancel = () => {
         </a-form-item>
 
         <a-form-item v-if="recordModalMode === 'append'" v-bind="formTailLayout">
-          <a-tooltip color="blue">
-            <template #title>
-              提交成功后不自动关闭弹窗，而是仅清除部分信息，方便导入同一项目的更多记录。
-            </template>
-            <a-checkbox v-model:checked="recordModalBatchMode">
-              批量导入模式
-              <InfoCircleOutlined style="color: #19F;" />
-            </a-checkbox>
-          </a-tooltip>
+          <div class="flex-centered">
+            <a-tooltip color="blue">
+              <template #title>
+                提交成功后不自动关闭弹窗，而是仅清除部分信息，方便继续导入同一项目的更多记录。
+              </template>
+              <a-checkbox v-model:checked="recordModalBatchMode">
+                批量导入模式
+                <InfoCircleOutlined style="color: #19F;" />
+              </a-checkbox>
+            </a-tooltip>
+          </div>
         </a-form-item>
 
-        <a-form-item v-bind="formTailLayout">
+        <div class="flex-centered">
           <a-space>
             <a-button v-bind="{
               type: 'primary',
@@ -396,7 +400,7 @@ const onCancel = () => {
             <a-button @click="onCancel()">取消</a-button>
             <a-button danger @click="recordModalForm?.resetFields()">重置</a-button>
           </a-space>
-        </a-form-item>
+        </div>
 
       </a-form>
 
