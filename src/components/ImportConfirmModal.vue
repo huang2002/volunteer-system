@@ -56,6 +56,8 @@ const rejected = computed(() => (
         <br />
         对应的表格：{{ targetTableNames.join('、') }}。
         <br />
+        年级由程序根据班级和学号猜测得出。
+        <br />
         重复数据只会保留第一条。
         <br />
         首尾空格会被自动删除。

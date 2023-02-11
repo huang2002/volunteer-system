@@ -46,11 +46,7 @@ export const guessTableName = (
         return guess;
     }
 
-    throw new Error(
-        'Failed to guess the table name.'
-        + ` (student_id: ${record.student_id},`
-        + ` student_class: ${record.student_class})`
-    );
+    throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;
 
 };
 
@@ -83,8 +79,12 @@ export const inputImportConfirm = (
 
         try {
             constructedImport.value = constructImport(data);
-        } catch {
-            message.error('处理导入数据时出错');
+        } catch (error) {
+            if (typeof error === 'string') {
+                message.error(error);
+            } else {
+                message.error('处理导入数据时出错');
+            }
             resolve(null);
             return;
         }
