@@ -82,7 +82,7 @@ export const createImport = async (
             }
 
             const records = submitted[tableName];
-            const url = `/api/append/table/${tableName}`;
+            const url = `/api/table/append/${tableName}`;
             const response = await fetch(url, {
                 method: 'POST',
                 headers: {

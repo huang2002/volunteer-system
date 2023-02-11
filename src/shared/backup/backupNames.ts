@@ -19,7 +19,7 @@ export const updateBackupNames = async (
     }
     loadingBackupNames.value = true;
 
-    const response = await fetch('/api/list/backups');
+    const response = await fetch('/api/backup/list');
     if (response.status === 200) {
         try {
             const result = await response.json();

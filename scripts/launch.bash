@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-./.venv/bin/python backend/app.py \
+./.venv/bin/python backend \
 || read -n 1 -p 'Press any key to continue...'

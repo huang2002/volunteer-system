@@ -25,7 +25,7 @@ export const updateTableNames = async (
     }
     loadingTableNames.value = true;
 
-    const response = await fetch('/api/list/tables');
+    const response = await fetch('/api/table/list');
     if (response.status === 200) {
         try {
             const result = await response.json();

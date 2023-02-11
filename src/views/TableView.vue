@@ -38,7 +38,7 @@ const updateDataSource = async (
     return;
   }
   loadingDataSource.value = true;
-  const response = await fetch(`/api/view/table/${tableName}`);
+  const response = await fetch(`/api/table/view/${tableName}`);
   if (response.status === 200) {
     try {
       const result = await response.json();

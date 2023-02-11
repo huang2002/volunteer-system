@@ -1,3 +1,3 @@
 @echo off
 
-.\.venv\Scripts\python backend\app.py || pause
+.\.venv\Scripts\python backend || pause

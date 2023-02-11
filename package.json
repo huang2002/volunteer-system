@@ -4,7 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "dev-backend": "python backend/app.py --no-open",
+    "dev-backend": "python backend/app.py",
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",

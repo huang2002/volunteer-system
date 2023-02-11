@@ -30,7 +30,7 @@ export const createTable = async (
     }
 
     const response = await fetch(
-        `/api/create/table/${submitted.name}`
+        `/api/table/create/${submitted.name}`
     );
     if (response.status === 200) {
         await updateTableNames();
@@ -65,7 +65,7 @@ export const renameTable = async (
     }
 
     const response = await fetch(
-        `/api/rename/table/${source}/${submitted.name}`
+        `/api/table/rename/${source}/${submitted.name}`
     );
     if (response.status === 200) {
         message.success('重命名表格成功');
@@ -104,7 +104,7 @@ export const deleteTable = (
         maskClosable: true,
         async onOk() {
             const response = await fetch(
-                `/api/delete/table/${tableName}`
+                `/api/table/delete/${tableName}`
             );
             if (response.status === 200) {
                 message.success('删除成功');

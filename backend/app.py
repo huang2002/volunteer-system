@@ -1,17 +1,30 @@
-#!/usr/bin/env python3
-from getopt import getopt
-import sys
-from apis import app
+import os
+from flask import Flask
+from api import api_blueprint
 
 PORT = 2023
-
-option_list, extra_args = getopt(sys.argv[1:], '', ['no-open'])
-options = dict(option_list)
-
-if not '--no-open' in options:
-    import webbrowser
-    webbrowser.open(f'http://127.0.0.1:{PORT:d}/index.html')
-
-app.run(
-    port=PORT,
+FRONTEND_PATH = os.path.join(
+    os.path.dirname(__file__),
+    '../frontend',
 )
+
+app = Flask(
+    __name__,
+    static_url_path='',
+    static_folder=FRONTEND_PATH,
+)
+
+app.config['MAX_CONTENT_LENGTH'] = 233 * 1024 * 1024  # bytes
+
+app.register_blueprint(api_blueprint)
+
+
+@app.get('/')
+def home_page():
+    return app.send_static_file('index.html')
+
+
+if __name__ == '__main__':
+    app.run(
+        port=PORT,
+    )

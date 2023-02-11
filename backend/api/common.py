@@ -4,11 +4,10 @@ import datetime
 import re
 import shutil
 import pandas as pd
-from flask import Flask, request, jsonify
+from flask import Blueprint, request, jsonify
 from typing import NoReturn, Any, Optional, Callable
 
 BACKEND_PATH = os.path.join(os.path.dirname(__file__), '..')
-FRONTEND_PATH = os.path.join(BACKEND_PATH, '../frontend')
 DATA_DIR = os.path.join(BACKEND_PATH, '../data')
 BACKUP_DIR = os.path.join(BACKEND_PATH, '../backup')
 

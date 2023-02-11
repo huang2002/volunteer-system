@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, GithubOutlined, HomeOutlined, ImportOutlined, TableOutlined } from '@ant-design/icons-vue';
+import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, HomeOutlined, ImportOutlined, TableOutlined } from '@ant-design/icons-vue';
 import { provide, ref, watch, type Component } from 'vue';
 import locale from 'ant-design-vue/es/locale/zh_CN';
 import { KEY_GET_CONTENT_CONTAINER } from '@/shared/common';
+import AppCloseButton from '@/components/AppCloseButton.vue';
 
 const CONTENT_ID = 'content';
 const getContentContainer = () => (
@@ -48,15 +49,7 @@ const links: LinkInfo[] = [
           {{ VERSION }}
         </code>
         </h1>
-        <a-button v-bind="{
-          id: 'header-link',
-          type: 'link',
-          size: 'small',
-          href: 'https://github.com/huang2002/volunteer-system',
-        }">
-          <GithubOutlined />
-          huang2002
-        </a-button>
+        <AppCloseButton />
       </a-layout-header>
 
       <a-layout>
@@ -125,10 +118,6 @@ const links: LinkInfo[] = [
 #header-version {
   color: #DDD;
   font-size: 0.8em;
-}
-
-#header-link {
-  color: #FFF;
 }
 
 #sider {

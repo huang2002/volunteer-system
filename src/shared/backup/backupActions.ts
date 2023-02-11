@@ -31,7 +31,7 @@ export const createBackup = async (
     }
 
     const response = await fetch(
-        `/api/create/backup/${submitted.name}`
+        `/api/backup/create/${submitted.name}`
     );
     if (response.status === 200) {
         message.success('新建备份成功');
@@ -67,7 +67,7 @@ export const renameBackup = async (
     }
 
     const response = await fetch(
-        `/api/rename/backup/${source}/${submitted.name}`
+        `/api/backup/rename/${source}/${submitted.name}`
     );
     if (response.status === 200) {
         message.success('重命名备份成功');
@@ -112,7 +112,7 @@ export const loadBackup = (
         maskClosable: true,
         async onOk() {
             const response = await fetch(
-                `/api/load/backup/${backupName}`
+                `/api/backup/load/${backupName}`
             );
             if (response.status === 200) {
                 message.success('加载成功');
@@ -153,7 +153,7 @@ export const deleteBackup = (
         maskClosable: true,
         async onOk() {
             const response = await fetch(
-                `/api/delete/backup/${backupName}`
+                `/api/backup/delete/${backupName}`
             );
             if (response.status === 200) {
                 message.success('删除成功');

@@ -2,40 +2,40 @@
 
 ## Table APIs
 
-- GET `/api/list/tables`
+- GET `/api/table/list`
     - Returns an array of table names.
     - Response Body:
         - Type: JSON
         - Format: `[name0, name1, ...]`
 
-- GET `/api/create/table/<table_name>`
+- GET `/api/table/create/<table_name>`
     - Creates a new table.
 
-- GET `/api/rename/table/<source>/<destination>`
+- GET `/api/table/rename/<source>/<destination>`
     - Renames specific table.
 
-- GET `/api/view/table/<table_name>`
+- GET `/api/table/view/<table_name>`
     - Returns data in specific table.
     - Response Body:
         - Type: JSON
         - Format: `[{ key -> value, ... }, ...]`
 
-- POST `/api/append/table/<table_name>`
+- POST `/api/table/append/<table_name>`
     - Append the given data to specific table.
     - Request Body: data to append
         - Type: JSON
         - Format: `[{ key -> value, ... }, ...]`
 
-- GET `/api/delete/record/<table_name>/<record_id>`
+- GET `/api/record/delete/<table_name>/<record_id>`
     - Deletes specific record.
 
-- POST `/api/update/record/<table_name>/<record_id>`
+- POST `/api/record/update/<table_name>/<record_id>`
     - Updates the specific record.
     - Request Body: data to update
         - Type: JSON
         - Format: `{ key -> value, ... }`
 
-- GET `/api/delete/table/<table_name>`
+- GET `/api/table/delete/<table_name>`
     - Deletes entire table.
 
 ## Export APIs
@@ -57,22 +57,22 @@ TODO:
 
 TODO: add file info to backups
 
-- GET `/api/list/backups`
+- GET `/api/backup/list`
     - Returns an array of backup names.
     - Response Body:
         - Type: JSON
         - Format: `[name0, name1, ...]`
 
-- GET `/api/create/backup/<backup_name>`
+- GET `/api/backup/create/<backup_name>`
     - Creates a backup.
 
-- GET `/api/rename/backup/<source>/<destination>`
+- GET `/api/backup/rename/<source>/<destination>`
     - Renames specific backup.
 
-- GET `/api/load/backup/<backup_name>`
+- GET `/api/backup/load/<backup_name>`
     - Loads specific backup.
 
-- GET `/api/delete/backup/<backup_name>`
+- GET `/api/backup/delete/<backup_name>`
     - Deletes specific backup.
 
 ## Miscellaneous
