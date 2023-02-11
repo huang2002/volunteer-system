@@ -31,6 +31,6 @@ def api_import_preview():
     # Keep only first occurrances to avoid duplicates.
     df_result.drop_duplicates(inplace=True)
 
-    trimWhitespaces(df_result)
+    trim_whitespaces(df_result)
 
     return make_table_response(df_result)

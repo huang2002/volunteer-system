@@ -93,6 +93,6 @@ def append_table(
     # Keep only first occurrances to avoid duplicates.
     df_result.drop_duplicates(inplace=True)
 
-    trimWhitespaces(df_result)
+    trim_whitespaces(df_result)
 
     save_table(df_result, table_path)

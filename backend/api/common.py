@@ -89,7 +89,7 @@ def make_table_response(df: pd.DataFrame):
     return jsonify(df.to_dict('records'))
 
 
-def trimWhitespaces(df: pd.DataFrame):
+def trim_whitespaces(df: pd.DataFrame):
     for col, dtype in NON_DATE_DTYPES.items():
         if dtype != 'string':
             continue
