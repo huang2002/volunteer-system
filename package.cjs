@@ -5,8 +5,11 @@ const { name: appName, version: appVersion } = require('./package.json');
 
 // Expected Release Structure:
 // releases/<TARGET_NAME>v<VERSION>
-//     +- output/
-//     +- <PROJECT_NAME>.pyz
+//     +- backend/
+//     +- frontend/
+//     +- data/
+//     +- backup/
+//     +- export/
 //     +- 初始化（Windows）.bat
 //     +- 初始化（MacOS或Linux）.bash
 //     +- 启动（Windows）.bat
