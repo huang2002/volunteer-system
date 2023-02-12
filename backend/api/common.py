@@ -1,8 +1,10 @@
+import sys
 import os
 import time
 import datetime
 import re
 import shutil
+import subprocess
 import pandas as pd
 from flask import Blueprint, request, jsonify
 from typing import NoReturn, Any, Optional, Callable
@@ -10,9 +12,11 @@ from typing import NoReturn, Any, Optional, Callable
 BACKEND_PATH = os.path.join(os.path.dirname(__file__), '..')
 DATA_DIR = os.path.join(BACKEND_PATH, '../data')
 BACKUP_DIR = os.path.join(BACKEND_PATH, '../backup')
+EXPORT_DIR = os.path.join(BACKEND_PATH, '../export')
 
 RESPONSE_SUCCESS = ('success', 200)
 RESPONSE_TOO_FREQUENT = ('操作太频繁，请稍后重试', 403)
+RESPONSE_INVALID_DATA = ('数据不符合要求', 400)
 
 DATE_DTYPE = 'datetime64[ns]'
 DATE_FORMAT = '%Y/%m/%d'
@@ -49,7 +53,7 @@ OPTIONAL_COLUMNS = [
 ]
 
 
-def convert_date(x):
+def convert_date(x: str) -> pd.Timestamp:
     return pd.to_datetime(x, format=DATE_FORMAT)
 
 

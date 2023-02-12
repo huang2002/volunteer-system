@@ -1,5 +1,6 @@
 from ..common import *
 from .common import *
+from .construct_tree import construct_tree
 
 table_blueprint = Blueprint('table', __name__, url_prefix='/table')
 
@@ -7,11 +8,7 @@ table_blueprint = Blueprint('table', __name__, url_prefix='/table')
 @table_blueprint.get('/list')
 def api_table_list():
     return jsonify(
-        sorted(
-            os.path.splitext(table_filename)[0]
-            for table_filename in os.listdir(DATA_DIR)
-            if table_filename.endswith('.csv')
-        )
+        sorted(get_table_names())
     )
 
 
@@ -121,3 +118,8 @@ def api_table_delete(table_name: str):
 
     os.remove(table_path)
     return RESPONSE_SUCCESS
+
+
+@table_blueprint.get('/tree')
+def api_table_tree():
+    return jsonify(construct_tree())

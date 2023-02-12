@@ -31,6 +31,7 @@ export const onRefreshSuccess = () => {
 };
 
 /**
+ * TODO: display error message from server using notifications instead.
  * Display the error message from response
  * if it is neither empty nor containing "DOCTYPE".
  * Otherwise, display `fallbackMessage`.

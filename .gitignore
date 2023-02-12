@@ -38,6 +38,6 @@ __pycache__
 
 # custom
 /data/
-/output/
+/export/
 /backup/
 /releases/

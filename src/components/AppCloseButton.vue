@@ -53,5 +53,6 @@ const closeApp = async () => {
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(6px);
   text-shadow: 0 0 10px #FFF;
+  z-index: 9999;
 }
 </style>

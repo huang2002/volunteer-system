@@ -4,19 +4,18 @@ __all__ = [
     'RESPONSE_INVALID_TABLE_NAME',
     'RESPONSE_DUPLICATE_TABLE',
     'RESPONSE_TABLE_NOT_FOUND',
-    'RESPONSE_INVALID_DATA',
     'is_valid_table_name',
     'get_table_path',
     'init_table',
     'read_table',
     'save_table',
     'append_table',
+    'get_table_names',
 ]
 
 RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
 RESPONSE_DUPLICATE_TABLE = ('指定的表已经存在', 403)
 RESPONSE_TABLE_NOT_FOUND = ('指定的表不存在', 404)
-RESPONSE_INVALID_DATA = ('数据不符合要求', 400)
 
 PATTERN_TABLE_NAME = re.compile(r'^\d{2}$')
 
@@ -35,21 +34,31 @@ def init_table(path: str) -> NoReturn:
     df.to_csv(path, index=False)
 
 
-def read_table(path: str) -> pd.DataFrame:
+def read_table(
+    path: str,
+    *,
+    usecols: list[str] = COLUMNS,
+) -> pd.DataFrame:
     df = pd.read_csv(
         path,
         index_col=INDEX_NAME,
         infer_datetime_format=True,
         dtype=NON_DATE_DTYPES,
         converters=CONVERTERS,
-        parse_dates=DATE_COLUMNS,
+        parse_dates=[
+            col
+            for col in DATE_COLUMNS
+            if col in usecols
+        ],
+        usecols=[INDEX_NAME, *usecols],
         # Currently, no NAs should exist in saved data.
         # So, pass `na_filter=False` to avoid empty strings
         # being recognized as NAs.
         na_filter=False,
     )
     for col in DATE_COLUMNS:
-        df[col] = df[col].astype(DATE_DTYPE)
+        if col in df.columns:
+            df[col] = df[col].astype(DATE_DTYPE)
     return df
 
 
@@ -96,3 +105,11 @@ def append_table(
     trim_whitespaces(df_result)
 
     save_table(df_result, table_path)
+
+
+def get_table_names():
+    return [
+        table_filename[:-4]
+        for table_filename in os.listdir(DATA_DIR)
+        if table_filename.endswith('.csv')
+    ]

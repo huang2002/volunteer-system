@@ -40,7 +40,16 @@
 
 ## Export APIs
 
-TODO:
+- GET `/api/export/create/<level>`
+    - Creates an export of specific level.
+    - Query Args:
+        - `encoding` -- output encoding, default: `gb2312`
+        - `format` -- output format, default: `xlsx`
+        - `begin_date` -- filter by `activity_end <= begin_date`
+        - `end_date` -- filter by `activity_begin >= end_date`
+
+- GET `/api/export/show`
+    - Opens file explorer at the export folder.
 
 ## Import APIs
 

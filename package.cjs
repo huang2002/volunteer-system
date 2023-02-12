@@ -78,7 +78,7 @@ if (!fs.existsSync(RELEASE_DIR)) {
 fs.mkdirSync(TARGET_DIR);
 fs.mkdirSync(targetPath('data'));
 fs.mkdirSync(targetPath('backup'));
-fs.mkdirSync(targetPath('output'));
+fs.mkdirSync(targetPath('export'));
 
 // Keep backend unpacked for potential modification.
 copyDirSync(
