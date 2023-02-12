@@ -1,4 +1,4 @@
-import { message } from 'ant-design-vue';
+import { message, Modal } from 'ant-design-vue';
 import type { InjectionKey } from 'vue';
 
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
@@ -31,7 +31,6 @@ export const onRefreshSuccess = () => {
 };
 
 /**
- * TODO: display error message from server using notifications instead.
  * Display the error message from response
  * if it is neither empty nor containing "DOCTYPE".
  * Otherwise, display `fallbackMessage`.
@@ -46,7 +45,12 @@ export const displayErrorMessage = async (
             errorMessage
             && !errorMessage.toLowerCase().includes('doctype')
         ) {
-            message.error(errorMessage);
+            Modal.error({
+                title: fallbackMessage,
+                content: errorMessage,
+                closable:true,
+                maskClosable: true,
+            });
         } else {
             message.error(fallbackMessage);
         }
