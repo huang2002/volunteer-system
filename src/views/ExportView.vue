@@ -219,6 +219,7 @@ const openExportFolder = async () => {
 
 #export-title {
   margin-right: auto;
+  font-weight: bold;
 }
 
 #export-form {
