@@ -76,7 +76,9 @@ const links: LinkInfo[] = [
 
         <a-layout-content :id="CONTENT_ID">
           <div id="view-wrapper">
-            <router-view />
+            <keep-alive>
+              <router-view />
+            </keep-alive>
           </div>
           <a-back-top v-bind="{
             target: getContentContainer,
