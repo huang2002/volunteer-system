@@ -5,7 +5,7 @@
 \usepackage[colorlinks,allcolors=blue,pdflang=zh-CN]{hyperref}
 
 \newcommand{\systemname}{志愿服务信息管理系统}
-\newcommand{\systemversion}{v1.0.0-beta}
+\newcommand{\systemversion}{v1.0.0}
 \newcommand{\githuburl}{https://github.com/huang2002/volunteer-system}
 \newcommand{\issuesurl}{\githuburl/issues}
 \newcommand{\releasesurl}{\githuburl/releases}
@@ -56,9 +56,6 @@
 /path/to/volunteer-system
         ├─ backend/
         ├─ frontend/
-        ├─ data/
-        ├─ backup/
-        ├─ export/
         ├─ 初始化（Windows）.bat
         ├─ 初始化（MacOS或Linux）.bash
         ├─ 启动（Windows）.bat
@@ -69,9 +66,11 @@
 \end{verbatim}
 
 其中，\texttt{frontend}和\texttt{backend}文件夹分别存放前端和后端的代码。
-\texttt{data}、\texttt{backup}和\texttt{export}分别存放原始数据、备份数据和导出数据。
 \texttt{*.bat}和\texttt{*.bash}是辅助使用的脚本程序。\texttt{使用手册.pdf}就是当前文件。
 \texttt{LICENSE.txt}和\texttt{requirements.txt}分别是开源许可证和\Python依赖项清单。
+
+首次成功运行后，会生成三个文件夹：\texttt{data}、\texttt{backup}和\texttt{export}，
+分别用来存放原始数据、备份数据和导出数据。
 
 \subsection{安装\Python}
 \label{sec:install-python}
