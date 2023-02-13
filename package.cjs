@@ -23,7 +23,7 @@ const sourcePath = (...paths) => (
     path.join(__dirname, ...paths)
 );
 
-const TARGET_NAME = `志愿服务信息管理系统v${appVersion}`;
+const TARGET_NAME = `${appName}@${appVersion}`;
 const RELEASE_DIR = sourcePath('releases');
 const TARGET_DIR = path.join(RELEASE_DIR, TARGET_NAME);
 if (fs.existsSync(TARGET_DIR)) {
