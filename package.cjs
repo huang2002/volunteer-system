@@ -5,7 +5,7 @@ const { zip } = require('compressing');
 const { name: appName, version: appVersion } = require('./package.json');
 
 // Expected Release Structure:
-// releases/<TARGET_NAME>v<VERSION>
+// releases/<APP_NAME>@<VERSION>
 //     +- backend/
 //     +- frontend/
 //     +- 初始化（Windows）.bat
