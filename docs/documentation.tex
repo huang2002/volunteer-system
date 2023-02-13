@@ -8,7 +8,9 @@
 \newcommand{\systemversion}{v1.0.0-beta}
 \newcommand{\githuburl}{https://github.com/huang2002/volunteer-system}
 \newcommand{\issuesurl}{\githuburl/issues}
+\newcommand{\releasesurl}{\githuburl/releases}
 \newcommand{\Python}{\textit{Python}}
+\newcommand{\GitHub}{\textit{GitHub}}
 
 \NewDocumentEnvironment{warnings}{b}{%
     \vspace{5ex}
@@ -42,10 +44,9 @@
 
 \subsection{软件概述}
 
-\textit{\systemname}是一款由个人开发的免费、开源
-\footnote{GitHub地址：\url{\githuburl}}
-软件，用于录入、保存、整理和统计志愿服务信息。
-目前，软件以压缩包形式发布。
+\textit{\systemname}是一款由个人开发的免费、开源\footnote{GitHub地址：\url{\githuburl}}
+软件，用于录入、保存、整理和统计志愿服务信息。目前，软件以压缩包形式在\GitHub上发布。
+\footnote{GitHub Releases: \url{\releasesurl}}
 
 \subsection{软件结构}
 
@@ -201,9 +202,12 @@ python --version
 \end{warnings}
 
 \subsection{数据备份}
+\label{subsec:backup}
 
 在“数据备份”页面中，可以查看、生成、加载和删除备份。
 建议每周或每月进行一次备份，保留最新的几次备份，删除多余备份。
+
+备份数据会保存在软件目录下\texttt{backup}中以备份名称命名的新文件夹里。
 
 \begin{warnings}
     \item 加载备份不是导入数据，而是以备份数据代替当前数据。
@@ -213,14 +217,27 @@ python --version
 \newpage
 \section{关于此软件}
 
+\subsection{版本更新}
+
+更新方法：
+
+\begin{enumerate}
+    \item 启动当前版本的系统，创建备份后退出。（备份方法见章节\ref{subsec:backup}。）
+    \item 在\textit{GitHub Releases}\footnote{GitHub Releases: \url{\releasesurl}}
+          上查找并下载新版本。
+    \item 解压新版本的软件压缩包，根据新版本的使用手册初始化、启动新版系统。
+    \item 在新版系统中导入第一步创建的备份数据。
+          （备份数据应在旧版本软件目录下\texttt{backup}中相应的文件夹里。）
+\end{enumerate}
+
 \subsection{反馈问题}
 
-如果发现软件有任何问题，欢迎在GitHub上\href{\issuesurl}{提Issue}
+如果发现软件有任何问题，欢迎在\GitHub上\href{\issuesurl}{提Issue}
 \footnote{GitHub Issues: \url{\issuesurl}}。
 
 \subsection{学习交流}
 
-此系统为开源软件，欢迎友好的学习交流。GitHub地址：\url{\githuburl}。
+此系统为开源软件，欢迎友好的学习交流。\GitHub地址：\url{\githuburl}。
 
 系统后端由\Python\footnote{Python官网：\url{https://www.python.org/}}
 语言编写，使用\textit{Flask}\footnote{Flask官网：\url{https://flask.palletsprojects.com/}}
