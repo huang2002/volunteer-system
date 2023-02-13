@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import multiprocessing as mp
 from app import app, PORT
+from api.common import DATA_DIR, BACKUP_DIR, EXPORT_DIR
 
 
 def run_app(queue: mp.Queue) -> None:
@@ -16,6 +17,11 @@ def run_app(queue: mp.Queue) -> None:
 
 
 if __name__ == '__main__':
+
+    import os
+    for path in [DATA_DIR, BACKUP_DIR, EXPORT_DIR]:
+        if not os.path.exists(path):
+            os.mkdir(path)
 
     import sys
     from getopt import getopt

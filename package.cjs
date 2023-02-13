@@ -8,9 +8,6 @@ const { name: appName, version: appVersion } = require('./package.json');
 // releases/<TARGET_NAME>v<VERSION>
 //     +- backend/
 //     +- frontend/
-//     +- data/
-//     +- backup/
-//     +- export/
 //     +- 初始化（Windows）.bat
 //     +- 初始化（MacOS或Linux）.bash
 //     +- 启动（Windows）.bat
@@ -88,9 +85,6 @@ if (!fs.existsSync(RELEASE_DIR)) {
     fs.mkdirSync(RELEASE_DIR);
 }
 fs.mkdirSync(TARGET_DIR);
-fs.mkdirSync(targetPath('data'));
-fs.mkdirSync(targetPath('backup'));
-fs.mkdirSync(targetPath('export'));
 
 // Keep backend unpacked for potential modification.
 copyDirSync(
