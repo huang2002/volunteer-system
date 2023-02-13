@@ -20,6 +20,7 @@ const { name: appName, version: appVersion } = require('./package.json');
 //     `- requirements.txt
 
 const ENCODING = 'utf8';
+const ARCHIVE_EXT = '.zip';
 
 const sourcePath = (...paths) => (
     path.join(__dirname, ...paths)
@@ -31,6 +32,13 @@ const TARGET_DIR = path.join(RELEASE_DIR, TARGET_NAME);
 if (fs.existsSync(TARGET_DIR)) {
     throw new Error(
         `target directory already exists: ${TARGET_DIR}`
+    );
+}
+
+const ARCHIVE_PATH = TARGET_DIR + ARCHIVE_EXT;
+if (fs.existsSync(ARCHIVE_PATH)) {
+    throw new Error(
+        `target archive already exists: ${ARCHIVE_PATH}`
     );
 }
 
@@ -131,10 +139,7 @@ fs.copyFileSync(
     targetPath('使用手册.pdf'),
 );
 
-zip.compressDir(
-    TARGET_DIR,
-    TARGET_DIR + '.zip',
-).then(() => {
+zip.compressDir(TARGET_DIR, ARCHIVE_PATH).then(() => {
     fs.rmSync(TARGET_DIR, { recursive: true });
     console.log(`Successfully packaged "${TARGET_NAME}"!`);
 }).catch((error) => {
