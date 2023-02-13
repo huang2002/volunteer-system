@@ -11,13 +11,17 @@
 \newcommand{\Python}{\textit{Python}}
 
 \NewDocumentEnvironment{warnings}{b}{%
-    \begin{itshape}
+    \vspace{5ex}
+    \noindent
+    \begin{minipage}{\linewidth} \itshape
         注意：
         \begin{itemize}
         #1
 }{%
         \end{itemize}
-    \end{itshape}
+    \end{minipage}
+    \vspace{2ex}
+    \ignorespacesafterend
 }
 
 \title{\systemname\\使用手册\\\systemversion}
@@ -66,7 +70,7 @@
 其中，\texttt{frontend}和\texttt{backend}文件夹分别存放前端和后端的代码。
 \texttt{data}、\texttt{backup}和\texttt{export}分别存放原始数据、备份数据和导出数据。
 \texttt{*.bat}和\texttt{*.bash}是辅助使用的脚本程序。\texttt{使用手册.pdf}就是当前文件。
-\texttt{LICENSE.txt}和\texttt{requirements.txt}分别是开源许可证和Python依赖项清单。
+\texttt{LICENSE.txt}和\texttt{requirements.txt}分别是开源许可证和\Python依赖项清单。
 
 \subsection{安装\Python}
 \label{sec:install-python}
@@ -212,7 +216,7 @@ python --version
 \subsection{反馈问题}
 
 如果发现软件有任何问题，欢迎在GitHub上\href{\issuesurl}{提Issue}
-\footnote{\url{\issuesurl}}。
+\footnote{GitHub Issues: \url{\issuesurl}}。
 
 \subsection{学习交流}
 
