@@ -1,6 +1,7 @@
 /* eslint-env node */
 const fs = require('fs');
 const path = require('path');
+const { zip } = require('compressing');
 const { name: appName, version: appVersion } = require('./package.json');
 
 // Expected Release Structure:
@@ -130,4 +131,12 @@ fs.copyFileSync(
     targetPath('使用手册.pdf'),
 );
 
-console.log(`Successfully packaged "${TARGET_NAME}"!`);
+zip.compressDir(
+    TARGET_DIR,
+    TARGET_DIR + '.zip',
+).then(() => {
+    fs.rmSync(TARGET_DIR, { recursive: true });
+    console.log(`Successfully packaged "${TARGET_NAME}"!`);
+}).catch((error) => {
+    console.error(error);
+});
