@@ -23,7 +23,7 @@ const onCancel = () => {
     <a-alert type="info" show-icon>
       <template #message>表名格式</template>
       <template #description>
-        表名应为两位阿拉伯数字，用来表示年级（入学年份）。
+        表名应为学院名称加上表示年级（入学年份）的两位阿拉伯数字。
       </template>
     </a-alert>
 
@@ -36,7 +36,7 @@ const onCancel = () => {
 
       <a-form-item name="name" label="表名" :rules="[{
         required: true,
-        pattern: /^\d{2}$/,
+        pattern: /^[^/?:;~!@$%]+\d{2}$/,
         message: '表名与格式要求不匹配',
       }]">
         <a-input v-model:value="tableNameModalState.name" />

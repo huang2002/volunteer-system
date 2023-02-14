@@ -35,8 +35,8 @@ const onCancel = () => {
 
       <a-form-item name="name" label="备份名称" :rules="[{
         required: true,
-        pattern: /^[^/?:;~!@$%]+$/,
-        message: '备份名称为必填项，且不能含有以下字符：/?:;~!@$%',
+        pattern: /^[^\\/?:;~!@$%]+$/,
+        message: '备份名称为必填项，且不能含有以下字符：\\/?:;~!@$%',
       }]">
         <a-input v-model:value="backupNameModalState.name" />
       </a-form-item>

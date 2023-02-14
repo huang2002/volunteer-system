@@ -2,7 +2,6 @@ import { message, type FormInstance } from 'ant-design-vue';
 import { reactive, ref, shallowRef } from 'vue';
 import type { RecordModalState } from '../common';
 import type { ActivityRecord } from '../record/recordModal';
-import { TABLE_NAME_PATTERN_SEARCH, isValidTableName } from '../table/tableNames';
 
 export interface ImportConfirmModalState {
     allowTableCreation: boolean;
@@ -25,28 +24,28 @@ export const importConfirmModalPending = ref(false);
 export const importConfirmModalForm = ref<FormInstance>();
 export const constructedImport = shallowRef<ConstructedImport | null>(null);
 
+export const SCHOOL_SEARCH_PATTERN = /(?<!年)[^-_a-zA-Z\d]+学院/;
+export const GRADE_SEARCH_PATTERN = /\d{2}/;
 export const guessTableName = (
     record: Readonly<RecordModalState>,
 ): string => {
 
-    let guess: string;
+    const school = record.student_school.trim();
 
-    const matchResult = record.student_class.trim()
-        .match(TABLE_NAME_PATTERN_SEARCH);
+    let matchResult: RegExpMatchArray | null = null;
+
+    let grade: string | null = null;
+    matchResult = record.student_class.trim().match(GRADE_SEARCH_PATTERN);
     if (matchResult) {
-        guess = matchResult[0];
-        if (isValidTableName(guess)) {
-            return guess;
+        grade = matchResult[0];
+    } else {
+        grade = record.student_id.trim().slice(0, 2);
+        if (!GRADE_SEARCH_PATTERN.test(grade)) {
+            throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;
         }
     }
 
-    guess = record.student_id.trim()
-        .slice(0, 2);
-    if (isValidTableName(guess)) {
-        return guess;
-    }
-
-    throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;
+    return school + grade;
 
 };
 

@@ -195,55 +195,50 @@ const onCancel = () => {
         <a-form-item name="student_school" label="学院名称（全称）">
           <a-auto-complete v-model:value="recordModalState.student_school" v-bind="{
             dataSource: studentSchoolSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="student_school" />
+            <a-input name="student_school" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="student_class" label="班级">
           <a-auto-complete v-model:value="recordModalState.student_class" v-bind="{
             dataSource: studentClassSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="student_class" />
+            <a-input name="student_class" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="student_name" label="姓名">
           <a-auto-complete v-model:value="recordModalState.student_name" v-bind="{
             dataSource: studentNameSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="student_name" />
+            <a-input name="student_name" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="student_id" label="学号">
           <a-auto-complete v-model:value="recordModalState.student_id" v-bind="{
             dataSource: studentIdSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="student_id" />
+            <a-input name="student_id" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="student_contact" label="联系方式">
           <a-auto-complete v-model:value="recordModalState.student_contact" v-bind="{
             dataSource: studentContactSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="student_contact" />
+            <a-input name="student_contact" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
@@ -293,78 +288,72 @@ const onCancel = () => {
         <a-form-item name="activity_name" label="项目名称（全称）">
           <a-auto-complete v-model:value="recordModalState.activity_name" v-bind="{
             dataSource: activityNameSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="activity_name" />
+            <a-input name="activity_name" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="activity_type" label="项目类型">
           <a-auto-complete v-model:value="recordModalState.activity_type" v-bind="{
             dataSource: activityTypeSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="activity_type" />
+            <a-input name="activity_type" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="activity_host" label="举办单位">
           <a-auto-complete v-model:value="recordModalState.activity_host" v-bind="{
             dataSource: activityHostSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="activity_host" />
+            <a-input name="activity_host" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="manager_name" label="项目负责人姓名">
           <a-auto-complete v-model:value="recordModalState.manager_name" v-bind="{
             dataSource: managerNameSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="manager_name" />
+            <a-input name="manager_name" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="manager_contact" label="项目负责人联系方式">
           <a-auto-complete v-model:value="recordModalState.manager_contact" v-bind="{
             dataSource: managerContactSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="manager_name" />
+            <a-input name="manager_name" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item name="manager_qq" label="项目负责人QQ">
           <a-auto-complete v-model:value="recordModalState.manager_qq" v-bind="{
             dataSource: managerQQSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
-            <a-input name="manager_qq" />
+            <a-input name="manager_qq" allow-clear />
           </a-auto-complete>
         </a-form-item>
 
         <a-form-item id="record-form-item-notes" name="notes" label="备注">
           <a-auto-complete v-model:value="recordModalState.notes" v-bind="{
             dataSource: notesSuggestions,
-            allowClear: true,
             backfill: true,
             filterOption: true,
           }">
             <a-textarea v-bind="{
               name: 'notes',
+              allowClear: true,
               showCount: true,
               maxlength: 200,
               autoSize: {

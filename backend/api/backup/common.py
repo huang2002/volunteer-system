@@ -11,7 +11,7 @@ RESPONSE_INVALID_BACKUP_NAME: ResponseType = ('备份名称不符合要求', 403
 RESPONSE_DUPLICATE_BACKUP: ResponseType = ('备份名称已经存在', 403)
 RESPONSE_BACKUP_NOT_FOUND: ResponseType = ('指定的备份不存在', 404)
 
-PATTERN_BACKUP_NAME = re.compile(r'^[^/?:;~!@$%]+$')
+PATTERN_BACKUP_NAME = re.compile(fr'^{NAME_LETTER_PATTERN_RAW}+$')
 
 
 def is_valid_backup_name(name: str) -> bool:

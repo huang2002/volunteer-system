@@ -19,6 +19,8 @@ RESPONSE_SUCCESS: ResponseType = ('success', 200)
 RESPONSE_TOO_FREQUENT: ResponseType = ('操作太频繁，请稍后重试', 403)
 RESPONSE_INVALID_DATA: ResponseType = ('数据不符合要求', 400)
 
+NAME_LETTER_PATTERN_RAW = r'[^\\/?:;~!@$%]'
+
 DATE_DTYPE = 'datetime64[ns]'
 DATE_FORMAT = '%Y/%m/%d'
 
