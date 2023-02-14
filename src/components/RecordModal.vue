@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DATE_PATTERN, type RecordModalState } from '@/shared/common';
+import { CLASS_PATTERN, DATE_PATTERN, type RecordModalState } from '@/shared/common';
 import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalMode, recordModalForm, recordModalBatchMode, type RecordModalMode } from '@/shared/record/recordModal';
 import { CopyOutlined, FilterOutlined, InfoCircleOutlined, ScissorOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
@@ -23,7 +23,7 @@ const formTailLayout = {
 const rules: Record<keyof RecordModalState, Rule[]> = {
   student_name: [{ type: 'string', required: true }],
   student_school: [{ type: 'string', required: true }],
-  student_class: [{ type: 'string', required: true }],
+  student_class: [{ type: 'string', required: true, pattern: CLASS_PATTERN, message: '班级必须是纯数字' }],
   student_id: [{ type: 'string', required: true }],
   student_contact: [{ type: 'string' }],
   activity_length: [{ type: 'number', required: true }],

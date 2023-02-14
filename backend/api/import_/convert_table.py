@@ -3,10 +3,12 @@ from .common import *
 from .detect_skiprows import detect_skiprows
 from .load_dataframe import load_dataframe
 from .handle_activity_date import handle_activity_date
+from .handle_student_class import handle_student_class
 
 SpecialColumnHandler = Callable[[pd.DataFrame, pd.Series], NoReturn]
 SPECIAL_COLUMNS: Dict[str, SpecialColumnHandler] = {
     'activity_date': handle_activity_date,
+    'student_class': handle_student_class,
 }
 
 

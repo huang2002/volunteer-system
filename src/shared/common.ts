@@ -9,6 +9,7 @@ export const KEY_TABLE_MANAGEMENT_MODAL_VISIBLE =
     Symbol('KEY_TABLE_MANAGEMENT_MODAL_VISIBLE') as InjectionKey<Ref<boolean>>;
 
 export const DATE_PATTERN = /^\d{4}\/\d{2}\/\d{2}$/;
+export const CLASS_PATTERN = /^\d+$/;
 
 export interface RecordModalState {
     student_name: string;
