@@ -46,9 +46,9 @@ const updateDataSource = async (
     return;
   }
   loadingDataSource.value = true;
-  const response = await fetch(`/api/table/view/${tableName}`);
-  if (response.status === 200) {
-    try {
+  try {
+    const response = await fetch(`/api/table/view/${tableName}`);
+    if (response.status === 200) {
       const result = await response.json();
       if (activeTableName.value !== tableName) {
         // loading other table
@@ -58,11 +58,11 @@ const updateDataSource = async (
       if (alertSuccess) {
         message.success('刷新成功');
       }
-    } catch {
-      message.error('更新数据时出错');
+    } else {
+      await displayErrorMessage(response, '获取数据时出错');
     }
-  } else {
-    await displayErrorMessage(response, '获取数据时出错');
+  } catch {
+    message.error('更新数据失败');
   }
   loadingDataSource.value = false;
 };

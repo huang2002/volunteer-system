@@ -32,22 +32,22 @@ export const previewImport = async (
         formData.append('files[]', file);
     });
 
-    const url = `/api/import/preview`;
-    const response = await fetch(url, {
-        method: 'POST',
-        body: formData,
-    });
-    if (response.status === 200) {
-        try {
+    try {
+        const url = `/api/import/preview`;
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData,
+        });
+        if (response.status === 200) {
             const previewData = await response.json();
             onSuccess(previewData);
             message.success('预览加载成功');
-        } catch {
-            message.error('预览加载失败');
+        } else {
+            await displayErrorMessage(response, '预览生成失败');
             onFailure();
         }
-    } else {
-        await displayErrorMessage(response, '预览生成失败');
+    } catch {
+        message.error('预览加载失败');
         onFailure();
     }
 

@@ -27,22 +27,25 @@ export const updateRecord = (
                 return;
             }
 
-            const url = `/api/record/update/${tableName}/${oldRecord.record_id}`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': CONTENT_TYPE_JSON,
-                },
-                body: JSON.stringify(submitted),
-            });
-
-            if (response.status === 200) {
-                message.success('修改成功');
-                finishRecord();
-                onSuccess?.();
-            } else {
-                recordModalPending.value = false;
-                await displayErrorMessage(response, '更新数据时出错');
+            try {
+                const url = `/api/record/update/${tableName}/${oldRecord.record_id}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': CONTENT_TYPE_JSON,
+                    },
+                    body: JSON.stringify(submitted),
+                });
+                if (response.status === 200) {
+                    message.success('修改成功');
+                    finishRecord();
+                    onSuccess?.();
+                } else {
+                    recordModalPending.value = false;
+                    await displayErrorMessage(response, '更新记录时出错');
+                }
+            } catch {
+                message.error('更新记录失败');
             }
 
             recordActionDisabled.value = false;
@@ -79,22 +82,25 @@ export const appendRecord = async (
                 return;
             }
 
-            const url = `/api/table/append/${tableName}`;
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': CONTENT_TYPE_JSON,
-                },
-                body: JSON.stringify([submitted]),
-            });
-
-            if (response.status === 200) {
-                message.success('添加成功');
-                finishRecord();
-                onSuccess?.();
-            } else {
-                recordModalPending.value = false;
-                await displayErrorMessage(response, '添加记录时出错');
+            try {
+                const url = `/api/table/append/${tableName}`;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': CONTENT_TYPE_JSON,
+                    },
+                    body: JSON.stringify([submitted]),
+                });
+                if (response.status === 200) {
+                    message.success('添加成功');
+                    finishRecord();
+                    onSuccess?.();
+                } else {
+                    recordModalPending.value = false;
+                    await displayErrorMessage(response, '添加记录时出错');
+                }
+            } catch {
+                message.error('添加记录失败');
             }
 
             recordActionDisabled.value = false;
@@ -128,14 +134,18 @@ export const deleteRecord = (
         closable: true,
         maskClosable: true,
         async onOk() {
-            const response = await fetch(
-                `/api/record/delete/${tableName}/${recordId}`
-            );
-            if (response.status === 200) {
-                message.success('删除成功');
-                onSuccess?.();
-            } else {
-                await displayErrorMessage(response, '删除数据时出错');
+            try {
+                const response = await fetch(
+                    `/api/record/delete/${tableName}/${recordId}`
+                );
+                if (response.status === 200) {
+                    message.success('删除成功');
+                    onSuccess?.();
+                } else {
+                    await displayErrorMessage(response, '删除记录时出错');
+                }
+            } catch {
+                message.error('删除记录失败');
             }
             recordActionDisabled.value = false;
         },

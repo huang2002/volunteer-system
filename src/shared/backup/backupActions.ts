@@ -30,16 +30,20 @@ export const createBackup = async (
         return;
     }
 
-    const response = await fetch(
-        `/api/backup/create/${submitted.name}`
-    );
-    if (response.status === 200) {
-        if (alertSuccess) {
-            message.success('新建成功');
+    try {
+        const response = await fetch(
+            `/api/backup/create/${submitted.name}`
+        );
+        if (response.status === 200) {
+            if (alertSuccess) {
+                message.success('新建成功');
+            }
+            await updateBackupList(false);
+        } else {
+            await displayErrorMessage(response, '新建备份时出错');
         }
-        await updateBackupList(false);
-    } else {
-        await displayErrorMessage(response, '新建备份时出错');
+    } catch {
+        message.error('新建备份失败');
     }
 
     backupNameModalPending.value = false;
@@ -67,16 +71,20 @@ export const renameBackup = async (
         return;
     }
 
-    const response = await fetch(
-        `/api/backup/rename/${source}/${submitted.name}`
-    );
-    if (response.status === 200) {
-        if (alertSuccess) {
-            message.success('重命名成功');
+    try {
+        const response = await fetch(
+            `/api/backup/rename/${source}/${submitted.name}`
+        );
+        if (response.status === 200) {
+            if (alertSuccess) {
+                message.success('重命名成功');
+            }
+            await updateBackupList(false);
+        } else {
+            await displayErrorMessage(response, '重命名备份时出错');
         }
-        await updateBackupList(false);
-    } else {
-        await displayErrorMessage(response, '重命名备份时出错');
+    } catch {
+        message.error('重命名备份失败');
     }
 
     backupNameModalPending.value = false;
@@ -113,15 +121,19 @@ export const loadBackup = (
         closable: true,
         maskClosable: true,
         async onOk() {
-            const response = await fetch(
-                `/api/backup/load/${backupName}`
-            );
-            if (response.status === 200) {
-                if (alertSuccess) {
-                    message.success('加载成功');
+            try {
+                const response = await fetch(
+                    `/api/backup/load/${backupName}`
+                );
+                if (response.status === 200) {
+                    if (alertSuccess) {
+                        message.success('加载成功');
+                    }
+                } else {
+                    await displayErrorMessage(response, '加载备份时出错');
                 }
-            } else {
-                await displayErrorMessage(response, '加载备份时出错');
+            } catch {
+                message.error('加载备份失败');
             }
             backupActionDisabled.value = false;
         },
@@ -154,16 +166,20 @@ export const deleteBackup = (
         closable: true,
         maskClosable: true,
         async onOk() {
-            const response = await fetch(
-                `/api/backup/delete/${backupName}`
-            );
-            if (response.status === 200) {
-                if (alertSuccess) {
-                    message.success('删除成功');
+            try {
+                const response = await fetch(
+                    `/api/backup/delete/${backupName}`
+                );
+                if (response.status === 200) {
+                    if (alertSuccess) {
+                        message.success('删除成功');
+                    }
+                    await updateBackupList(false);
+                } else {
+                    await displayErrorMessage(response, '删除备份时出错');
                 }
-                await updateBackupList(false);
-            } else {
-                await displayErrorMessage(response, '删除备份时出错');
+            } catch {
+                message.error('删除备份失败');
             }
             backupActionDisabled.value = false;
         },

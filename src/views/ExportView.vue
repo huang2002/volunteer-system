@@ -61,13 +61,16 @@ const onSubmit = async () => {
     }
   });
 
-  const url = `/api/export/create/${options.level}?${params.toString()}`;
-  const response = await fetch(url);
-
-  if (response.status === 200) {
-    message.success('导出成功');
-  } else {
-    await displayErrorMessage(response, '导出失败');
+  try {
+    const url = `/api/export/create/${options.level}?${params.toString()}`;
+    const response = await fetch(url);
+    if (response.status === 200) {
+      message.success('导出成功');
+    } else {
+      await displayErrorMessage(response, '导出时出错');
+    }
+  } catch {
+    message.error('导出失败');
   }
 
   exporting.value = false;
@@ -82,12 +85,15 @@ const openExportFolder = async () => {
   }
   openingExportFolder.value = true;
 
-  const response = await fetch('/api/export/show');
-
-  if (response.status === 200) {
-    message.success('打开成功');
-  } else {
-    await displayErrorMessage(response, '打开失败');
+  try {
+    const response = await fetch('/api/export/show');
+    if (response.status === 200) {
+      message.success('打开成功');
+    } else {
+      await displayErrorMessage(response, '打开导出文件夹时出错');
+    }
+  } catch {
+    message.error('打开失败');
   }
 
   openingExportFolder.value = false;

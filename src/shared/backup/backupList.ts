@@ -31,9 +31,9 @@ export const updateBackupList = async (
     }
     loadingBackupNames.value = true;
 
-    const response = await fetch('/api/backup/list');
-    if (response.status === 200) {
-        try {
+    try {
+        const response = await fetch('/api/backup/list');
+        if (response.status === 200) {
             const result = await response.json();
             if (isValidBackupList(result)) {
                 backupList.value = result;
@@ -43,11 +43,11 @@ export const updateBackupList = async (
             } else {
                 message.error('后台返回的备份列表格式有误');
             }
-        } catch {
-            message.error('更新备份列表时出错');
+        } else {
+            await displayErrorMessage(response, '获取备份列表时出错');
         }
-    } else {
-        await displayErrorMessage(response, '获取备份列表时出错');
+    } catch {
+        message.error('更新备份列表失败');
     }
 
     loadingBackupNames.value = false;

@@ -25,9 +25,9 @@ export const updateTableNames = async (
     }
     loadingTableNames.value = true;
 
-    const response = await fetch('/api/table/list');
-    if (response.status === 200) {
-        try {
+    try {
+        const response = await fetch('/api/table/list');
+        if (response.status === 200) {
             const result = await response.json();
             if (isValidTableNames(result)) {
                 tableNames.value = result;
@@ -37,11 +37,11 @@ export const updateTableNames = async (
             } else {
                 message.error('后台返回的表名格式有误');
             }
-        } catch {
-            message.error('更新表名时出错');
+        } else {
+            await displayErrorMessage(response, '获取表名时出错');
         }
-    } else {
-        await displayErrorMessage(response, '获取表名时出错');
+    } catch {
+        message.error('更新表名失败');
     }
 
     loadingTableNames.value = false;
