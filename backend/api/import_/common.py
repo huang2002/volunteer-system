@@ -20,7 +20,7 @@ class ImportTableError(Exception):
 
 
 # whitespace characters will be ignored automatically
-COLUMN_MAP: dict[str, str] = {
+COLUMN_MAP: Dict[str, str] = {
     **dict((col, col) for col in COLUMNS),
     '学院': 'student_school',
     '学院（全称）': 'student_school',

@@ -6,7 +6,7 @@ export_blueprint = Blueprint('export', __name__, url_prefix='/export')
 
 
 @export_blueprint.get('/create/<level>')
-def api_export_create(level: str):
+def api_export_create(level: str) -> ResponseType:
 
     if not level in EXPORT_LEVELS:
         return RESPONSE_INVALID_LEVEL
@@ -98,7 +98,7 @@ def api_export_create(level: str):
 
 
 @export_blueprint.get('/show')
-def api_export_show():
+def api_export_show() -> ResponseType:
     program = 'explorer' if sys.platform.startswith('win') else 'open'
     path = os.path.normpath(EXPORT_DIR)
     command = program + ' ' + path

@@ -22,7 +22,7 @@ class ExportError(Exception):
         super().__init__(message)
 
 
-RESPONSE_INVALID_LEVEL = ('未知的报表级别', 400)
+RESPONSE_INVALID_LEVEL: ResponseType = ('未知的报表级别', 400)
 
 KEY_BEGIN_DATE = 'begin_date'
 KEY_END_DATE = 'end_date'

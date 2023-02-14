@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 import multiprocessing as mp
+from typing import NoReturn
 from app import app, PORT
 from api.common import DATA_DIR, BACKUP_DIR, EXPORT_DIR
 
 
-def run_app(queue: mp.Queue) -> None:
+def run_app(queue: mp.Queue) -> NoReturn:
 
     @app.get('/api/close')
     def api_close():

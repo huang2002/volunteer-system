@@ -6,14 +6,14 @@ table_blueprint = Blueprint('table', __name__, url_prefix='/table')
 
 
 @table_blueprint.get('/list')
-def api_table_list():
+def api_table_list() -> Any:
     return jsonify(
         sorted(get_table_names())
     )
 
 
 @table_blueprint.get('/create/<table_name>')
-def api_table_create(table_name: str):
+def api_table_create(table_name: str) -> ResponseType:
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
@@ -27,7 +27,7 @@ def api_table_create(table_name: str):
 
 
 @table_blueprint.get('/rename/<source>/<destination>')
-def api_table_rename(source: str, destination: str):
+def api_table_rename(source: str, destination: str) -> ResponseType:
 
     if not (
         is_valid_table_name(source)
@@ -48,7 +48,7 @@ def api_table_rename(source: str, destination: str):
 
 
 @table_blueprint.get('/view/<table_name>')
-def api_table_view(table_name: str):
+def api_table_view(table_name: str) -> Any:
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
@@ -62,7 +62,7 @@ def api_table_view(table_name: str):
 
 
 @table_blueprint.post('/append/<table_name>')
-def api_table_append(table_name: str):
+def api_table_append(table_name: str) -> ResponseType:
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
@@ -107,7 +107,7 @@ def api_table_append(table_name: str):
 
 
 @table_blueprint.get('/delete/<table_name>')
-def api_table_delete(table_name: str):
+def api_table_delete(table_name: str) -> ResponseType:
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
@@ -121,5 +121,5 @@ def api_table_delete(table_name: str):
 
 
 @table_blueprint.get('/tree')
-def api_table_tree():
+def api_table_tree() -> Any:
     return jsonify(construct_tree())

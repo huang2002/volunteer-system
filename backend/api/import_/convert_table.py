@@ -5,7 +5,7 @@ from .load_dataframe import load_dataframe
 from .handle_activity_date import handle_activity_date
 
 SpecialColumnHandler = Callable[[pd.DataFrame, pd.Series], NoReturn]
-SPECIAL_COLUMNS: dict[str, SpecialColumnHandler] = {
+SPECIAL_COLUMNS: Dict[str, SpecialColumnHandler] = {
     'activity_date': handle_activity_date,
 }
 

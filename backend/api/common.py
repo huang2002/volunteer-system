@@ -7,22 +7,23 @@ import shutil
 import subprocess
 import pandas as pd
 from flask import Blueprint, request, jsonify
-from typing import NoReturn, Any, Optional, Callable
+from typing import NoReturn, Any, Optional, Callable, Dict, List, Tuple
 
 BACKEND_PATH = os.path.join(os.path.dirname(__file__), '..')
 DATA_DIR = os.path.join(BACKEND_PATH, '../data')
 BACKUP_DIR = os.path.join(BACKEND_PATH, '../backup')
 EXPORT_DIR = os.path.join(BACKEND_PATH, '../export')
 
-RESPONSE_SUCCESS = ('success', 200)
-RESPONSE_TOO_FREQUENT = ('操作太频繁，请稍后重试', 403)
-RESPONSE_INVALID_DATA = ('数据不符合要求', 400)
+ResponseType = Tuple[str, int]
+RESPONSE_SUCCESS: ResponseType = ('success', 200)
+RESPONSE_TOO_FREQUENT: ResponseType = ('操作太频繁，请稍后重试', 403)
+RESPONSE_INVALID_DATA: ResponseType = ('数据不符合要求', 400)
 
 DATE_DTYPE = 'datetime64[ns]'
 DATE_FORMAT = '%Y/%m/%d'
 
 INDEX_NAME = 'record_id'
-NON_DATE_DTYPES: dict[str, str] = {
+NON_DATE_DTYPES: Dict[str, str] = {
     'student_school': 'string',
     'student_class': 'string',
     'student_name': 'string',
@@ -41,7 +42,7 @@ DATE_COLUMNS = [
     'activity_begin',
     'activity_end',
 ]
-COLUMNS: list[str] = DATE_COLUMNS + list(NON_DATE_DTYPES.keys())
+COLUMNS: List[str] = DATE_COLUMNS + list(NON_DATE_DTYPES.keys())
 OPTIONAL_COLUMNS = [
     'student_contact',
     'activity_type',

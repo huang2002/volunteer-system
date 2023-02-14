@@ -6,7 +6,7 @@ import_blueprint = Blueprint('import', __name__, url_prefix='/import')
 
 
 @import_blueprint.post('/preview')
-def api_import_preview():
+def api_import_preview() -> Any:
 
     try:
         dataframes = [

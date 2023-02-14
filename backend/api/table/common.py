@@ -13,9 +13,9 @@ __all__ = [
     'get_table_names',
 ]
 
-RESPONSE_INVALID_TABLE_NAME = ('表名不符合要求', 403)
-RESPONSE_DUPLICATE_TABLE = ('指定的表已经存在', 403)
-RESPONSE_TABLE_NOT_FOUND = ('指定的表不存在', 404)
+RESPONSE_INVALID_TABLE_NAME: ResponseType = ('表名不符合要求', 403)
+RESPONSE_DUPLICATE_TABLE: ResponseType = ('指定的表已经存在', 403)
+RESPONSE_TABLE_NOT_FOUND: ResponseType = ('指定的表不存在', 404)
 
 PATTERN_TABLE_NAME = re.compile(r'^\d{2}$')
 
@@ -37,7 +37,7 @@ def init_table(path: str) -> NoReturn:
 def read_table(
     path: str,
     *,
-    usecols: list[str] = COLUMNS,
+    usecols: List[str] = COLUMNS,
 ) -> pd.DataFrame:
     df = pd.read_csv(
         path,

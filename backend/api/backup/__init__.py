@@ -5,7 +5,7 @@ backup_blueprint = Blueprint('backup', __name__, url_prefix='/backup')
 
 
 @backup_blueprint.get('/list')
-def api_backup_list():
+def api_backup_list() -> Any:
     return jsonify([
         {
             'name': backup_name,
@@ -26,7 +26,7 @@ def api_backup_list():
 
 
 @backup_blueprint.get('/create/<backup_name>')
-def api_backup_create(backup_name: str):
+def api_backup_create(backup_name: str) -> ResponseType:
     if not is_valid_backup_name(backup_name):
         return RESPONSE_INVALID_BACKUP_NAME
     target_path = get_backup_path(backup_name)
@@ -37,7 +37,7 @@ def api_backup_create(backup_name: str):
 
 
 @backup_blueprint.get('/rename/<source>/<destination>')
-def api_backup_rename(source: str, destination: str):
+def api_backup_rename(source: str, destination: str) -> ResponseType:
 
     if not (
         is_valid_backup_name(source)
@@ -58,7 +58,7 @@ def api_backup_rename(source: str, destination: str):
 
 
 @backup_blueprint.get('/load/<backup_name>')
-def api_backup_load(backup_name: str):
+def api_backup_load(backup_name: str) -> ResponseType:
 
     if not is_valid_backup_name(backup_name):
         return RESPONSE_INVALID_BACKUP_NAME
@@ -73,7 +73,7 @@ def api_backup_load(backup_name: str):
 
 
 @backup_blueprint.get('/delete/<backup_name>')
-def api_backup_delete(backup_name: str):
+def api_backup_delete(backup_name: str) -> ResponseType:
 
     if not is_valid_backup_name(backup_name):
         return RESPONSE_INVALID_BACKUP_NAME
