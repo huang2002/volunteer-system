@@ -5,8 +5,8 @@ __all__ = [
     'FileStorage',
     'WHITESPACE_PATTERN',
     'ImportTableError',
-    'COLUMN_MAP',
-    'IGNORED_COLUMN_PATTERN',
+    'COLUMN_PATTERNS',
+    'IGNORE_COLUMN_PATTERN',
 ]
 
 WHITESPACE_PATTERN = re.compile(r'\s+')
@@ -19,46 +19,24 @@ class ImportTableError(Exception):
         super().__init__(message)
 
 
-# whitespace characters will be ignored automatically
-COLUMN_MAP: Dict[str, str] = {
-    **dict((col, col) for col in COLUMNS),
-    '学院': 'student_school',
-    '学院（全称）': 'student_school',
-    '班级': 'student_class',
-    '姓名': 'student_name',
-    '学号': 'student_id',
-    '联系方式': 'student_contact',
-    '联系方式（电话）': 'student_contact',
-    '联系电话': 'student_contact',
-    '电话': 'student_contact',
-    '志愿时': 'activity_length',
-    '志愿时长': 'activity_length',
-    '志愿时长（小时）': 'activity_length',
-    '服务开始日期': 'activity_begin',
-    '开始日期': 'activity_begin',
-    '服务结束日期': 'activity_end',
-    '结束日期': 'activity_end',
-    '服务截止日期': 'activity_end',
-    '截止日期': 'activity_end',
-    '服务日期': 'activity_date',
-    '服务日期（xxxx/xx/xx）': 'activity_date',
-    '活动名称': 'activity_name',
-    '志愿项目名称': 'activity_name',
-    '志愿项目名称（全称）': 'activity_name',
-    '活动类别': 'activity_type',
-    '志愿类别': 'activity_type',
-    '志愿活动类别': 'activity_type',
-    '志愿项目类别': 'activity_type',
-    '志愿服务类别': 'activity_type',
-    '举办单位': 'activity_host',
-    '负责人姓名': 'manager_name',
-    '项目负责人姓名': 'manager_name',
-    '负责人电话': 'manager_contact',
-    '项目负责人电话': 'manager_contact',
-    '负责人QQ号': 'manager_qq',
-    '项目负责人QQ号': 'manager_qq',
-    '备注': 'notes',
-}
+COLUMN_PATTERNS: List[Tuple[str, re.Pattern]] = [
+    ('student_school', re.compile(r'学院')),
+    ('student_class', re.compile(r'班级')),
+    ('student_name', re.compile(r'姓名')),
+    ('student_id', re.compile(r'学号')),
+    ('student_contact', re.compile(r'联系方式|电话')),
+    ('activity_length', re.compile(r'志愿时')),
+    ('activity_begin', re.compile(r'开始(?:日期|时间)')),
+    ('activity_end', re.compile(r'(?:结束|截止)(?:日期|时间)')),
+    ('activity_date', re.compile(r'服务日期')),
+    ('activity_name', re.compile(r'(?:活动|项目)名称')),
+    ('activity_type', re.compile(r'类别')),
+    ('activity_host', re.compile(r'举办单位')),
+    ('manager_name', re.compile(r'负责人姓名')),
+    ('manager_contact', re.compile(r'负责人电话')),
+    ('manager_qq', re.compile(r'负责人QQ')),
+    ('notes', re.compile(r'备注')),
+]
 
 # whitespaces will be striped before test
-IGNORED_COLUMN_PATTERN = re.compile(r'^(?:记录编号|编号|序号|Unnamed:\d+)$', re.I)
+IGNORE_COLUMN_PATTERN = re.compile(r'^(?:记录编号|编号|序号|Unnamed:\d+)$', re.I)

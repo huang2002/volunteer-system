@@ -4,9 +4,8 @@ from .load_dataframe import load_dataframe
 
 # A row is recognized as a header row
 # if it contains at least `RECOGNIZE_THRESHOLD`
-# words listed in `RECOGNIZABLE_COLUMNS`.
+# words matched by `COLUMN_PATTERNS`.
 RECOGNIZE_THRESHOLD = 5
-RECOGNIZABLE_COLUMNS = list(COLUMN_MAP.keys())
 RECOGNIZE_NROWS = 5
 MAX_SKIPROWS = 3
 
@@ -19,8 +18,11 @@ def detect_skiprows(file: FileStorage) -> int:
             skiprows=n,
         )
         recognized_count = 0
-        for word in RECOGNIZABLE_COLUMNS:
-            if word in df.columns:
+        for col in df.columns:
+            if any(
+                (pattern.match(col) != None)
+                for pattern_col, pattern in COLUMN_PATTERNS
+            ):
                 recognized_count += 1
         if recognized_count >= RECOGNIZE_THRESHOLD:
             return n

@@ -27,13 +27,17 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
     df_result = pd.DataFrame()
     for col_src in df_raw.columns:
         col_raw = WHITESPACE_PATTERN.sub('', col_src)
-        if IGNORED_COLUMN_PATTERN.match(col_raw):
+        if IGNORE_COLUMN_PATTERN.match(col_raw):
             continue
-        if not col_raw in COLUMN_MAP:
+        col = None
+        for pattern_col, pattern in COLUMN_PATTERNS:
+            if pattern.match(col_raw):
+                col = pattern_col
+                break
+        if col == None:
             raise ImportTableError(
                 f'无法识别的列：{col_src}，文件：{filename}'
             )
-        col = COLUMN_MAP[col_raw]
         if col in df_result.columns:
             raise ImportTableError(
                 f'多余的列：{col_src}，文件：{filename}'
