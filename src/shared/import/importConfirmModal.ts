@@ -39,10 +39,13 @@ export const guessTableName = (
     if (matchResult) {
         grade = matchResult[0];
     } else {
-        grade = record.student_id.trim().slice(0, 2);
-        if (!GRADE_SEARCH_PATTERN.test(grade)) {
-            throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;
+        matchResult = record.student_id.trim().match(GRADE_SEARCH_PATTERN);
+        if (matchResult) {
+            grade = matchResult[0];
         }
+    }
+    if (!grade) {
+        throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;
     }
 
     return `${school}${grade}级`;
