@@ -97,6 +97,7 @@ def export_table(
     *,
     output_format: str = 'csv',
     encoding: Optional[str] = None,
+    suffix_encoding: Optional[str] = None,
 ) -> NoReturn:
 
     if not output_format in TABLE_EXPORTERS:
@@ -130,9 +131,13 @@ def export_table(
         params['freeze_panes'] = EXCEL_FREEZE_PANES
         del params['encoding']
 
+    file_path = path
+    if suffix_encoding:
+        file_path += '_' + encoding
+
     ext = FORMAT_EXTENSIONS[output_format]
     TABLE_EXPORTERS[output_format](
         df_output,
-        path + '_' + encoding + ext,
+        file_path + ext,
         **params,
     )

@@ -12,6 +12,7 @@ interface ExportFormState {
   end_date?: string;
   format: string;
   encoding?: string;
+  suffix_encoding: boolean;
 }
 
 const exportFormState = reactive<ExportFormState>({
@@ -20,6 +21,7 @@ const exportFormState = reactive<ExportFormState>({
   end_date: undefined,
   format: 'xlsx',
   encoding: undefined,
+  suffix_encoding: true,
 });
 
 const paramNames: (keyof ExportFormState)[] = [
@@ -27,6 +29,7 @@ const paramNames: (keyof ExportFormState)[] = [
   'end_date',
   'format',
   'encoding',
+  'suffix_encoding',
 ];
 
 const commonFormLayout = {
@@ -54,7 +57,7 @@ const onSubmit = async () => {
   const params = new URLSearchParams();
   paramNames.forEach((name) => {
     if (options[name]) {
-      params.append(name, options[name]!);
+      params.append(name, String(options[name]));
     }
   });
 
@@ -190,6 +193,12 @@ const openExportFolder = async () => {
         }">
           <a-input name="encoding" allow-clear />
         </a-auto-complete>
+      </a-form-item>
+
+      <a-form-item name="suffix_encoding" v-bind="formTailLayout">
+        <a-checkbox v-model:checked="exportFormState.suffix_encoding">
+          将文件编码添加到文件名
+        </a-checkbox>
       </a-form-item>
 
       <a-form-item v-bind="formTailLayout">

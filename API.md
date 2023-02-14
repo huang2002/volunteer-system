@@ -52,6 +52,7 @@
         - `format` -- output format, default: `xlsx`
         - `begin_date` -- filter by `activity_end <= begin_date`
         - `end_date` -- filter by `activity_begin >= end_date`
+        - `suffix_encoding` -- append encoding to filenames
 
 - GET `/api/export/show`
     - Opens file explorer at the export folder.

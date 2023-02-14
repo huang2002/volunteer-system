@@ -84,6 +84,7 @@ def api_export_create(level: str) -> ResponseType:
                 file_path,
                 output_format=options.get('format'),
                 encoding=options.get('encoding'),
+                suffix_encoding=options.get('suffix_encoding'),
             )
 
     except ExportError as error:
