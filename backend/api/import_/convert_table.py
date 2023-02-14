@@ -31,7 +31,7 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
             continue
         col = None
         for pattern_col, pattern in COLUMN_PATTERNS:
-            if pattern.match(col_raw):
+            if pattern.search(col_raw):
                 col = pattern_col
                 break
         if col == None:

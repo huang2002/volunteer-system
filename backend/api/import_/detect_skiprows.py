@@ -20,7 +20,7 @@ def detect_skiprows(file: FileStorage) -> int:
         recognized_count = 0
         for col in df.columns:
             if any(
-                (pattern.match(col) != None)
+                (pattern.search(col) != None)
                 for pattern_col, pattern in COLUMN_PATTERNS
             ):
                 recognized_count += 1

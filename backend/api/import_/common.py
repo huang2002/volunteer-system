@@ -22,9 +22,9 @@ class ImportTableError(Exception):
 COLUMN_PATTERNS: List[Tuple[str, re.Pattern]] = [
     ('student_school', re.compile(r'学院')),
     ('student_class', re.compile(r'班级')),
-    ('student_name', re.compile(r'姓名')),
+    ('student_name', re.compile(r'(?<!负责人)姓名')),
     ('student_id', re.compile(r'学号')),
-    ('student_contact', re.compile(r'联系方式|电话')),
+    ('student_contact', re.compile(r'(?<!负责人)(?:联系方式|电话)')),
     ('activity_length', re.compile(r'志愿时')),
     ('activity_begin', re.compile(r'开始(?:日期|时间)')),
     ('activity_end', re.compile(r'(?:结束|截止)(?:日期|时间)')),
