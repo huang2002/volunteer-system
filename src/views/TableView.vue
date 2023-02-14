@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
 import { DeleteOutlined, DownOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
-import { message, type RadioGroupProps } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 import { computed, ref, watch, onBeforeMount, shallowRef } from 'vue';
 import { appendRecord, appendingRecord } from '@/shared/record/recordActions';
 import { createTable, deleteTable, renameTable } from '@/shared/table/tableActions';
@@ -12,19 +12,22 @@ import { tableNameModalVisible } from '@/shared/table/tableNameModal';
 import ToolbarButton from '@/components/ToolbarButton.vue';
 import { displayErrorMessage, onRefreshSuccess } from '@/shared/common';
 import RecordTable from '@/components/RecordTable.vue';
+import type { SelectProps } from 'ant-design-vue/lib/vc-select';
 
 onBeforeMount(updateTableNames);
 
-const activeTableName = ref('');
+const activeTableName = ref<string | undefined>(undefined);
 
 const tableNotFound = computed(() => (
-  !tableNames.value.includes(activeTableName.value)
+  !(tableNames.value as (string | undefined)[])
+    .includes(activeTableName.value)
 ));
 
-const tableNameOptions = computed((): RadioGroupProps['options'] => (
+const tableNameOptions = computed((): SelectProps['options'] => (
   tableNames.value.map((name) => ({
-    label: `表 ${name}`,
+    label: name,
     value: name,
+    title: name,
   }))
 ));
 
@@ -69,11 +72,11 @@ const createAndViewTable = () => {
 };
 
 const renameActiveTable = () => {
-  renameTable(activeTableName.value);
+  renameTable(activeTableName.value!);
 };
 
 const deleteActiveTable = () => {
-  deleteTable(activeTableName.value);
+  deleteTable(activeTableName.value!);
 };
 </script>
 
@@ -82,7 +85,7 @@ const deleteActiveTable = () => {
 
     <div id="toolbar">
 
-      <a-input-group id="toolbar-table-select" compact>
+      <a-input-group id="toolbar-table-list" compact>
 
         <a-tooltip v-bind="{
           color: 'blue',
@@ -97,11 +100,14 @@ const deleteActiveTable = () => {
           </a-button>
         </a-tooltip>
 
-        <a-radio-group v-if="tableNames.length" v-model:value="activeTableName" v-bind="{
-          optionType: 'button',
-          buttonStyle: 'solid',
+        <a-select v-if="tableNames.length" v-model:value="activeTableName" v-bind="{
           options: tableNameOptions,
-          disabled: loadingTableNames || loadingDataSource,
+          loading: loadingTableNames,
+          disabled: loadingDataSource,
+          placeholder: '请选择表格',
+          style: {
+            width: '10em',
+          },
         }" />
         <a-button v-else disabled>
           暂无表格
@@ -115,7 +121,7 @@ const deleteActiveTable = () => {
         disabled: !activeTableName || tableNotFound,
         onClick: () => {
           appendRecord(
-            activeTableName,
+            activeTableName!,
             recordModalDefaults,
             updateDataSource,
           );
@@ -215,8 +221,8 @@ const deleteActiveTable = () => {
   overflow-x: auto;
 }
 
-#toolbar-table-select {
-  flex: 1 0;
+#toolbar-table-list {
+  margin-right: auto;
 }
 
 .toolbar-button {
