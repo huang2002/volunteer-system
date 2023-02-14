@@ -88,9 +88,11 @@
 - GET `/api/backup/delete/<backup_name>`
     - Deletes specific backup.
 
-TODO: add multiple-delete support to backup APIs
-
 ## Miscellaneous
 
 - GET `/api/close`
     - Close the backend.
+
+TODO: add school alias system
+
+TODO: add search APIs
