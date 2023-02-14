@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { message } from 'ant-design-vue';
 import { displayErrorMessage } from '../common';
 import { isValidTableName } from '../table/tableNames';
@@ -19,7 +19,7 @@ const isValidBackupList = (list: unknown): list is BackupListItem[] => (
     ))
 );
 
-export const backupList = ref<BackupListItem[]>([]);
+export const backupList = shallowRef<BackupListItem[]>([]);
 export const loadingBackupNames = ref(false);
 
 export const updateBackupNames = async (

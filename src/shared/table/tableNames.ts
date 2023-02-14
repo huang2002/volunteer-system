@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, shallowRef } from 'vue';
 import { message } from 'ant-design-vue';
 import { displayErrorMessage } from '../common';
 
@@ -13,7 +13,7 @@ const isValidTableNames = (names: unknown): names is string[] => (
     && names.every(isValidTableName)
 );
 
-export const tableNames = ref<string[]>([]);
+export const tableNames = shallowRef<string[]>([]);
 export const loadingTableNames = ref(false);
 
 export const updateTableNames = async (
