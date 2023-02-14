@@ -115,7 +115,7 @@ const loadPreview = () => {
           <template #icon>
             <DeleteOutlined />
           </template>
-          清楚选择
+          清除选择
         </ToolbarButton>
         <ToolbarButton v-bind="{
           type: 'primary',
