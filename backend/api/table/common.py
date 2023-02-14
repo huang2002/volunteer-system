@@ -17,7 +17,7 @@ RESPONSE_INVALID_TABLE_NAME: ResponseType = ('表名不符合要求', 403)
 RESPONSE_DUPLICATE_TABLE: ResponseType = ('指定的表已经存在', 403)
 RESPONSE_TABLE_NOT_FOUND: ResponseType = ('指定的表不存在', 404)
 
-PATTERN_TABLE_NAME = re.compile(fr'^{NAME_LETTER_PATTERN_RAW}+\d{{2}}$')
+PATTERN_TABLE_NAME = re.compile(fr'^{NAME_LETTER_PATTERN_RAW}+\d{{2}}级$')
 
 
 def is_valid_table_name(table_name: str) -> bool:

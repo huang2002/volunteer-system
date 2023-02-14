@@ -1,15 +1,15 @@
 import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
 import { h, ref } from 'vue';
-import { displayErrorMessage } from '../common';
+import { CONTENT_TYPE_JSON, displayErrorMessage } from '../common';
 import { tableNameModalDefaults, tableNameModalPending, tableNameModalVisible, inputTableName, type TableNameModalState } from './tableNameModal';
 import { updateTableNames } from './tableNames';
 
 export const tableActionDisabled = ref(false);
 
 export const createTable = async (
-    init?: TableNameModalState | null,
-    onSuccess?: (newTableName: TableNameModalState) => void,
+    init: TableNameModalState | null,
+    alertSuccess: boolean,
 ) => {
 
     if (tableActionDisabled.value) {
@@ -33,8 +33,10 @@ export const createTable = async (
         `/api/table/create/${submitted.name}`
     );
     if (response.status === 200) {
-        await updateTableNames();
-        onSuccess?.(submitted);
+        await updateTableNames(false);
+        if (alertSuccess) {
+            message.success('新建成功');
+        }
     } else {
         await displayErrorMessage(response, '新建表格时出错');
     }
@@ -47,7 +49,7 @@ export const createTable = async (
 
 export const renameTable = async (
     source: string,
-    onSuccess?: (destination: TableNameModalState) => void,
+    alertSuccess: boolean,
 ) => {
 
     if (tableActionDisabled.value) {
@@ -68,9 +70,10 @@ export const renameTable = async (
         `/api/table/rename/${source}/${submitted.name}`
     );
     if (response.status === 200) {
-        message.success('重命名表格成功');
-        await updateTableNames();
-        onSuccess?.(submitted);
+        await updateTableNames(false);
+        if (alertSuccess) {
+            message.success('重命名表格成功');
+        }
     } else {
         await displayErrorMessage(response, '重命名表格时出错');
     }
@@ -82,8 +85,8 @@ export const renameTable = async (
 };
 
 export const deleteTable = (
-    tableName: string,
-    onSuccess?: () => void,
+    tableNames: string[],
+    alertSuccess: boolean,
 ) => {
 
     if (tableActionDisabled.value) {
@@ -92,8 +95,8 @@ export const deleteTable = (
     tableActionDisabled.value = true;
 
     Modal.confirm({
-        title: `删除表格“${tableName}”`,
-        content: '确定要删除此条表格吗？',
+        title: `删除表格`,
+        content: `将要删除的表格：${tableNames.join('、')}。`,
         icon: h(WarningOutlined, { style: { color: '#F90' } }),
         okButtonProps: { danger: true },
         okText: '确认',
@@ -102,14 +105,19 @@ export const deleteTable = (
         autoFocusButton: 'cancel',
         closable: true,
         maskClosable: true,
-        async onOk() {
-            const response = await fetch(
-                `/api/table/delete/${tableName}`
-            );
+        onOk: async () => {
+            const response = await fetch(`/api/table/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': CONTENT_TYPE_JSON,
+                },
+                body: JSON.stringify(tableNames),
+            });
             if (response.status === 200) {
-                message.success('删除成功');
-                await updateTableNames();
-                onSuccess?.();
+                if (alertSuccess) {
+                    message.success('删除成功');
+                }
+                await updateTableNames(false);
             } else {
                 await displayErrorMessage(response, '删除表格时出错');
             }

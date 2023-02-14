@@ -1,22 +1,27 @@
 <script setup lang="ts">
 import { tableNames, updateTableNames, loadingTableNames } from '@/shared/table/tableNames';
-import { DeleteOutlined, DownOutlined, FileAddOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { DeleteOutlined, DownOutlined, FormOutlined, PlusSquareOutlined, ReloadOutlined, SyncOutlined, ToolOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
-import { computed, ref, watch, onBeforeMount, shallowRef } from 'vue';
+import { computed, ref, watch, onBeforeMount, shallowRef, provide } from 'vue';
 import { appendRecord, appendingRecord } from '@/shared/record/recordActions';
-import { createTable, deleteTable, renameTable } from '@/shared/table/tableActions';
+import { deleteTable, renameTable } from '@/shared/table/tableActions';
 import RecordModal from '@/components/RecordModal.vue';
 import { recordModalDefaults, type ActivityRecord } from '@/shared/record/recordModal';
 import TableNameModal from '@/components/TableNameModal.vue';
-import { tableNameModalVisible } from '@/shared/table/tableNameModal';
 import ToolbarButton from '@/components/ToolbarButton.vue';
-import { displayErrorMessage, onRefreshSuccess } from '@/shared/common';
+import { displayErrorMessage, KEY_TABLE_MANAGEMENT_MODAL_VISIBLE } from '@/shared/common';
 import RecordTable from '@/components/RecordTable.vue';
 import type { SelectProps } from 'ant-design-vue/lib/vc-select';
+import TableManagementModal from '@/components/TableManagementModal.vue';
 
-onBeforeMount(updateTableNames);
+onBeforeMount(() => {
+  updateTableNames(false);
+});
 
 const activeTableName = ref<string | undefined>(undefined);
+
+const tableManagementModalVisible = ref(false);
+provide(KEY_TABLE_MANAGEMENT_MODAL_VISIBLE, tableManagementModalVisible);
 
 const tableNotFound = computed(() => (
   !(tableNames.value as (string | undefined)[])
@@ -34,7 +39,7 @@ const tableNameOptions = computed((): SelectProps['options'] => (
 const dataSource = shallowRef<ActivityRecord[]>([]);
 const loadingDataSource = ref(false);
 const updateDataSource = async (
-  onSuccess?: () => void,
+  alertSuccess: boolean,
 ) => {
   const tableName = activeTableName.value;
   if (!tableName) {
@@ -50,7 +55,9 @@ const updateDataSource = async (
         return;
       }
       dataSource.value = result;
-      onSuccess?.();
+      if (alertSuccess) {
+        message.success('刷新成功');
+      }
     } catch {
       message.error('更新数据时出错');
     }
@@ -61,23 +68,8 @@ const updateDataSource = async (
 };
 
 watch(activeTableName, () => {
-  updateDataSource();
+  updateDataSource(false);
 });
-
-const createAndViewTable = () => {
-  createTable(null, (newTable) => {
-    message.success('新建表格成功');
-    activeTableName.value = newTable.name;
-  });
-};
-
-const renameActiveTable = () => {
-  renameTable(activeTableName.value!);
-};
-
-const deleteActiveTable = () => {
-  deleteTable(activeTableName.value!);
-};
 </script>
 
 <template>
@@ -91,7 +83,7 @@ const deleteActiveTable = () => {
           color: 'blue',
           title: '刷新表格列表',
         }">
-          <a-button @click="updateTableNames(onRefreshSuccess)" v-bind="{
+          <a-button @click="updateTableNames(true)" v-bind="{
             loading: loadingTableNames,
           }">
             <template #icon>
@@ -123,7 +115,9 @@ const deleteActiveTable = () => {
           appendRecord(
             activeTableName!,
             recordModalDefaults,
-            updateDataSource,
+            () => {
+              updateDataSource(false);
+            },
           );
         },
       }">
@@ -137,7 +131,7 @@ const deleteActiveTable = () => {
         loading: loadingDataSource,
         disabled: !activeTableName || tableNotFound,
         onClick: () => {
-          updateDataSource(onRefreshSuccess);
+          updateDataSource(true);
         },
       }">
         <template #icon>
@@ -154,16 +148,16 @@ const deleteActiveTable = () => {
         <template #overlay>
           <a-menu>
 
-            <a-menu-item @click="createAndViewTable" v-bind="{
-              disabled: tableNameModalVisible,
+            <a-menu-item @click="tableManagementModalVisible = true" v-bind="{
+              disabled: tableManagementModalVisible,
             }">
               <a-space>
-                <FileAddOutlined style="color: #192;" />
-                新建表格
+                <ToolOutlined style="color: #19F;" />
+                管理表格
               </a-space>
             </a-menu-item>
 
-            <a-menu-item @click="renameActiveTable" v-bind="{
+            <a-menu-item @click="renameTable(activeTableName!, true)" v-bind="{
               disabled: !activeTableName || tableNotFound,
             }">
               <a-space>
@@ -172,7 +166,7 @@ const deleteActiveTable = () => {
               </a-space>
             </a-menu-item>
 
-            <a-menu-item @click="deleteActiveTable" v-bind="{
+            <a-menu-item @click="deleteTable([activeTableName!], true)" v-bind="{
               disabled: !activeTableName || tableNotFound,
             }">
               <a-space>
@@ -207,8 +201,9 @@ const deleteActiveTable = () => {
       dataSourceUpdater: updateDataSource,
     }" />
 
-    <TableNameModal />
+    <TableManagementModal />
     <RecordModal :suggestion-source="dataSource" />
+    <TableNameModal />
 
   </div>
 </template>

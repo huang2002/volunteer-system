@@ -45,7 +45,7 @@ export const guessTableName = (
         }
     }
 
-    return school + grade;
+    return `${school}${grade}级`;
 
 };
 

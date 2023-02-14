@@ -2,7 +2,7 @@ import { ref, shallowRef } from 'vue';
 import { message } from 'ant-design-vue';
 import { displayErrorMessage } from '../common';
 
-export const TABLE_NAME_PATTERN = /^[^\\/?:;~!@$%]+\d{2}$/;
+export const TABLE_NAME_PATTERN = /^[^\\/?:;~!@$%]+\d{2}级$/;
 export const isValidTableName = (name: unknown): name is string => (
     (typeof name === 'string')
     && TABLE_NAME_PATTERN.test(name)
@@ -17,7 +17,7 @@ export const tableNames = shallowRef<string[]>([]);
 export const loadingTableNames = ref(false);
 
 export const updateTableNames = async (
-    onSuccess?: () => void,
+    alertSuccess: boolean,
 ) => {
 
     if (loadingTableNames.value) {
@@ -31,7 +31,9 @@ export const updateTableNames = async (
             const result = await response.json();
             if (isValidTableNames(result)) {
                 tableNames.value = result;
-                onSuccess?.();
+                if (alertSuccess) {
+                    message.success('刷新成功');
+                }
             } else {
                 message.error('后台返回的表名格式有误');
             }

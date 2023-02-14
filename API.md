@@ -26,6 +26,14 @@
         - Type: JSON
         - Format: `[{ key -> value, ... }, ...]`
 
+- POST `/api/table/delete`
+    - Deletes specific tables.
+    - Request Body: table names
+        - Type: JSON
+        - Format: `[name0, name1, ...]`
+
+## Record APIs
+
 - GET `/api/record/delete/<table_name>/<record_id>`
     - Deletes specific record.
 
@@ -34,9 +42,6 @@
     - Request Body: data to update
         - Type: JSON
         - Format: `{ key -> value, ... }`
-
-- GET `/api/table/delete/<table_name>`
-    - Deletes entire table.
 
 ## Export APIs
 
@@ -81,6 +86,8 @@
 
 - GET `/api/backup/delete/<backup_name>`
     - Deletes specific backup.
+
+TODO: add multiple-delete support to backup APIs
 
 ## Miscellaneous
 

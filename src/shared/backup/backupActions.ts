@@ -1,7 +1,7 @@
 import { message, Modal, TypographyText } from 'ant-design-vue';
 import { h, ref } from 'vue';
-import { backupNameModalDefaults, backupNameModalPending, backupNameModalVisible, inputBackupName, type BackupNameModalState } from './backupNameModal';
-import { updateBackupNames } from './backupList';
+import { backupNameModalDefaults, backupNameModalPending, backupNameModalVisible, inputBackupName } from './backupNameModal';
+import { updateBackupList } from './backupList';
 import dayjs from 'dayjs';
 import { WarningOutlined } from '@ant-design/icons-vue';
 import { displayErrorMessage } from '../common';
@@ -13,7 +13,7 @@ export const getDefaultBackupName = () => (
 );
 
 export const createBackup = async (
-    onSuccess?: (newBackupName: BackupNameModalState) => void,
+    alertSuccess: boolean,
 ) => {
 
     if (backupActionDisabled.value) {
@@ -34,9 +34,10 @@ export const createBackup = async (
         `/api/backup/create/${submitted.name}`
     );
     if (response.status === 200) {
-        message.success('新建备份成功');
-        await updateBackupNames();
-        onSuccess?.(submitted);
+        if (alertSuccess) {
+            message.success('新建成功');
+        }
+        await updateBackupList(false);
     } else {
         await displayErrorMessage(response, '新建备份时出错');
     }
@@ -49,7 +50,7 @@ export const createBackup = async (
 
 export const renameBackup = async (
     source: string,
-    onSuccess?: (destination: BackupNameModalState) => void,
+    alertSuccess: boolean,
 ) => {
 
     if (backupActionDisabled.value) {
@@ -70,9 +71,10 @@ export const renameBackup = async (
         `/api/backup/rename/${source}/${submitted.name}`
     );
     if (response.status === 200) {
-        message.success('重命名备份成功');
-        await updateBackupNames();
-        onSuccess?.(submitted);
+        if (alertSuccess) {
+            message.success('重命名成功');
+        }
+        await updateBackupList(false);
     } else {
         await displayErrorMessage(response, '重命名备份时出错');
     }
@@ -85,7 +87,7 @@ export const renameBackup = async (
 
 export const loadBackup = (
     backupName: string,
-    onSuccess?: () => void,
+    alertSuccess: boolean,
 ) => {
 
     if (backupActionDisabled.value) {
@@ -115,9 +117,9 @@ export const loadBackup = (
                 `/api/backup/load/${backupName}`
             );
             if (response.status === 200) {
-                message.success('加载成功');
-                await updateBackupNames();
-                onSuccess?.();
+                if (alertSuccess) {
+                    message.success('加载成功');
+                }
             } else {
                 await displayErrorMessage(response, '加载备份时出错');
             }
@@ -132,7 +134,7 @@ export const loadBackup = (
 
 export const deleteBackup = (
     backupName: string,
-    onSuccess?: () => void,
+    alertSuccess: boolean,
 ) => {
 
     if (backupActionDisabled.value) {
@@ -156,9 +158,10 @@ export const deleteBackup = (
                 `/api/backup/delete/${backupName}`
             );
             if (response.status === 200) {
-                message.success('删除成功');
-                await updateBackupNames();
-                onSuccess?.();
+                if (alertSuccess) {
+                    message.success('删除成功');
+                }
+                await updateBackupList(false);
             } else {
                 await displayErrorMessage(response, '删除备份时出错');
             }

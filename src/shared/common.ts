@@ -1,10 +1,12 @@
 import { message, Modal } from 'ant-design-vue';
-import type { InjectionKey } from 'vue';
+import type { InjectionKey, Ref } from 'vue';
 
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
 
 export const KEY_GET_CONTENT_CONTAINER =
     Symbol('KEY_GET_CONTENT_CONTAINER') as InjectionKey<() => HTMLElement>;
+export const KEY_TABLE_MANAGEMENT_MODAL_VISIBLE =
+    Symbol('KEY_TABLE_MANAGEMENT_MODAL_VISIBLE') as InjectionKey<Ref<boolean>>;
 
 export const DATE_PATTERN = /^\d{4}\/\d{2}\/\d{2}$/;
 
@@ -26,10 +28,6 @@ export interface RecordModalState {
     notes: string;
 }
 
-export const onRefreshSuccess = () => {
-    message.success('刷新成功');
-};
-
 /**
  * Display the error message from response
  * if it is neither empty nor containing "DOCTYPE".
@@ -48,7 +46,7 @@ export const displayErrorMessage = async (
             Modal.error({
                 title: fallbackMessage,
                 content: errorMessage,
-                closable:true,
+                closable: true,
                 maskClosable: true,
             });
         } else {

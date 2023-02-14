@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
   type?: string,
+  size?: string,
   loading?: boolean;
   disabled?: boolean;
   danger?: boolean;

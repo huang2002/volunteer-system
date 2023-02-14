@@ -52,15 +52,13 @@ const rejected = computed(() => (
         导入信息
       </template>
       <template #description>
-        来自 {{ fileCount }} 个文件的 {{ recordCount }} 条数据。
-        <br />
-        对应的表格：{{ targetTableNames.join('、') }}。
-        <br />
-        年级由程序根据班级和学号猜测得出。
-        <br />
-        重复数据只会保留第一条。
-        <br />
-        首尾空格会被自动删除。
+        <ul style="margin-bottom: 0;">
+          <li>来自 {{ fileCount }} 个文件的 {{ recordCount }} 条数据。</li>
+          <li>对应的表格：{{ targetTableNames.join('、') }}。</li>
+          <li>年级由程序根据班级和学号猜测得出。</li>
+          <li>重复数据只会保留第一条。</li>
+          <li>首尾空格会被自动删除。</li>
+        </ul>
       </template>
     </a-alert>
 

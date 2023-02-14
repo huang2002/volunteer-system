@@ -22,8 +22,8 @@ const isValidBackupList = (list: unknown): list is BackupListItem[] => (
 export const backupList = shallowRef<BackupListItem[]>([]);
 export const loadingBackupNames = ref(false);
 
-export const updateBackupNames = async (
-    onSuccess?: () => void,
+export const updateBackupList = async (
+    alertSuccess: boolean,
 ) => {
 
     if (loadingBackupNames.value) {
@@ -37,7 +37,9 @@ export const updateBackupNames = async (
             const result = await response.json();
             if (isValidBackupList(result)) {
                 backupList.value = result;
-                onSuccess?.();
+                if (alertSuccess) {
+                    message.success('刷新成功');
+                }
             } else {
                 message.error('后台返回的备份列表格式有误');
             }

@@ -106,17 +106,31 @@ def api_table_append(table_name: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@table_blueprint.get('/delete/<table_name>')
-def api_table_delete(table_name: str) -> ResponseType:
+@table_blueprint.post('/delete')
+def api_table_delete() -> ResponseType:
 
-    if not is_valid_table_name(table_name):
+    table_names = request.get_json()
+    if not isinstance(table_names, list):
+        return RESPONSE_INVALID_DATA
+    if not all(
+        is_valid_table_name(table_name)
+        for table_name in table_names
+    ):
         return RESPONSE_INVALID_TABLE_NAME
 
-    table_path = get_table_path(table_name)
-    if not os.path.exists(table_path):
+    table_paths = [
+        get_table_path(table_name)
+        for table_name in table_names
+    ]
+    if not all(
+        os.path.exists(table_path)
+        for table_path in table_paths
+    ):
         return RESPONSE_TABLE_NOT_FOUND
 
-    os.remove(table_path)
+    for table_path in table_paths:
+        os.remove(table_path)
+
     return RESPONSE_SUCCESS
 
 

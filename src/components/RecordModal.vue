@@ -150,7 +150,7 @@ const onCancel = () => {
 
 <template>
   <a-modal v-model:visible="recordModalVisible" @ok="onSubmit()" @cancel="onCancel()" v-bind="{
-    style: { top: '2em' },
+    style: { top: '32px' },
     title: titles[recordModalMode],
     width: 700,
     footer: null,

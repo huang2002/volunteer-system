@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { backupList, updateBackupNames, loadingBackupNames, type BackupListItem } from '@/shared/backup/backupList';
+import { backupList, updateBackupList, loadingBackupNames, type BackupListItem } from '@/shared/backup/backupList';
 import CreateBackupModal from '@/components/BackupNameModal.vue';
 import { FolderAddOutlined, SyncOutlined, DeleteOutlined, EditOutlined, FolderTwoTone } from '@ant-design/icons-vue';
 import { createBackup, renameBackup, deleteBackup, loadBackup } from '@/shared/backup/backupActions';
 import { onBeforeMount } from 'vue';
-import { onRefreshSuccess } from '@/shared/common';
 
-onBeforeMount(updateBackupNames);
+onBeforeMount(() => {
+  updateBackupList(false);
+});
 
 const formatBackupDescription = (item: BackupListItem) => (
   item.tables.length
@@ -31,7 +32,7 @@ const formatBackupDescription = (item: BackupListItem) => (
             备份列表
           </h2>
 
-          <a-button @click="updateBackupNames(onRefreshSuccess)" v-bind="{
+          <a-button @click="updateBackupList(true)" v-bind="{
             id: 'backup-list-refresh',
             type: 'link',
             size: 'small',
@@ -42,7 +43,7 @@ const formatBackupDescription = (item: BackupListItem) => (
             刷新
           </a-button>
 
-          <a-button @click="createBackup()" v-bind="{
+          <a-button @click="createBackup(true)" v-bind="{
             type: 'primary',
           }">
             <template #icon>
@@ -59,7 +60,7 @@ const formatBackupDescription = (item: BackupListItem) => (
 
           <template #actions>
 
-            <a-button @click="loadBackup((item as BackupListItem).name)" v-bind="{
+            <a-button @click="loadBackup((item as BackupListItem).name, true)" v-bind="{
               type: 'link',
               size: 'small',
             }">
@@ -69,7 +70,7 @@ const formatBackupDescription = (item: BackupListItem) => (
               加载
             </a-button>
 
-            <a-button @click="renameBackup((item as BackupListItem).name)" v-bind="{
+            <a-button @click="renameBackup((item as BackupListItem).name, true)" v-bind="{
               type: 'link',
               size: 'small',
               style: {
@@ -82,7 +83,7 @@ const formatBackupDescription = (item: BackupListItem) => (
               重命名
             </a-button>
 
-            <a-button @click="deleteBackup((item as BackupListItem).name)" v-bind="{
+            <a-button @click="deleteBackup((item as BackupListItem).name, true)" v-bind="{
               type: 'link',
               size: 'small',
               danger: true,

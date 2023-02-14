@@ -14,8 +14,8 @@ export const importActionDisabled = ref(false);
 
 export const previewImport = async (
     fileList: FileType[],
-    onSuccess?: (previewData: ActivityRecord[]) => void,
-    onFailure?: () => void,
+    onSuccess: (previewData: ActivityRecord[]) => void,
+    onFailure: () => void,
 ) => {
 
     if (importActionDisabled.value) {
@@ -40,15 +40,15 @@ export const previewImport = async (
     if (response.status === 200) {
         try {
             const previewData = await response.json();
-            onSuccess?.(previewData);
+            onSuccess(previewData);
             message.success('预览加载成功');
         } catch {
             message.error('预览加载失败');
-            onFailure?.();
+            onFailure();
         }
     } else {
         await displayErrorMessage(response, '预览生成失败');
-        onFailure?.();
+        onFailure();
     }
 
     importActionDisabled.value = false;
@@ -65,7 +65,7 @@ export const createImport = async (
     }
     importActionDisabled.value = true;
 
-    await updateTableNames();
+    await updateTableNames(false);
 
     const submitted = await inputImportConfirm(data);
     if (!submitted) { // canceled
@@ -78,7 +78,7 @@ export const createImport = async (
         for await (const tableName of Object.keys(submitted)) {
 
             if (!tableNames.value.includes(tableName)) {
-                await createTable({ name: tableName });
+                await createTable({ name: tableName }, false);
             }
 
             const records = submitted[tableName];

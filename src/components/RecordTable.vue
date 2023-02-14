@@ -15,7 +15,7 @@ const props = defineProps<{
   loading: boolean;
   showActions?: boolean;
   importPreviewMode?: boolean;
-  dataSourceUpdater?: () => void;
+  dataSourceUpdater?: (alertSuccess: boolean) => void;
 }>();
 
 const getContentContainer = inject(KEY_GET_CONTENT_CONTAINER);
@@ -113,7 +113,9 @@ if (props.showActions) {
             updateRecord(
               tableName!,
               (record as ActivityRecord),
-              dataSourceUpdater,
+              () => {
+                dataSourceUpdater!(false);
+              },
             );
           },
         }">
@@ -129,7 +131,9 @@ if (props.showActions) {
             appendRecord(
               tableName!,
               merge(record as ActivityRecord, recordModalStudentDefaults),
-              dataSourceUpdater,
+              () => {
+                dataSourceUpdater!(false);
+              },
             );
           },
         }">
@@ -145,7 +149,9 @@ if (props.showActions) {
             deleteRecord(
               tableName!,
               (record as ActivityRecord).record_id,
-              dataSourceUpdater,
+              () => {
+                dataSourceUpdater!(false);
+              },
             );
           },
         }">

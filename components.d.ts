@@ -12,6 +12,7 @@ declare module '@vue/runtime-core' {
     ABackTop: typeof import('ant-design-vue/es')['BackTop']
     AButton: typeof import('ant-design-vue/es')['Button']
     ACheckbox: typeof import('ant-design-vue/es')['Checkbox']
+    ACheckboxGroup: typeof import('ant-design-vue/es')['CheckboxGroup']
     AConfigProvider: typeof import('ant-design-vue/es')['ConfigProvider']
     ADatePicker: typeof import('ant-design-vue/es')['DatePicker']
     ADropdown: typeof import('ant-design-vue/es')['Dropdown']
@@ -56,6 +57,7 @@ declare module '@vue/runtime-core' {
     RecordTable: typeof import('./src/components/RecordTable.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    TableManagementModal: typeof import('./src/components/TableManagementModal.vue')['default']
     TableNameModal: typeof import('./src/components/TableNameModal.vue')['default']
     ToolbarButton: typeof import('./src/components/ToolbarButton.vue')['default']
   }
