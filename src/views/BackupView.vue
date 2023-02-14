@@ -101,7 +101,7 @@ const formatBackupDescription = (item: BackupListItem) => (
             description: formatBackupDescription(item as BackupListItem),
           }">
             <template #avatar>
-              <FolderTwoTone two-tone-color="#F90" style="font-size: 2em;" />
+              <FolderTwoTone two-tone-color="#F90" style="font-size: 1.6em;" />
             </template>
           </a-list-item-meta>
 
