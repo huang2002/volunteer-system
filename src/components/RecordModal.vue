@@ -154,6 +154,7 @@ const onCancel = () => {
     title: titles[recordModalMode],
     width: 700,
     footer: null,
+    maskClosable: false,
   }">
     <a-space v-bind="{
       direction: 'vertical',
