@@ -186,9 +186,10 @@ const openExportFolder = async () => {
         </template>
         <a-auto-complete v-model:value="exportFormState.encoding" v-bind="{
           placeholder: '使用默认值',
-          allowClear: true,
           dataSource: ['utf8', 'gb2312', 'gbk'],
-        }" />
+        }">
+          <a-input name="encoding" allow-clear />
+        </a-auto-complete>
       </a-form-item>
 
       <a-form-item v-bind="formTailLayout">
