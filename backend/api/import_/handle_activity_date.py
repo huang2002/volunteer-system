@@ -59,7 +59,7 @@ DATE_OFFSET_TO_MONTH_END = pd.DateOffset(months=1, days=-1)
 MONTH_RANGE_PATTERN = re.compile(r'''(?x)  # verbose mode
     # from
     (?:(\d{4})(?:年|/|\.))?
-    (\d{1,2})(?:月|/|\.|年)  # HACK
+    (\d{1,2})(?:月|/|\.|年)?  # HACK
     # separate
     (?:—+|-+|－|~|到|至|及)  # HACK
     # to
