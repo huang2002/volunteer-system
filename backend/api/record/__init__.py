@@ -47,11 +47,6 @@ def api_record_update(table_name: str, record_id: int) -> ResponseType:
         raw_value = addition[key]
         dtype = DATE_DTYPE if key in DATE_COLUMNS else NON_DATE_DTYPES[key]
         if dtype == 'string':
-            if (
-                (key in ADDITIONAL_PATTERNS)
-                and (ADDITIONAL_PATTERNS[key].match(value) == None)
-            ):
-                return RESPONSE_INVALID_DATA
             value = str(raw_value)
         elif dtype.startswith('float'):
             try:

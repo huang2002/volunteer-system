@@ -56,10 +56,6 @@ OPTIONAL_COLUMNS = [
     'notes',
 ]
 
-ADDITIONAL_PATTERNS: Dict[str, re.Pattern] = {
-    'student_class': re.compile(r'^\d+$'),
-}
-
 
 def convert_date(x: str) -> pd.Timestamp:
     return pd.to_datetime(x, format=DATE_FORMAT)
