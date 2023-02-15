@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from api import api_blueprint
+from api.alias.common import load_aliases
 
 PORT = 2023
 FRONTEND_PATH = os.path.join(
@@ -25,6 +26,7 @@ def home_page():
 
 
 if __name__ == '__main__':
+    load_aliases()
     app.run(
         port=PORT,
     )

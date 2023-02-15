@@ -88,6 +88,23 @@
 - GET `/api/backup/delete/<backup_name>`
     - Deletes specific backup.
 
+## Alias APIs
+
+- GET `/api/alias/view/<map_name>`
+    - Returns specific alias lists.
+    - Response Body:
+        - Type: JSON
+        - Format: `{ map_name -> { name: [alias, ...] }, ... }`
+
+- POST `/api/alias/update/<map_name>/<list_name>`
+    - Updates/Creates specific alias list.
+    - Request Body:
+        - Type: JSON
+        - Format: `[aliases...]`
+
+- GET `/api/alias/delete/<map_name>/<list_name>`
+    - Deletes specific alias list.
+
 ## Miscellaneous
 
 - GET `/api/close`
