@@ -1,6 +1,5 @@
 from ..common import *
 from .common import *
-from .construct_tree import construct_tree
 
 table_blueprint = Blueprint('table', __name__, url_prefix='/table')
 
@@ -132,8 +131,3 @@ def api_table_delete() -> ResponseType:
         os.remove(table_path)
 
     return RESPONSE_SUCCESS
-
-
-@table_blueprint.get('/tree')
-def api_table_tree() -> Any:
-    return jsonify(construct_tree())
