@@ -45,6 +45,8 @@ const rejected = computed(() => (
   <a-modal v-model:visible="importConfirmModalVisible" @ok="onSubmit()" @cancel="onCancel()" v-bind="{
     title: '导入记录',
     footer: null,
+    closable: false,
+    maskClosable: false,
   }">
 
     <a-alert type="info" show-icon>
@@ -100,7 +102,7 @@ const rejected = computed(() => (
           }">
             确认
           </a-button>
-          <a-button @click="onCancel()">取消</a-button>
+          <a-button @click="onCancel()" :disabled="importConfirmModalPending">取消</a-button>
         </a-space>
       </div>
 

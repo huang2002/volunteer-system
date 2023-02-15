@@ -3,12 +3,12 @@ import { message } from 'ant-design-vue';
 import { displayErrorMessage } from '../common';
 import { isValidTableName } from '../table/tableNames';
 
-export interface BackupListItem {
+export interface BackupItem {
     name: string;
     tables: string[];
 }
 
-const isValidBackupList = (list: unknown): list is BackupListItem[] => (
+const isValidBackupList = (list: unknown): list is BackupItem[] => (
     Array.isArray(list)
     && list.every((item) => (
         item
@@ -19,7 +19,7 @@ const isValidBackupList = (list: unknown): list is BackupListItem[] => (
     ))
 );
 
-export const backupList = shallowRef<BackupListItem[]>([]);
+export const backupList = shallowRef<BackupItem[]>([]);
 export const loadingBackupNames = ref(false);
 
 export const updateBackupList = async (

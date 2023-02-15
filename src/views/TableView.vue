@@ -98,7 +98,7 @@ watch(activeTableName, () => {
           disabled: loadingDataSource,
           placeholder: '请选择表格',
           style: {
-            width: '10em',
+            width: '12em',
           },
         }" />
         <a-button v-else disabled>

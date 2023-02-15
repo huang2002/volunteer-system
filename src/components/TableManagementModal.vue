@@ -33,8 +33,9 @@ watch(tableNames, (names) => {
         bordered: true,
         pagination: {
           size: 'small',
-          defaultPageSize: 8,
-          pageSizeOptions: ['8'],
+          defaultPageSize: 5,
+          pageSizeOptions: ['5', '10', '15', '20'],
+          showSizeChanger: true,
           showLessItems: true,
           showTotal: (total: number, range: [number, number]) => (
             `第${range[0]}项到第${range[1]}项（共${total}项）`

@@ -51,7 +51,3 @@ const onClick = () => {
     </a-button>
   </a-tooltip>
 </template>
-
-<style scoped>
-
-</style>

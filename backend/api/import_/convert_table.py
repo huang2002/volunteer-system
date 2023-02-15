@@ -38,11 +38,11 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
                 break
         if col == None:
             raise ImportTableError(
-                f'无法识别的列：{col_src}，文件：{filename}'
+                f'无法识别的列：{col_src}，文件：{filename}，请检查并修改后重试。'
             )
         if col in df_result.columns:
             raise ImportTableError(
-                f'多余的列：{col_src}，文件：{filename}'
+                f'多余的列：{col_src}，文件：{filename}，请检查并修改后重试。'
             )
         try:
             if col in SPECIAL_COLUMNS:
@@ -66,11 +66,11 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
                     df_result[col] = df_raw[col_src].astype(dtype)
         except ImportTableError as error:
             raise ImportTableError(
-                f'{error.message}，文件：{filename}'
+                f'{error.message}，文件：{filename}，请检查并修改后重试。'
             )
         except:
             raise ImportTableError(
-                f'未能转换的列：{col_src}，文件：{filename}'
+                f'未能转换的列：{col_src}，文件：{filename}，请检查并修改后重试。'
             )
 
     # check missing columns
@@ -86,7 +86,7 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
                 df_result[col] = pd.NA
         else:
             raise ImportTableError(
-                f'缺少必须的列：{col}，文件：{filename}'
+                f'缺少必须的列：{col}，文件：{filename}，请检查并修改后重试。'
             )
 
     return df_result

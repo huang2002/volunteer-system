@@ -49,6 +49,7 @@ declare module '@vue/runtime-core' {
     ATypographyText: typeof import('ant-design-vue/es')['TypographyText']
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
     AUploadDragger: typeof import('ant-design-vue/es')['UploadDragger']
+    BackupListItem: typeof import('./src/components/BackupListItem.vue')['default']
     BackupNameModal: typeof import('./src/components/BackupNameModal.vue')['default']
     ImportConfirmModal: typeof import('./src/components/ImportConfirmModal.vue')['default']
     RecordAction: typeof import('./src/components/RecordAction.vue')['default']
