@@ -5,7 +5,7 @@
 \usepackage[colorlinks,allcolors=blue,pdflang=zh-CN]{hyperref}
 
 \newcommand{\systemname}{志愿服务信息管理系统}
-\newcommand{\systemversion}{v1.0.0}
+\newcommand{\systemversion}{v1.1.0}
 \newcommand{\githuburl}{https://github.com/huang2002/volunteer-system}
 \newcommand{\issuesurl}{\githuburl/issues}
 \newcommand{\releasesurl}{\githuburl/releases}
@@ -194,6 +194,12 @@ python --version
     \item 在确认界面中，会显示导入的整体信息和导入选项。点击“确认”后数据会正式导入。
 \end{enumerate}
 
+目前，导入程序已尽可能兼容各种内容格式，尤其是日期数据。
+如果在导入时还是遇到了无法识别的问题，请先根据提示检查数据是否有误。
+若是数据本身有问题，例如“6月31日”（不存在的日期）、“XX年暑假”（缺少明确日期）等，
+麻烦手动修改，然后移除已选择的文件、重新上传并再次尝试生成导入预览。
+如果数据格式没有明显问题，但是程序却无法识别，请进行反馈（见章节\ref{subsec:report}）。
+
 \begin{warnings}
     \item 后台程序处理导入数据时会自动去除单元格内的首尾空格。
     \item 导入时，后台程序会自动忽略多余的重复记录，仅保留第一条。
@@ -204,7 +210,7 @@ python --version
 \label{subsec:backup}
 
 在“数据备份”页面中，可以查看、生成、加载和删除备份。
-建议每周或每月进行一次备份，保留最新的几次备份，删除多余备份。
+建议每周或每月进行一次备份，并保留最新的几次备份、删除多余备份。
 
 备份数据会保存在软件目录下\texttt{backup}中以备份名称命名的新文件夹里。
 
@@ -230,6 +236,7 @@ python --version
 \end{enumerate}
 
 \subsection{反馈问题}
+\label{subsec:report}
 
 如果发现软件有任何问题，欢迎在\GitHub上\href{\issuesurl}{提Issue}
 \footnote{GitHub Issues: \url{\issuesurl}}。
