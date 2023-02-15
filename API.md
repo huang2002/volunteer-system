@@ -90,26 +90,24 @@
 
 ## Alias APIs
 
-- GET `/api/alias/view/<map_name>`
+- GET `/api/alias/view/<column_name>`
     - Returns specific alias lists.
     - Response Body:
         - Type: JSON
-        - Format: `{ map_name -> { name: [alias, ...] }, ... }`
+        - Format: `{ column_name -> { name: [alias, ...] }, ... }`
 
-- POST `/api/alias/update/<map_name>/<list_name>`
+- POST `/api/alias/update/<column_name>/<list_name>`
     - Updates/Creates specific alias list.
     - Request Body:
         - Type: JSON
         - Format: `[aliases...]`
 
-- GET `/api/alias/delete/<map_name>/<list_name>`
+- GET `/api/alias/delete/<column_name>/<list_name>`
     - Deletes specific alias list.
 
 ## Miscellaneous
 
 - GET `/api/close`
     - Close the backend.
-
-TODO: add school alias system
 
 TODO: add search APIs

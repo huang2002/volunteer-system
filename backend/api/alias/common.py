@@ -15,10 +15,13 @@ AliasMap = Dict[str, str]  # alias -> name
 AliasList = List[str]
 AliasLists = Dict[str, AliasList]  # name -> [aliases...]
 
+# col -> alias_map
 alias_maps: Dict[str, AliasMap] = {
-    "school_map": {},
+    "student_school": {},
     # TODO: "class_map": {},
 }
+
+# col -> alias_lists
 alias_list_map: Dict[str, AliasLists] = {}
 
 
@@ -46,30 +49,30 @@ def load_aliases() -> NoReturn:
     source = json.load(ALIASES_PATH)
     assert isinstance(source, dict)
 
-    for map_name, source_map in source.items():
-        set_aliases(alias_maps[map_name], source_map)
+    for column_name, source_map in source.items():
+        set_aliases(alias_maps[column_name], source_map)
 
 
-def get_alias_map(map_name: str) -> AliasMap:
-    return alias_maps[map_name]
+def get_alias_map(column_name: str) -> AliasMap:
+    return alias_maps[column_name]
 
 
 def update_alias_list(
-    map_name: str,
+    column_name: str,
     list_name: str,
     alias_list: AliasList,
 ) -> NoReturn:
-    alias_list_map[map_name][list_name] = list_name
-    alias_maps[map_name] = dict(
+    alias_list_map[column_name][list_name] = list_name
+    alias_maps[column_name] = dict(
         (alias, list_name)
         for alias in alias_list
     )
     save_aliases()
 
 
-def delete_alias_list(map_name: str, list_name: str) -> NoReturn:
-    del alias_list_map[map_name][list_name]
-    del alias_maps[map_name][list_name]
+def delete_alias_list(column_name: str, list_name: str) -> NoReturn:
+    del alias_list_map[column_name][list_name]
+    del alias_maps[column_name][list_name]
     save_aliases()
 
 
