@@ -6,7 +6,7 @@ record_blueprint = Blueprint('record', __name__, url_prefix='/record')
 
 
 @record_blueprint.get('/delete/<table_name>/<int:record_id>')
-def api_record_delete(table_name: str, record_id: int) -> ResponseType:
+def delete(table_name: str, record_id: int) -> ResponseType:
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
@@ -25,7 +25,7 @@ def api_record_delete(table_name: str, record_id: int) -> ResponseType:
 
 
 @record_blueprint.post('/update/<table_name>/<int:record_id>')
-def api_record_update(table_name: str, record_id: int) -> ResponseType:
+def update(table_name: str, record_id: int) -> ResponseType:
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
