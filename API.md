@@ -32,6 +32,8 @@
         - Type: JSON
         - Format: `[name0, name1, ...]`
 
+TODO: add table merge
+
 ## Record APIs
 
 - GET `/api/record/delete/<table_name>/<record_id>`
