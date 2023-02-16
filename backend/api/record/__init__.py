@@ -27,6 +27,8 @@ def delete(table_name: str, record_id: int) -> ResponseType:
 @record_blueprint.post('/update/<table_name>/<int:record_id>')
 def update(table_name: str, record_id: int) -> ResponseType:
 
+    # TODO: add alias support here
+
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
 

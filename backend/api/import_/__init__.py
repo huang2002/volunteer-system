@@ -1,4 +1,5 @@
 from ..common import *
+from ..alias.common import handle_aliases
 from .common import *
 from .convert_table import convert_table
 
@@ -17,6 +18,7 @@ def preview() -> Any:
         return error.message, 400
 
     df_result = pd.concat(dataframes, ignore_index=True)
+    handle_aliases(df_result)
 
     # set indices
     index_count = len(df_result.index)

@@ -1,5 +1,6 @@
 from ..common import *
 from ..table.common import *
+from ..alias.common import handle_aliases
 from .common import *
 
 export_blueprint = Blueprint('export', __name__, url_prefix='/export')
@@ -28,6 +29,7 @@ def create(level: str) -> ResponseType:
             df[GRADE_COLUMN_NAME] = table_name
             dataframes.append(df)
         df_data = pd.concat(dataframes)
+        handle_aliases(df_data)
 
         options = request.args
         begin_date = None

@@ -1,4 +1,5 @@
 from ..common import *
+from ..alias.common import handle_aliases
 from .common import *
 
 table_blueprint = Blueprint('table', __name__, url_prefix='/table')
@@ -100,6 +101,7 @@ def append(table_name: str) -> ResponseType:
         columns=COLUMNS,
         index=index,
     )
+    handle_aliases(df_addition)
     append_table(table_path, df_addition)
 
     return RESPONSE_SUCCESS

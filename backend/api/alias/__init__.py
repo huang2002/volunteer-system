@@ -5,12 +5,12 @@ alias_blueprint = Blueprint('alias', __name__, url_prefix='/alias')
 
 
 @alias_blueprint.get('/view/<column_name>')
-def api_alias_view(column_name: str) -> Any:
+def view(column_name: str) -> Any:
     return jsonify(get_alias_map(column_name))
 
 
 @alias_blueprint.post('/update/<column_name>/<list_name>')
-def api_alias_update(column_name: str, list_name: str) -> ResponseType:
+def update(column_name: str, list_name: str) -> ResponseType:
     alias_list = request.get_json()
     if not (
         isinstance(alias_list, list)
@@ -22,7 +22,7 @@ def api_alias_update(column_name: str, list_name: str) -> ResponseType:
 
 
 @alias_blueprint.get('/delete/<column_name>/<list_name>')
-def api_alias_delete(column_name: str, list_name: str) -> ResponseType:
+def delete(column_name: str, list_name: str) -> ResponseType:
     alias_list = request.get_json()
     if not (
         isinstance(alias_list, list)

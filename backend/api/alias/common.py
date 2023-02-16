@@ -9,6 +9,7 @@ __all__ = [
     'update_alias_list',
     'delete_alias_list',
     'save_aliases',
+    'handle_aliases',
 ]
 
 AliasMap = Dict[str, str]  # alias -> name
@@ -79,3 +80,17 @@ def delete_alias_list(column_name: str, list_name: str) -> NoReturn:
 def save_aliases() -> NoReturn:
     with open(ALIASES_PATH, 'w') as output_file:
         json.dump(alias_maps, output_file)
+
+
+def handle_aliases(df: pd.DataFrame) -> NoReturn:
+    for column_name in df.columns:
+        if not column_name in alias_maps:
+            continue
+        alias_map = alias_maps[column_name]
+        df[column_name] = df[column_name].map(
+            lambda value: (
+                alias_map[value]
+                if value in alias_map
+                else value
+            )
+        )
