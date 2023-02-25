@@ -62,7 +62,7 @@ const updateDataSource = async (
       await displayErrorMessage(response, '获取数据时出错');
     }
   } catch {
-    message.error('更新数据失败');
+    message.error('获取数据失败');
   }
   loadingDataSource.value = false;
 };
