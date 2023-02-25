@@ -96,7 +96,7 @@ TODO: add table merge
     - Returns specific alias lists.
     - Response Body:
         - Type: JSON
-        - Format: `{ column_name -> { name: [alias, ...] }, ... }`
+        - Format: `{ name -> [aliases...] }`
 
 - POST `/api/alias/update/<column_name>/<list_name>`
     - Updates/Creates specific alias list.
