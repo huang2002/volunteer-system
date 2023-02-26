@@ -7,6 +7,9 @@ from api.common import DATA_DIR, BACKUP_DIR, EXPORT_DIR
 
 def run_app(queue: mp.Queue) -> NoReturn:
 
+    from api.alias.common import load_aliases
+    load_aliases()
+
     @app.get('/api/close')
     def api_close():
         queue.put(1011)

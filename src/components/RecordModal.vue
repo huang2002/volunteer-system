@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { DATE_PATTERN, type RecordModalState } from '@/shared/common';
 import { recordModalCallback, recordModalState, recordModalVisible, recordModalPending, recordModalMode, recordModalForm, recordModalBatchMode, type RecordModalMode } from '@/shared/record/recordModal';
-import { CopyOutlined, FilterOutlined, InfoCircleOutlined, ScissorOutlined } from '@ant-design/icons-vue';
+import { CopyOutlined, FilterOutlined, InfoCircleOutlined, ScissorOutlined, SwapOutlined } from '@ant-design/icons-vue';
 import type { Rule } from 'ant-design-vue/lib/form';
 import { computed, watch } from 'vue';
 import { merge, unique } from '3h-utils';
@@ -177,6 +177,11 @@ const onCancel = () => {
           <a-space>
             <CopyOutlined />
             如需添加雷同记录，请填写不同的备注加以区分，例如：1、2、……。
+          </a-space>
+          <br />
+          <a-space>
+            <SwapOutlined />
+            别名将根据设置自动转换。
           </a-space>
           <br />
           <a-space>

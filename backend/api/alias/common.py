@@ -5,12 +5,14 @@ __all__ = [
     'AliasList',
     'AliasLists',
     'load_aliases',
-    'get_alias_map',
+    'get_alias_lists',
     'update_alias_list',
     'delete_alias_list',
     'save_aliases',
     'handle_aliases',
 ]
+
+ALIASES_ENCODING = 'utf-8'
 
 AliasMap = Dict[str, str]  # alias -> name
 AliasList = List[str]
@@ -31,11 +33,7 @@ def set_aliases(target_map: AliasMap, source: Any) -> NoReturn:
     assert isinstance(source, dict)
     assert all(
         isinstance(aliases, list)
-        for aliases in source.values()
-    )
-    assert all(
-        isinstance(alias, str)
-        for alias in aliases
+        and all(isinstance(alias, str) for alias in aliases)
         for aliases in source.values()
     )
 
@@ -47,15 +45,18 @@ def set_aliases(target_map: AliasMap, source: Any) -> NoReturn:
 
 def load_aliases() -> NoReturn:
 
-    source = json.load(ALIASES_PATH)
-    assert isinstance(source, dict)
+    global alias_list_map
 
-    for column_name, source_map in source.items():
+    with open(ALIASES_PATH, 'r', encoding=ALIASES_ENCODING) as input_file:
+        alias_list_map = json.load(input_file)
+    assert isinstance(alias_list_map, dict)
+
+    for column_name, source_map in alias_list_map.items():
         set_aliases(alias_maps[column_name], source_map)
 
 
-def get_alias_map(column_name: str) -> AliasMap:
-    return alias_maps[column_name]
+def get_alias_lists(column_name: str) -> AliasLists:
+    return alias_list_map[column_name]
 
 
 def update_alias_list(
@@ -63,11 +64,11 @@ def update_alias_list(
     list_name: str,
     alias_list: AliasList,
 ) -> NoReturn:
-    alias_list_map[column_name][list_name] = list_name
-    alias_maps[column_name] = dict(
-        (alias, list_name)
-        for alias in alias_list
-    )
+    for old_alias in alias_list_map[column_name][list_name]:
+        del alias_maps[column_name][old_alias]
+    alias_list_map[column_name][list_name] = alias_list
+    for new_alias in alias_list:
+        alias_maps[column_name][new_alias] = list_name
     save_aliases()
 
 
@@ -78,8 +79,8 @@ def delete_alias_list(column_name: str, list_name: str) -> NoReturn:
 
 
 def save_aliases() -> NoReturn:
-    with open(ALIASES_PATH, 'w') as output_file:
-        json.dump(alias_maps, output_file)
+    with open(ALIASES_PATH, 'w', encoding=ALIASES_ENCODING) as output_file:
+        json.dump(alias_list_map, output_file)
 
 
 def handle_aliases(df: pd.DataFrame) -> NoReturn:

@@ -133,7 +133,7 @@ const loadPreview = () => {
     </div>
 
     <RecordTable v-if="previewData.length || loadingPreview" v-bind="{
-      dataSource: previewData,
+      records: previewData,
       loading: loadingPreview,
       importPreviewMode: true,
     }" />

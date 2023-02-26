@@ -66,9 +66,12 @@ const description = computed(() => {
         <FolderTwoTone two-tone-color="#F90" style="font-size: 1.6em;" />
       </template>
       <template #description>
-        <a-typography-text type="secondary" :title="description" ellipsis>
-          {{ description }}
-        </a-typography-text>
+        <a-typography-text v-bind="{
+          type: 'secondary',
+          ellipsis: true,
+          title: description,
+          content: description,
+        }" />
       </template>
     </a-list-item-meta>
 

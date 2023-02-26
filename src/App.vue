@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router';
-import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, HomeOutlined, ImportOutlined, TableOutlined } from '@ant-design/icons-vue';
+import { AppstoreOutlined, DatabaseOutlined, ExportOutlined, HomeOutlined, ImportOutlined, TableOutlined, TagsOutlined } from '@ant-design/icons-vue';
 import { provide, ref, watch, type Component } from 'vue';
 import locale from 'ant-design-vue/es/locale/zh_CN';
 import { KEY_GET_CONTENT_CONTAINER } from '@/shared/common';
@@ -35,6 +35,7 @@ const links: LinkInfo[] = [
   { name: 'export', icon: ExportOutlined, text: '生成报表' },
   { name: 'import', icon: ImportOutlined, text: '导入记录' },
   { name: 'backup', icon: DatabaseOutlined, text: '数据备份' },
+  { name: 'alias', icon: TagsOutlined, text: '别名管理' },
 ];
 </script>
 
@@ -46,8 +47,8 @@ const links: LinkInfo[] = [
         <h1 id="header-title">
           志愿服务信息管理系统
           <code id="header-version">
-          {{ VERSION }}
-        </code>
+            {{ VERSION }}
+          </code>
         </h1>
         <AppCloseButton />
       </a-layout-header>

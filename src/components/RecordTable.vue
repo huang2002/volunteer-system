@@ -10,12 +10,12 @@ import { updateRecord, appendRecord, deleteRecord } from '@/shared/record/record
 import RecordIndex from './RecordIndex.vue';
 
 const props = defineProps<{
-  dataSource: ActivityRecord[];
+  records: ActivityRecord[];
   tableName?: string;
   loading: boolean;
   showActions?: boolean;
   importPreviewMode?: boolean;
-  dataSourceUpdater?: (alertSuccess: boolean) => void;
+  updater?: (alertSuccess: boolean) => void;
 }>();
 
 const getContentContainer = inject(KEY_GET_CONTENT_CONTAINER);
@@ -47,7 +47,7 @@ if (props.showActions) {
 <template>
   <a-table v-bind="{
     columns,
-    dataSource,
+    dataSource: records,
     loading,
     rowKey: 'record_id',
     size: 'small',
@@ -114,7 +114,7 @@ if (props.showActions) {
               tableName!,
               (record as ActivityRecord),
               () => {
-                dataSourceUpdater!(false);
+                updater!(false);
               },
             );
           },
@@ -132,7 +132,7 @@ if (props.showActions) {
               tableName!,
               merge(record as ActivityRecord, recordModalStudentDefaults),
               () => {
-                dataSourceUpdater!(false);
+                updater!(false);
               },
             );
           },
@@ -150,7 +150,7 @@ if (props.showActions) {
               tableName!,
               (record as ActivityRecord).record_id,
               () => {
-                dataSourceUpdater!(false);
+                updater!(false);
               },
             );
           },

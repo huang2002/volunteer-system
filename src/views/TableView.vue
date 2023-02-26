@@ -36,16 +36,16 @@ const tableNameOptions = computed((): SelectProps['options'] => (
   }))
 ));
 
-const dataSource = shallowRef<ActivityRecord[]>([]);
-const loadingDataSource = ref(false);
-const updateDataSource = async (
+const records = shallowRef<ActivityRecord[]>([]);
+const loadingRecords = ref(false);
+const loadRecords = async (
   alertSuccess: boolean,
 ) => {
   const tableName = activeTableName.value;
   if (!tableName) {
     return;
   }
-  loadingDataSource.value = true;
+  loadingRecords.value = true;
   try {
     const response = await fetch(`/api/table/view/${tableName}`);
     if (response.status === 200) {
@@ -54,7 +54,7 @@ const updateDataSource = async (
         // loading other table
         return;
       }
-      dataSource.value = result;
+      records.value = result;
       if (alertSuccess) {
         message.success('刷新成功');
       }
@@ -64,11 +64,11 @@ const updateDataSource = async (
   } catch {
     message.error('获取数据失败');
   }
-  loadingDataSource.value = false;
+  loadingRecords.value = false;
 };
 
 watch(activeTableName, () => {
-  updateDataSource(false);
+  loadRecords(false);
 });
 </script>
 
@@ -95,7 +95,7 @@ watch(activeTableName, () => {
         <a-select v-if="tableNames.length" v-model:value="activeTableName" v-bind="{
           options: tableNameOptions,
           loading: loadingTableNames,
-          disabled: loadingDataSource,
+          disabled: loadingRecords,
           placeholder: '请选择表格',
           style: {
             width: '12em',
@@ -116,7 +116,7 @@ watch(activeTableName, () => {
             activeTableName!,
             recordModalDefaults,
             () => {
-              updateDataSource(false);
+              loadRecords(false);
             },
           );
         },
@@ -128,10 +128,10 @@ watch(activeTableName, () => {
       </ToolbarButton>
 
       <ToolbarButton v-bind="{
-        loading: loadingDataSource,
+        loading: loadingRecords,
         disabled: !activeTableName || tableNotFound,
         onClick: () => {
-          updateDataSource(true);
+          loadRecords(true);
         },
       }">
         <template #icon>
@@ -194,15 +194,15 @@ watch(activeTableName, () => {
     }" />
 
     <RecordTable v-else v-bind="{
-      dataSource,
+      records,
       tableName: activeTableName,
-      loading: loadingDataSource,
+      loading: loadingRecords,
       showActions: true,
-      dataSourceUpdater: updateDataSource,
+      updater: loadRecords,
     }" />
 
     <TableManagementModal />
-    <RecordModal :suggestion-source="dataSource" />
+    <RecordModal :suggestion-source="records" />
     <TableNameModal />
 
   </div>

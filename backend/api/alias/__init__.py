@@ -6,7 +6,16 @@ alias_blueprint = Blueprint('alias', __name__, url_prefix='/alias')
 
 @alias_blueprint.get('/view/<column_name>')
 def view(column_name: str) -> Any:
-    return jsonify(get_alias_map(column_name))
+    alias_lists = [
+        {'name': name, 'aliases': aliases}
+        for name, aliases in get_alias_lists(column_name).items()
+    ]
+    return jsonify(
+        sorted(
+            alias_lists,
+            key=lambda item: item['name'],
+        )
+    )
 
 
 @alias_blueprint.post('/update/<column_name>/<list_name>')
