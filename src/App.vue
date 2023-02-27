@@ -34,8 +34,8 @@ const links: LinkInfo[] = [
   { name: 'table', icon: TableOutlined, text: '增删改查' },
   { name: 'export', icon: ExportOutlined, text: '生成报表' },
   { name: 'import', icon: ImportOutlined, text: '导入记录' },
-  { name: 'backup', icon: DatabaseOutlined, text: '数据备份' },
   { name: 'alias', icon: TagsOutlined, text: '别名管理' },
+  { name: 'backup', icon: DatabaseOutlined, text: '数据备份' },
 ];
 </script>
 

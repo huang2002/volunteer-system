@@ -21,13 +21,13 @@ const router = createRouter({
     name: 'import',
     component: () => import('@/views/ImportView.vue'),
   }, {
-    path: '/backup',
-    name: 'backup',
-    component: () => import('@/views/BackupView.vue'),
-  }, {
     path: '/alias',
     name: 'alias',
     component: () => import('@/views/AliasView.vue')
+  }, {
+    path: '/backup',
+    name: 'backup',
+    component: () => import('@/views/BackupView.vue'),
   }],
 });
 
