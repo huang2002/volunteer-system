@@ -12,7 +12,7 @@ def list_() -> Any:
     )
 
 
-@table_blueprint.get('/create/<table_name>')
+@table_blueprint.post('/create/<table_name>')
 def create(table_name: str) -> ResponseType:
 
     if not is_valid_table_name(table_name):
@@ -26,7 +26,7 @@ def create(table_name: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@table_blueprint.get('/rename/<source>/<destination>')
+@table_blueprint.post('/rename/<source>/<destination>')
 def rename(source: str, destination: str) -> ResponseType:
 
     if not (

@@ -6,7 +6,7 @@ from .common import *
 export_blueprint = Blueprint('export', __name__, url_prefix='/export')
 
 
-@export_blueprint.get('/create/<level>')
+@export_blueprint.post('/create/<level>')
 def create(level: str) -> ResponseType:
 
     if not level in EXPORT_LEVELS:
@@ -100,7 +100,7 @@ def create(level: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@export_blueprint.get('/show')
+@export_blueprint.post('/show')
 def show() -> ResponseType:
     program = 'explorer' if sys.platform.startswith('win') else 'open'
     path = os.path.normpath(EXPORT_DIR)

@@ -63,7 +63,7 @@ const onSubmit = async () => {
 
   try {
     const url = `/api/export/create/${options.level}?${params.toString()}`;
-    const response = await fetch(url);
+    const response = await fetch(url, { method: 'POST' });
     if (response.status === 200) {
       message.success('导出成功');
     } else {
@@ -86,7 +86,7 @@ const openExportFolder = async () => {
   openingExportFolder.value = true;
 
   try {
-    const response = await fetch('/api/export/show');
+    const response = await fetch('/api/export/show', { method: 'POST' });
     if (response.status === 200) {
       message.success('打开成功');
     } else {

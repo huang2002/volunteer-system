@@ -32,7 +32,8 @@ export const createBackup = async (
 
     try {
         const response = await fetch(
-            `/api/backup/create/${submitted.name}`
+            `/api/backup/create/${submitted.name}`,
+            { method: 'POST' },
         );
         if (response.status === 200) {
             if (alertSuccess) {
@@ -73,7 +74,8 @@ export const renameBackup = async (
 
     try {
         const response = await fetch(
-            `/api/backup/rename/${source}/${submitted.name}`
+            `/api/backup/rename/${source}/${submitted.name}`,
+            { method: 'POST' },
         );
         if (response.status === 200) {
             if (alertSuccess) {
@@ -123,7 +125,8 @@ export const loadBackup = (
         async onOk() {
             try {
                 const response = await fetch(
-                    `/api/backup/load/${backupName}`
+                    `/api/backup/load/${backupName}`,
+                    { method: 'POST' },
                 );
                 if (response.status === 200) {
                     if (alertSuccess) {
@@ -168,7 +171,8 @@ export const deleteBackup = (
         async onOk() {
             try {
                 const response = await fetch(
-                    `/api/backup/delete/${backupName}`
+                    `/api/backup/delete/${backupName}`,
+                    { method: 'POST' },
                 );
                 if (response.status === 200) {
                     if (alertSuccess) {

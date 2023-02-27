@@ -30,7 +30,7 @@ def update(column_name: str, list_name: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@alias_blueprint.get('/delete/<column_name>/<list_name>')
+@alias_blueprint.post('/delete/<column_name>/<list_name>')
 def delete(column_name: str, list_name: str) -> ResponseType:
     alias_list = request.get_json()
     if not (

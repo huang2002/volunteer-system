@@ -25,7 +25,7 @@ def list_() -> Any:
     ])
 
 
-@backup_blueprint.get('/create/<backup_name>')
+@backup_blueprint.post('/create/<backup_name>')
 def create(backup_name: str) -> ResponseType:
     if not is_valid_backup_name(backup_name):
         return RESPONSE_INVALID_BACKUP_NAME
@@ -36,7 +36,7 @@ def create(backup_name: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@backup_blueprint.get('/rename/<source>/<destination>')
+@backup_blueprint.post('/rename/<source>/<destination>')
 def rename(source: str, destination: str) -> ResponseType:
 
     if not (
@@ -57,7 +57,7 @@ def rename(source: str, destination: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@backup_blueprint.get('/load/<backup_name>')
+@backup_blueprint.post('/load/<backup_name>')
 def load(backup_name: str) -> ResponseType:
 
     if not is_valid_backup_name(backup_name):
@@ -72,7 +72,7 @@ def load(backup_name: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@backup_blueprint.get('/delete/<backup_name>')
+@backup_blueprint.post('/delete/<backup_name>')
 def delete(backup_name: str) -> ResponseType:
 
     if not is_valid_backup_name(backup_name):

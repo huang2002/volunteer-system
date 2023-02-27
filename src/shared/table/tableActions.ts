@@ -31,7 +31,8 @@ export const createTable = async (
 
     try {
         const response = await fetch(
-            `/api/table/create/${submitted.name}`
+            `/api/table/create/${submitted.name}`,
+            { method: 'POST' },
         );
         if (response.status === 200) {
             await updateTableNames(false);
@@ -72,7 +73,8 @@ export const renameTable = async (
 
     try {
         const response = await fetch(
-            `/api/table/rename/${source}/${submitted.name}`
+            `/api/table/rename/${source}/${submitted.name}`,
+            { method: 'POST' },
         );
         if (response.status === 200) {
             await updateTableNames(false);

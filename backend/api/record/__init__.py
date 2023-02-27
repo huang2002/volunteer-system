@@ -5,7 +5,7 @@ from .common import *
 record_blueprint = Blueprint('record', __name__, url_prefix='/record')
 
 
-@record_blueprint.get('/delete/<table_name>/<int:record_id>')
+@record_blueprint.post('/delete/<table_name>/<int:record_id>')
 def delete(table_name: str, record_id: int) -> ResponseType:
 
     if not is_valid_table_name(table_name):

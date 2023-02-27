@@ -71,7 +71,9 @@ export const deleteAliasList = async (
         async onOk() {
             try {
                 const url = `/api/alias/delete/${columnName}/${listName}`;
-                const response = await fetch(url);
+                const response = await fetch(url, {
+                    method: 'POST',
+                });
                 if (response.status === 200) {
                     message.success('删除成功');
                     onSuccess?.();

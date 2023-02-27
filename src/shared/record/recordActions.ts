@@ -136,7 +136,8 @@ export const deleteRecord = (
         async onOk() {
             try {
                 const response = await fetch(
-                    `/api/record/delete/${tableName}/${recordId}`
+                    `/api/record/delete/${tableName}/${recordId}`,
+                    { method: 'POST' },
                 );
                 if (response.status === 200) {
                     message.success('删除成功');

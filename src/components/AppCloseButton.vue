@@ -7,7 +7,7 @@ const closed = ref(false);
 const closeApp = async () => {
   closing.value = true;
   try {
-    await fetch('/api/close');
+    await fetch('/api/close', { method: 'POST' });
   } finally {
     closed.value = true;
     closing.value = false;
@@ -16,7 +16,6 @@ const closeApp = async () => {
 </script>
 
 <template>
-
   <a-button @click="closeApp()" v-bind="{
     id: 'header-link',
     ghost: true,
@@ -40,7 +39,6 @@ const closeApp = async () => {
       </template>
     </a-result>
   </teleport>
-
 </template>
 
 <style scoped>

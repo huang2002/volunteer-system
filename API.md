@@ -8,10 +8,10 @@
         - Type: JSON
         - Format: `[name0, name1, ...]`
 
-- GET `/api/table/create/<table_name>`
+- POST `/api/table/create/<table_name>`
     - Creates a new table.
 
-- GET `/api/table/rename/<source>/<destination>`
+- POST `/api/table/rename/<source>/<destination>`
     - Renames specific table.
 
 - GET `/api/table/view/<table_name>`
@@ -36,7 +36,7 @@ TODO: add table merge
 
 ## Record APIs
 
-- GET `/api/record/delete/<table_name>/<record_id>`
+- POST `/api/record/delete/<table_name>/<record_id>`
     - Deletes specific record.
 
 - POST `/api/record/update/<table_name>/<record_id>`
@@ -47,7 +47,7 @@ TODO: add table merge
 
 ## Export APIs
 
-- GET `/api/export/create/<level>`
+- POST `/api/export/create/<level>`
     - Creates an export of specific level.
     - Query Args:
         - `encoding` -- output encoding, default: `gb2312`
@@ -56,7 +56,7 @@ TODO: add table merge
         - `end_date` -- filter by `activity_begin >= end_date`
         - `suffix_encoding` -- append encoding to filenames
 
-- GET `/api/export/show`
+- POST `/api/export/show`
     - Opens file explorer at the export folder.
 
 ## Import APIs
@@ -78,16 +78,16 @@ TODO: add table merge
         - Type: JSON
         - Format: `[{ "name": "foo", "tables": [...] }, ...]`
 
-- GET `/api/backup/create/<backup_name>`
+- POST `/api/backup/create/<backup_name>`
     - Creates a backup.
 
-- GET `/api/backup/rename/<source>/<destination>`
+- POST `/api/backup/rename/<source>/<destination>`
     - Renames specific backup.
 
-- GET `/api/backup/load/<backup_name>`
+- POST `/api/backup/load/<backup_name>`
     - Loads specific backup.
 
-- GET `/api/backup/delete/<backup_name>`
+- POST `/api/backup/delete/<backup_name>`
     - Deletes specific backup.
 
 ## Alias APIs
@@ -104,12 +104,12 @@ TODO: add table merge
         - Type: JSON
         - Format: `[aliases...]`
 
-- GET `/api/alias/delete/<column_name>/<list_name>`
+- POST `/api/alias/delete/<column_name>/<list_name>`
     - Deletes specific alias list.
 
 ## Miscellaneous
 
-- GET `/api/close`
+- POST `/api/close`
     - Close the backend.
 
 TODO: add search APIs
