@@ -2,14 +2,18 @@
 import { aliasActionDisabled, updateAliasList, type AliasViewResult } from '@/shared/alias/aliasActions';
 import { aliasEditorVisible } from '@/shared/alias/aliasEditor';
 import { displayErrorMessage } from '@/shared/common';
-import { ClearOutlined, DeleteOutlined, EditOutlined, PlusSquareOutlined, SyncOutlined, TagOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
-import { onBeforeMount, ref, shallowRef, watch } from 'vue';
+import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusSquareOutlined, SyncOutlined, WarningOutlined } from '@ant-design/icons-vue';
+import { message, Modal } from 'ant-design-vue';
+import { computed, h, onBeforeMount, ref, shallowRef, watch } from 'vue';
 import ToolbarButton from './ToolbarButton.vue';
 
 const props = defineProps<{
   columnName: string;
   listName: string;
+}>();
+
+const emit = defineEmits<{
+  (event: 'update'): void;
 }>();
 
 onBeforeMount(() => {
@@ -62,6 +66,7 @@ const updateAlias = (
     ),
     () => {
       loadAliases(false);
+      emit('update');
     },
   );
 };
@@ -69,16 +74,31 @@ const updateAlias = (
 const deleteAlias = (
   targetAlias: string,
 ) => {
-  updateAliasList(
-    props.columnName,
-    props.listName,
-    aliases.value.filter(
-      (alias) => (alias !== targetAlias)
-    ),
-    () => {
-      loadAliases(false);
+  Modal.confirm({
+    title: `删除别名：${targetAlias}`,
+    content: '确定要删除此条别名吗？',
+    icon: h(WarningOutlined, { style: { color: '#F90' } }),
+    okButtonProps: { danger: true },
+    okText: '确认',
+    cancelButtonProps: { type: 'primary' },
+    cancelText: '取消',
+    autoFocusButton: 'cancel',
+    closable: true,
+    maskClosable: true,
+    onOk() {
+      updateAliasList(
+        props.columnName,
+        props.listName,
+        aliases.value.filter(
+          (alias) => (alias !== targetAlias)
+        ),
+        () => {
+          loadAliases(false);
+          emit('update');
+        },
+      );
     },
-  );
+  });
 };
 
 const appendAlias = () => {
@@ -92,72 +112,120 @@ const appendAlias = () => {
     aliases.value.concat(newAlias),
     () => {
       loadAliases(false);
+      emit('update');
     },
   );
 };
 
-const selectedAliases = ref<string[]>([]);
+const selectedAliases = shallowRef<string[]>([]);
 const deleteAliases = () => {
-  updateAliasList(
-    props.columnName,
-    props.listName,
-    aliases.value.filter(
-      (alias) => !selectedAliases.value.includes(alias)
-    ),
-    () => {
-      loadAliases(false);
+  Modal.confirm({
+    title: `删除别名`,
+    content: `即将删除别名：${selectedAliases.value.join('、')}。`,
+    icon: h(WarningOutlined, { style: { color: '#F90' } }),
+    okButtonProps: { danger: true },
+    okText: '确认',
+    cancelButtonProps: { type: 'primary' },
+    cancelText: '取消',
+    autoFocusButton: 'cancel',
+    closable: true,
+    maskClosable: true,
+    onOk() {
+      updateAliasList(
+        props.columnName,
+        props.listName,
+        aliases.value.filter(
+          (alias) => !selectedAliases.value.includes(alias)
+        ),
+        () => {
+          loadAliases(false);
+          emit('update');
+        },
+      );
     },
-  );
+  });
+};
+
+const allChecked = computed(() => (
+  selectedAliases.value.length === aliases.value.length
+));
+
+const indeterminate = computed(() => {
+  const selected = selectedAliases.value;
+  const all = aliases.value;
+  return (selected.length > 0) && (selected.length < all.length);
+});
+
+const onClickCheckAll = () => {
+  if (indeterminate.value || !allChecked.value) {
+    selectedAliases.value = aliases.value.slice();
+  } else {
+    selectedAliases.value = [];
+  }
 };
 </script>
 
 <template>
   <a-drawer v-model:visible="aliasEditorVisible" v-bind="{
-    title: '别名管理',
-    width: 600,
+    title: `别名管理：${listName}`,
+    width: 500,
+    bodyStyle: {
+      padding: '12px 24px',
+    },
   }">
-
-    <div id="alias-editor-toolbar">
-
-      <p id="alias-editor-title">
-        <span id="alias-editor-list-name">{{ listName }}</span>
-        的别名：
-      </p>
-
-      <ToolbarButton v-bind="{
-        loading: loadingAliases,
-        onClick: () => {
-          loadAliases(true);
-        },
-      }">
-        <template #icon>
-          <SyncOutlined />
-        </template>
-        刷新列表
-      </ToolbarButton>
-
-      <ToolbarButton v-bind="{
-        danger: true,
-        disabled: aliasActionDisabled || loadingAliases || !selectedAliases.length,
-        onClick: deleteAliases,
-      }">
-        <template #icon>
-          <ClearOutlined />
-        </template>
-        删除选中
-      </ToolbarButton>
-
-    </div>
 
     <a-checkbox-group v-model:value="selectedAliases" :style="{
       width: '100%',
     }">
       <a-list v-bind="{
-        size: 'small',
-        bordered: true,
         loading: loadingAliases,
         dataSource: aliases,
       }">
+
+        <template #header>
+          <div id="alias-editor-header">
+
+            <a-button @click="onClickCheckAll()" v-bind="{
+              id: 'alias-editor-select-all',
+              disabled: loadingAliases,
+            }">
+              <template #icon>
+                <CloseOutlined v-if="allChecked" />
+                <CheckOutlined v-else />
+              </template>
+              <template v-if="allChecked">
+                取消全选
+              </template>
+              <template v-else>
+                全部选中
+              </template>
+            </a-button>
+
+            <ToolbarButton v-bind="{
+              loading: loadingAliases,
+              onClick: () => {
+                loadAliases(true);
+              },
+            }">
+              <template #icon>
+                <SyncOutlined />
+              </template>
+              刷新列表
+            </ToolbarButton>
+
+            <ToolbarButton v-bind="{
+              danger: true,
+              disabled: aliasActionDisabled || loadingAliases || !selectedAliases.length,
+              onClick: deleteAliases,
+            }">
+              <template #icon>
+                <ClearOutlined />
+              </template>
+              删除选中
+            </ToolbarButton>
+
+          </div>
+        </template>
 
         <template #renderItem="{ item }">
           <a-list-item>
@@ -198,7 +266,10 @@ const deleteAliases = () => {
 
         <template #loadMore>
           <div class="flex-centered" style="padding: 12px 0;">
-            <a-button type="primary" @click="appendAlias()">
+            <a-button @click="appendAlias()" v-bind="{
+              type: 'primary',
+              disabled: loadingAliases,
+            }">
               <template #icon>
                 <PlusSquareOutlined />
               </template>
@@ -214,20 +285,13 @@ const deleteAliases = () => {
 </template>
 
 <style scoped>
-#alias-editor-toolbar {
+#alias-editor-header {
   display: flex;
   align-items: baseline;
-  margin-bottom: 12px;
 }
 
-#alias-editor-title {
-  margin: 0;
+#alias-editor-select-all {
   margin-right: auto;
-  font-size: 1.2em;
-}
-
-#alias-editor-list-name {
-  font-weight: bold;
 }
 
 .toolbar-button {

@@ -11,6 +11,10 @@ onBeforeMount(() => {
   loadAliasLists(false);
 });
 
+const formatAliases = (item: AliasViewResultItem) => (
+  item.aliases.join('，')
+);
+
 const columnName = ref('student_school');
 const listName = ref('');
 watch(columnName, () => {
@@ -129,16 +133,17 @@ const createAliasList = () => {
       <template #renderItem="{ item }">
         <a-list-item>
 
-          <a-space>
+          <div class="alias-list-item-text">
             <a-typography-text>
               {{ (item as AliasViewResultItem).name }}
             </a-typography-text>
             <a-typography-text v-bind="{
               type: 'secondary',
               ellipsis: true,
-              content: (item as AliasViewResultItem).aliases.join('，'),
+              title: formatAliases(item as AliasViewResultItem),
+              content: formatAliases(item as AliasViewResultItem),
             }" />
-          </a-space>
+          </div>
 
           <template #actions>
 
@@ -168,7 +173,10 @@ const createAliasList = () => {
 
     </a-list>
 
-    <AliasEditor :column-name="columnName" :list-name="listName" />
+    <AliasEditor @update="loadAliasLists(false)" v-bind="{
+      columnName,
+      listName,
+    }" />
 
   </div>
 </template>
@@ -186,5 +194,12 @@ const createAliasList = () => {
 
 #alias-list-select {
   width: 6em;
+}
+
+.alias-list-item-text {
+  display: flex;
+  gap: 12px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 </style>
