@@ -1,5 +1,6 @@
 from ..common import *
 from ..table.common import *
+from ..alias.common import alias_maps
 from .common import *
 
 record_blueprint = Blueprint('record', __name__, url_prefix='/record')
@@ -26,8 +27,6 @@ def delete(table_name: str, record_id: int) -> ResponseType:
 
 @record_blueprint.post('/update/<table_name>/<int:record_id>')
 def update(table_name: str, record_id: int) -> ResponseType:
-
-    # TODO: add alias support here
 
     if not is_valid_table_name(table_name):
         return RESPONSE_INVALID_TABLE_NAME
@@ -62,6 +61,10 @@ def update(table_name: str, record_id: int) -> ResponseType:
                 return RESPONSE_INVALID_DATA
         else:
             raise Exception(f'failed to set value of type: {dtype}')
+        if key in alias_maps:
+            alias_map = alias_maps[key]
+            if value in alias_map:
+                value = alias_map[value]
         df.loc[record_id, key] = value
 
     save_table(df, table_path)

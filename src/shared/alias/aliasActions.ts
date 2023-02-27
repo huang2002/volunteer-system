@@ -46,9 +46,9 @@ export const updateAliasList = async (
 
 };
 
-export const deleteAliasList = async (
+export const deleteAliasLists = async (
     columnName: string,
-    listName: string,
+    listNames: string[],
     onSuccess?: () => void,
 ) => {
 
@@ -58,8 +58,8 @@ export const deleteAliasList = async (
     aliasActionDisabled.value = true;
 
     Modal.confirm({
-        title: `删除别名列表：${listName}`,
-        content: '确定要删除此条别名列表吗？',
+        title: `删除别名列表`,
+        content: `将要删除别名列表：${listNames.join('、')}。`,
         icon: h(WarningOutlined, { style: { color: '#F90' } }),
         okButtonProps: { danger: true },
         okText: '确认',
@@ -70,9 +70,13 @@ export const deleteAliasList = async (
         maskClosable: true,
         async onOk() {
             try {
-                const url = `/api/alias/delete/${columnName}/${listName}`;
+                const url = `/api/alias/delete/${columnName}`;
                 const response = await fetch(url, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': CONTENT_TYPE_JSON,
+                    },
+                    body: JSON.stringify(listNames),
                 });
                 if (response.status === 200) {
                     message.success('删除成功');
@@ -83,6 +87,7 @@ export const deleteAliasList = async (
             } catch {
                 message.error('删除别名列表失败');
             }
+            aliasActionDisabled.value = false;
         },
         onCancel() {
             aliasActionDisabled.value = false;

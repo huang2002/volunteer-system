@@ -64,8 +64,9 @@ def update_alias_list(
     list_name: str,
     alias_list: AliasList,
 ) -> NoReturn:
-    for old_alias in alias_list_map[column_name][list_name]:
-        del alias_maps[column_name][old_alias]
+    if list_name in alias_list_map[column_name]:
+        for old_alias in alias_list_map[column_name][list_name]:
+            del alias_maps[column_name][old_alias]
     alias_list_map[column_name][list_name] = alias_list
     for new_alias in alias_list:
         alias_maps[column_name][new_alias] = list_name
@@ -73,8 +74,9 @@ def update_alias_list(
 
 
 def delete_alias_list(column_name: str, list_name: str) -> NoReturn:
+    for alias in alias_list_map[column_name][list_name]:
+        del alias_maps[column_name][alias]
     del alias_list_map[column_name][list_name]
-    del alias_maps[column_name][list_name]
     save_aliases()
 
 

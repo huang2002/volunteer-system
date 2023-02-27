@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import AliasEditor from '@/components/AliasEditor.vue';
-import { type AliasViewResult, deleteAliasList, type AliasViewResultItem, updateAliasList } from '@/shared/alias/aliasActions';
+import ToolbarButton from '@/components/ToolbarButton.vue';
+import { type AliasViewResult, type AliasViewResultItem, updateAliasList, deleteAliasLists, aliasActionDisabled } from '@/shared/alias/aliasActions';
 import { showAliasEditor } from '@/shared/alias/aliasEditor';
 import { displayErrorMessage } from '@/shared/common';
-import { DeleteOutlined, EditOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons-vue';
-import { message } from 'ant-design-vue';
-import { computed, onBeforeMount, ref, shallowRef, watch } from 'vue';
+import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SyncOutlined, WarningOutlined } from '@ant-design/icons-vue';
+import { message, Modal } from 'ant-design-vue';
+import { computed, h, onBeforeMount, ref, shallowRef, watch } from 'vue';
 
 onBeforeMount(() => {
   loadAliasLists(false);
@@ -61,6 +62,34 @@ const loadAliasLists = async (
   loadingAliasLists.value = false;
 };
 
+const selectedAliasListNames = shallowRef<string[]>([]);
+const deleteSelectedAliasLists = () => {
+  deleteAliasLists(
+    columnName.value,
+    selectedAliasListNames.value,
+    () => {
+      loadAliasLists(false);
+    });
+};
+
+const allChecked = computed(() => (
+  selectedAliasListNames.value.length === aliasLists.value.length
+));
+
+const indeterminate = computed(() => {
+  const selected = selectedAliasListNames.value;
+  const all = aliasLists.value;
+  return (selected.length > 0) && (selected.length < all.length);
+});
+
+const onClickCheckAll = () => {
+  if (indeterminate.value || !allChecked.value) {
+    selectedAliasListNames.value = aliasListNames.value.slice();
+  } else {
+    selectedAliasListNames.value = [];
+  }
+};
+
 const editAliasList = (
   currentListName: string,
 ) => {
@@ -82,96 +111,135 @@ const createAliasList = () => {
     },
   );
 };
-
-// TODO: batch deletion
 </script>
 
 <template>
   <div id="alias-view" class="view">
 
-    <a-list v-bind="{
-      id: 'alias-list',
-      dataSource: aliasLists,
-      bordered: true,
-      loading: loadingAliasLists,
+    <a-checkbox-group v-model:value="selectedAliasListNames" :style="{
+      width: '100%',
     }">
+      <a-list v-bind="{
+        id: 'alias-list',
+        size: 'small',
+        bordered: true,
+        dataSource: aliasLists,
+        loading: loadingAliasLists,
+      }">
 
-      <template #header>
-        <div id="alias-list-header">
+        <template #header>
+          <div id="alias-list-header">
 
-          <a-input-group id="alias-list-control" compact>
-            <a-tooltip v-bind="{
-              color: 'blue',
-              title: '刷新别名列表',
-            }">
-              <a-button @click="loadAliasLists(true)" v-bind="{
-                loading: loadingAliasLists,
-              }">
-                <template #icon>
-                  <SyncOutlined />
-                </template>
-              </a-button>
-            </a-tooltip>
-            <a-select v-model:value="columnName" v-bind="{
-              id: 'alias-list-select',
+            <a-button @click="onClickCheckAll()" v-bind="{
+              id: 'alias-list-select-all',
               disabled: loadingAliasLists,
             }">
-              <a-select-option value="student_school">学院名称</a-select-option>
-            </a-select>
-          </a-input-group>
+              <template #icon>
+                <CloseOutlined v-if="allChecked" />
+                <CheckOutlined v-else />
+              </template>
+              <template v-if="allChecked">
+                取消全选
+              </template>
+              <template v-else>
+                全部选中
+              </template>
+            </a-button>
 
-          <a-button type="primary" @click="createAliasList()">
-            <template #icon>
-              <PlusOutlined />
-            </template>
-            新建别名
-          </a-button>
+            <a-input-group id="alias-column-control" compact>
+              <a-tooltip v-bind="{
+                color: 'blue',
+                title: '刷新别名列表',
+              }">
+                <a-button @click="loadAliasLists(true)" v-bind="{
+                  loading: loadingAliasLists,
+                }">
+                  <template #icon>
+                    <SyncOutlined />
+                  </template>
+                </a-button>
+              </a-tooltip>
+              <a-select v-model:value="columnName" v-bind="{
+                disabled: loadingAliasLists,
+                style: {
+                  width: '8em',
+                },
+              }">
+                <a-select-option value="student_school">学院名称</a-select-option>
+              </a-select>
+            </a-input-group>
 
-        </div>
-      </template>
+            <ToolbarButton v-bind="{
+              type: 'primary',
+              disabled: aliasActionDisabled,
+              onClick: createAliasList,
+            }">
+              <template #icon>
+                <PlusOutlined />
+              </template>
+              新建别名
+            </ToolbarButton>
 
-      <template #renderItem="{ item }">
-        <a-list-item>
+            <ToolbarButton v-bind="{
+              danger: true,
+              disabled: aliasActionDisabled || loadingAliasLists || !selectedAliasListNames.length,
+              onClick: deleteSelectedAliasLists,
+            }">
+              <template #icon>
+                <ClearOutlined />
+              </template>
+              删除选中
+            </ToolbarButton>
 
-          <div class="alias-list-item-text">
-            <a-typography-text>
-              {{ (item as AliasViewResultItem).name }}
-            </a-typography-text>
-            <a-typography-text v-bind="{
-              type: 'secondary',
-              ellipsis: true,
-              title: formatAliases(item as AliasViewResultItem),
-              content: formatAliases(item as AliasViewResultItem),
-            }" />
           </div>
+        </template>
 
-          <template #actions>
+        <template #renderItem="{ item }">
+          <a-list-item>
 
-            <a-button type="link" @click="editAliasList(
-              (item as AliasViewResultItem).name
-            )">
-              <template #icon>
-                <EditOutlined />
-              </template>
-              编辑
-            </a-button>
+            <div class="alias-list-item-text">
+              <a-checkbox :value="(item as AliasViewResultItem).name">
+                {{ (item as AliasViewResultItem).name }}
+              </a-checkbox>
+              <a-typography-text v-bind="{
+                type: 'secondary',
+                ellipsis: true,
+                title: formatAliases(item as AliasViewResultItem),
+                content: formatAliases(item as AliasViewResultItem),
+              }" />
+            </div>
 
-            <a-button type="link" danger @click="deleteAliasList(
-              columnName,
-              (item as AliasViewResultItem).name,
-            )">
-              <template #icon>
-                <DeleteOutlined />
-              </template>
-              删除
-            </a-button>
+            <template #actions>
 
-          </template>
+              <a-button type="link" @click="editAliasList(
+                (item as AliasViewResultItem).name
+              )">
+                <template #icon>
+                  <EditOutlined />
+                </template>
+                编辑
+              </a-button>
 
-        </a-list-item>
-      </template>
+              <a-button type="link" danger @click="deleteAliasLists(
+                columnName,
+                [(item as AliasViewResultItem).name],
+                () => {
+                  loadAliasLists(false);
+                },
+              )">
+                <template #icon>
+                  <DeleteOutlined />
+                </template>
+                删除
+              </a-button>
 
-    </a-list>
+            </template>
+
+          </a-list-item>
+        </template>
+
+      </a-list>
+    </a-checkbox-group>
 
     <AliasEditor @update="loadAliasLists(false)" v-bind="{
       columnName,
@@ -188,17 +256,26 @@ const createAliasList = () => {
 
 #alias-list-header {
   display: flex;
+  padding: 5px 0;
   white-space: nowrap;
   overflow-x: auto;
 }
 
-#alias-list-select {
-  width: 6em;
+#alias-list-select-all {
+  margin-right: auto;
+}
+
+#alias-column-control {
+  width: unset;
+}
+
+#alias-column-control,
+.toolbar-button {
+  margin-left: 12px;
 }
 
 .alias-list-item-text {
   display: flex;
-  gap: 12px;
   white-space: nowrap;
   overflow: hidden;
 }

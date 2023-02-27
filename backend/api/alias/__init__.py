@@ -30,13 +30,14 @@ def update(column_name: str, list_name: str) -> ResponseType:
     return RESPONSE_SUCCESS
 
 
-@alias_blueprint.post('/delete/<column_name>/<list_name>')
-def delete(column_name: str, list_name: str) -> ResponseType:
-    alias_list = request.get_json()
+@alias_blueprint.post('/delete/<column_name>')
+def delete(column_name: str) -> ResponseType:
+    list_names = request.get_json()
     if not (
-        isinstance(alias_list, list)
-        and all(isinstance(alias, str) for alias in alias_list)
+        isinstance(list_names, list)
+        and all(isinstance(alias_name, str) for alias_name in list_names)
     ):
         return RESPONSE_INVALID_DATA
-    delete_alias_list(column_name, list_name)
+    for list_name in list_names:
+        delete_alias_list(column_name, list_name)
     return RESPONSE_SUCCESS

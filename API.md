@@ -90,6 +90,8 @@ TODO: add table merge
 - POST `/api/backup/delete/<backup_name>`
     - Deletes specific backup.
 
+TODO: add alias backup
+
 ## Alias APIs
 
 - GET `/api/alias/view/<column_name>`
@@ -104,8 +106,11 @@ TODO: add table merge
         - Type: JSON
         - Format: `[aliases...]`
 
-- POST `/api/alias/delete/<column_name>/<list_name>`
+- POST `/api/alias/delete/<column_name>`
     - Deletes specific alias list.
+    - Request Body:
+        - Type: JSON
+        - Format: `[listNames...]`
 
 ## Miscellaneous
 

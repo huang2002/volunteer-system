@@ -118,7 +118,7 @@ const appendAlias = () => {
 };
 
 const selectedAliases = shallowRef<string[]>([]);
-const deleteAliases = () => {
+const deleteSelectedAliases = () => {
   Modal.confirm({
     title: `删除别名`,
     content: `即将删除别名：${selectedAliases.value.join('、')}。`,
@@ -187,7 +187,7 @@ const onClickCheckAll = () => {
 
             <a-button @click="onClickCheckAll()" v-bind="{
               id: 'alias-editor-select-all',
-              disabled: loadingAliases,
+              disabled: loadingAliases || !aliases.length,
             }">
               <template #icon>
                 <CloseOutlined v-if="allChecked" />
@@ -216,7 +216,7 @@ const onClickCheckAll = () => {
             <ToolbarButton v-bind="{
               danger: true,
               disabled: aliasActionDisabled || loadingAliases || !selectedAliases.length,
-              onClick: deleteAliases,
+              onClick: deleteSelectedAliases,
             }">
               <template #icon>
                 <ClearOutlined />
