@@ -10,6 +10,7 @@ export const tableActionDisabled = ref(false);
 export const createTable = async (
     init: TableNameModalState | null,
     alertSuccess: boolean,
+    autoUpdateTableNames = true,
 ) => {
 
     if (tableActionDisabled.value) {
@@ -35,7 +36,9 @@ export const createTable = async (
             { method: 'POST' },
         );
         if (response.status === 200) {
-            await updateTableNames(false);
+            if (autoUpdateTableNames) {
+                await updateTableNames(false);
+            }
             if (alertSuccess) {
                 message.success('新建成功');
             }

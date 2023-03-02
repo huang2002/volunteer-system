@@ -78,7 +78,11 @@ export const createImport = async (
         for await (const tableName of Object.keys(submitted)) {
 
             if (!tableNames.value.includes(tableName)) {
-                await createTable({ name: tableName }, false);
+                await createTable(
+                    { name: tableName },
+                    false,
+                    false,
+                );
             }
 
             const records = submitted[tableName];

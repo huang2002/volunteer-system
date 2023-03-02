@@ -38,11 +38,11 @@ export const guessTableName = (
     matchResult = record.student_class.trim().match(GRADE_SEARCH_PATTERN);
     if (matchResult) {
         grade = matchResult[0];
-    } else {
-        matchResult = record.student_id.trim().match(GRADE_SEARCH_PATTERN);
-        if (matchResult) {
-            grade = matchResult[0];
-        }
+    }
+    // TODO: implement more intelligent detection
+    matchResult = record.student_id.trim().match(GRADE_SEARCH_PATTERN);
+    if (matchResult && grade && (grade[0] === '0')) {
+        grade = matchResult[0];
     }
     if (!grade) {
         throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;

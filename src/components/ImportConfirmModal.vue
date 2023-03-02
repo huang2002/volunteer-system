@@ -56,7 +56,7 @@ const rejected = computed(() => (
       <template #description>
         <ul style="margin-bottom: 0;">
           <li>来自 {{ fileCount }} 个文件的 {{ recordCount }} 条数据。</li>
-          <li>对应的表格：{{ targetTableNames.join('、') }}。</li>
+          <li>对应的表格：{{ targetTableNames.sort().join('、') }}。</li>
           <li>年级由程序根据班级和学号猜测得出。</li>
           <li>重复数据只会保留第一条。</li>
           <li>别名将根据设置自动转换。</li>
@@ -69,7 +69,8 @@ const rejected = computed(() => (
       class: 'rejection-alert',
       type: 'error',
       showIcon: true,
-      message: `此次导入需要新建这些表格：${newTableNames.join('、')}。`,
+      message: '无法导入',
+      description: `此次导入需要新建这些表格：${newTableNames.sort().join('、')}。`,
     }" />
 
     <a-form ref="importConfirmModalForm" @finish="onSubmit()" v-bind="{

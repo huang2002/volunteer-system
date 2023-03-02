@@ -98,7 +98,7 @@ watch(activeTableName, () => {
           disabled: loadingRecords,
           placeholder: '请选择表格',
           style: {
-            width: '12em',
+            width: '16em',
           },
         }" />
         <a-button v-else disabled>
