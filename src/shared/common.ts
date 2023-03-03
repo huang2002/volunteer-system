@@ -61,7 +61,7 @@ export const displayErrorMessage = async (
 export interface ConfirmModalOptions {
     title: string;
     content: string | VNode;
-    onOk: () => void | Promise<void>;
+    onOk: () => (void | Promise<void>);
     onCancel?: () => void;
 }
 export const confirmModal = (options: ConfirmModalOptions) => {
