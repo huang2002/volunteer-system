@@ -102,6 +102,7 @@ export const createImport = async (
 
         }
 
+        await updateTableNames(false);
         message.success('导入成功');
         onSuccess?.();
 

@@ -25,7 +25,12 @@ export const importConfirmModalForm = ref<FormInstance>();
 export const constructedImport = shallowRef<ConstructedImport | null>(null);
 
 export const SCHOOL_SEARCH_PATTERN = /(?<!年)[^-_a-zA-Z\d]+学院/;
-export const GRADE_SEARCH_PATTERN = /\d{2}/;
+
+const GRADE_SEARCH_PATTERN_CLASS = /([1-9]\d)\d*/;
+const GRADE_SEARCH_PATTERNS_ID = [
+    /^[a-zA-Z]\d{2}(\d{2})\d{4}$/,
+    /^(\d{2})\d{4,10}$/,
+];
 export const guessTableName = (
     record: Readonly<RecordModalState>,
 ): string => {
@@ -35,14 +40,18 @@ export const guessTableName = (
     let matchResult: RegExpMatchArray | null = null;
 
     let grade: string | null = null;
-    matchResult = record.student_class.trim().match(GRADE_SEARCH_PATTERN);
+    matchResult = record.student_class.trim().match(GRADE_SEARCH_PATTERN_CLASS);
     if (matchResult) {
-        grade = matchResult[0];
+        grade = matchResult[1];
     }
-    // TODO: implement more intelligent detection
-    matchResult = record.student_id.trim().match(GRADE_SEARCH_PATTERN);
-    if (matchResult && grade && (grade[0] === '0')) {
-        grade = matchResult[0];
+    if (!matchResult) {
+        for (const pattern of GRADE_SEARCH_PATTERNS_ID) {
+            matchResult = record.student_id.trim().match(pattern);
+            if (matchResult) {
+                grade = matchResult[1];
+                break;
+            }
+        }
     }
     if (!grade) {
         throw `年级识别失败（学号：${record.student_id}，班级：${record.student_class}）`;

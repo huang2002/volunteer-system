@@ -44,6 +44,7 @@ const rejected = computed(() => (
 <template>
   <a-modal v-model:visible="importConfirmModalVisible" @ok="onSubmit()" @cancel="onCancel()" v-bind="{
     title: '导入记录',
+    width: 600,
     footer: null,
     closable: false,
     maskClosable: false,
