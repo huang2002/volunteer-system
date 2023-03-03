@@ -8,6 +8,7 @@ const { name: appName, version: appVersion } = require('./package.json');
 // releases/<APP_NAME>@<VERSION>
 //     +- backend/
 //     +- frontend/
+//     +- aliases.json
 //     +- 初始化（Windows）.bat
 //     +- 初始化（MacOS或Linux）.bash
 //     +- 启动（Windows）.bat
@@ -99,6 +100,11 @@ removeRecursively(
 copyDirSync(
     sourcePath('dist'),
     targetPath('frontend'),
+);
+
+fs.copyFileSync(
+    sourcePath('aliases.json'),
+    targetPath('aliases.json'),
 );
 
 fs.copyFileSync(

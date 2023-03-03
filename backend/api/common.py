@@ -15,7 +15,7 @@ BACKEND_PATH = os.path.join(os.path.dirname(__file__), '..')
 DATA_DIR = os.path.join(BACKEND_PATH, '../data')
 BACKUP_DIR = os.path.join(BACKEND_PATH, '../backup')
 EXPORT_DIR = os.path.join(BACKEND_PATH, '../export')
-ALIASES_PATH = os.path.join(BACKEND_PATH, './aliases.json')
+ALIASES_PATH = os.path.join(BACKEND_PATH, '../aliases.json')
 
 ResponseType = Tuple[str, int]
 RESPONSE_SUCCESS: ResponseType = ('success', 200)
