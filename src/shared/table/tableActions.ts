@@ -1,7 +1,6 @@
-import { WarningOutlined } from '@ant-design/icons-vue';
-import { message, Modal } from 'ant-design-vue';
-import { h, ref } from 'vue';
-import { CONTENT_TYPE_JSON, displayErrorMessage } from '../common';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
+import { confirmModal, CONTENT_TYPE_JSON, displayErrorMessage } from '../common';
 import { tableNameModalDefaults, tableNameModalPending, tableNameModalVisible, inputTableName, type TableNameModalState } from './tableNameModal';
 import { updateTableNames } from './tableNames';
 
@@ -107,17 +106,9 @@ export const deleteTable = (
     }
     tableActionDisabled.value = true;
 
-    Modal.confirm({
+    confirmModal({
         title: `删除表格`,
         content: `将要删除的表格：${tableNames.join('、')}。`,
-        icon: h(WarningOutlined, { style: { color: '#F90' } }),
-        okButtonProps: { danger: true },
-        okText: '确认',
-        cancelButtonProps: { type: 'primary' },
-        cancelText: '取消',
-        autoFocusButton: 'cancel',
-        closable: true,
-        maskClosable: true,
         onOk: async () => {
             try {
                 const response = await fetch(`/api/table/delete`, {

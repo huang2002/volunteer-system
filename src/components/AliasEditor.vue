@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { aliasActionDisabled, updateAliasList, type AliasViewResult } from '@/shared/alias/aliasActions';
 import { aliasEditorVisible } from '@/shared/alias/aliasEditor';
-import { displayErrorMessage } from '@/shared/common';
-import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusSquareOutlined, SyncOutlined, WarningOutlined } from '@ant-design/icons-vue';
-import { message, Modal } from 'ant-design-vue';
-import { computed, h, onBeforeMount, ref, shallowRef, watch } from 'vue';
+import { confirmModal, displayErrorMessage } from '@/shared/common';
+import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusSquareOutlined, SyncOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+import { computed, onBeforeMount, ref, shallowRef, watch } from 'vue';
 import ToolbarButton from './ToolbarButton.vue';
 
 const props = defineProps<{
@@ -74,17 +74,9 @@ const updateAlias = (
 const deleteAlias = (
   targetAlias: string,
 ) => {
-  Modal.confirm({
+  confirmModal({
     title: `删除别名：${targetAlias}`,
     content: '确定要删除此条别名吗？',
-    icon: h(WarningOutlined, { style: { color: '#F90' } }),
-    okButtonProps: { danger: true },
-    okText: '确认',
-    cancelButtonProps: { type: 'primary' },
-    cancelText: '取消',
-    autoFocusButton: 'cancel',
-    closable: true,
-    maskClosable: true,
     onOk() {
       updateAliasList(
         props.columnName,
@@ -119,17 +111,9 @@ const appendAlias = () => {
 
 const selectedAliases = shallowRef<string[]>([]);
 const deleteSelectedAliases = () => {
-  Modal.confirm({
+  confirmModal({
     title: `删除别名`,
     content: `即将删除别名：${selectedAliases.value.join('、')}。`,
-    icon: h(WarningOutlined, { style: { color: '#F90' } }),
-    okButtonProps: { danger: true },
-    okText: '确认',
-    cancelButtonProps: { type: 'primary' },
-    cancelText: '取消',
-    autoFocusButton: 'cancel',
-    closable: true,
-    maskClosable: true,
     onOk() {
       updateAliasList(
         props.columnName,

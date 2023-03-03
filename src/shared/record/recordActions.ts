@@ -1,7 +1,6 @@
-import { WarningOutlined } from '@ant-design/icons-vue';
-import { message, Modal } from 'ant-design-vue';
-import { h, ref } from 'vue';
-import { CONTENT_TYPE_JSON, displayErrorMessage, type RecordModalState } from '../common';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
+import { confirmModal, CONTENT_TYPE_JSON, displayErrorMessage, type RecordModalState } from '../common';
 import { finishRecord, inputRecord, recordModalPending, type ActivityRecord, type RecordIndex } from './recordModal';
 
 export const recordActionDisabled = ref(false);
@@ -122,17 +121,9 @@ export const deleteRecord = (
     }
     recordActionDisabled.value = true;
 
-    Modal.confirm({
+    confirmModal({
         title: `删除记录#${recordId}`,
         content: '确定要删除此条记录吗？',
-        icon: h(WarningOutlined, { style: { color: '#F90' } }),
-        okButtonProps: { danger: true },
-        okText: '确认',
-        cancelButtonProps: { type: 'primary' },
-        cancelText: '取消',
-        autoFocusButton: 'cancel',
-        closable: true,
-        maskClosable: true,
         async onOk() {
             try {
                 const response = await fetch(

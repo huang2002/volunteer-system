@@ -1,7 +1,6 @@
-import { WarningOutlined } from '@ant-design/icons-vue';
-import { message, Modal } from 'ant-design-vue';
-import { h, ref } from 'vue';
-import { CONTENT_TYPE_JSON, displayErrorMessage } from '../common';
+import { message } from 'ant-design-vue';
+import { ref } from 'vue';
+import { confirmModal, CONTENT_TYPE_JSON, displayErrorMessage } from '../common';
 
 export interface AliasViewResultItem {
     name: string;
@@ -57,17 +56,9 @@ export const deleteAliasLists = async (
     }
     aliasActionDisabled.value = true;
 
-    Modal.confirm({
+    confirmModal({
         title: `删除别名列表`,
         content: `将要删除别名列表：${listNames.join('、')}。`,
-        icon: h(WarningOutlined, { style: { color: '#F90' } }),
-        okButtonProps: { danger: true },
-        okText: '确认',
-        cancelButtonProps: { type: 'primary' },
-        cancelText: '取消',
-        autoFocusButton: 'cancel',
-        closable: true,
-        maskClosable: true,
         async onOk() {
             try {
                 const url = `/api/alias/delete/${columnName}`;

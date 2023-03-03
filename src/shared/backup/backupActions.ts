@@ -1,10 +1,9 @@
-import { message, Modal, TypographyText } from 'ant-design-vue';
+import { message, TypographyText } from 'ant-design-vue';
 import { h, ref } from 'vue';
 import { backupNameModalDefaults, backupNameModalPending, backupNameModalVisible, inputBackupName } from './backupNameModal';
 import { updateBackupList } from './backupList';
 import dayjs from 'dayjs';
-import { WarningOutlined } from '@ant-design/icons-vue';
-import { displayErrorMessage } from '../common';
+import { confirmModal, displayErrorMessage } from '../common';
 
 export const backupActionDisabled = ref(false);
 
@@ -105,7 +104,7 @@ export const loadBackup = (
     }
     backupActionDisabled.value = true;
 
-    Modal.confirm({
+    confirmModal({
         title: `加载备份“${backupName}”`,
         content: h('div', null, [
             '确定要加载此备份吗？',
@@ -114,14 +113,6 @@ export const loadBackup = (
                 '（将会清空当前所有数据！）' // default slot
             )),
         ]),
-        icon: h(WarningOutlined, { style: { color: '#F90' } }),
-        okButtonProps: { danger: true },
-        okText: '确认',
-        cancelButtonProps: { type: 'primary' },
-        cancelText: '取消',
-        autoFocusButton: 'cancel',
-        closable: true,
-        maskClosable: true,
         async onOk() {
             try {
                 const response = await fetch(
@@ -157,17 +148,9 @@ export const deleteBackup = (
     }
     backupActionDisabled.value = true;
 
-    Modal.confirm({
+    confirmModal({
         title: `删除备份“${backupName}”`,
         content: '确定要删除此条备份吗？',
-        icon: h(WarningOutlined, { style: { color: '#F90' } }),
-        okButtonProps: { danger: true },
-        okText: '确认',
-        cancelButtonProps: { type: 'primary' },
-        cancelText: '取消',
-        autoFocusButton: 'cancel',
-        closable: true,
-        maskClosable: true,
         async onOk() {
             try {
                 const response = await fetch(

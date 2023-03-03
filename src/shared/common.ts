@@ -1,5 +1,6 @@
+import { WarningOutlined } from '@ant-design/icons-vue';
 import { message, Modal } from 'ant-design-vue';
-import type { InjectionKey, Ref } from 'vue';
+import { h, type InjectionKey, type Ref, type VNode } from 'vue';
 
 export const CONTENT_TYPE_JSON = 'application/json; charset=utf8';
 
@@ -55,4 +56,24 @@ export const displayErrorMessage = async (
     } catch {
         message.error(fallbackMessage);
     }
+};
+
+export interface ConfirmModalOptions {
+    title: string;
+    content: string | VNode;
+    onOk: () => void | Promise<void>;
+    onCancel?: () => void;
+}
+export const confirmModal = (options: ConfirmModalOptions) => {
+    Modal.confirm({
+        icon: h(WarningOutlined, { style: { color: '#F90' } }),
+        okButtonProps: { danger: true },
+        okText: '确认',
+        cancelButtonProps: { type: 'primary' },
+        cancelText: '取消',
+        autoFocusButton: 'cancel',
+        closable: true,
+        maskClosable: true,
+        ...options,
+    });
 };
