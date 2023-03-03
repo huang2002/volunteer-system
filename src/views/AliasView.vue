@@ -4,9 +4,9 @@ import ToolbarButton from '@/components/ToolbarButton.vue';
 import { type AliasViewResult, type AliasViewResultItem, updateAliasList, deleteAliasLists, aliasActionDisabled } from '@/shared/alias/aliasActions';
 import { showAliasEditor } from '@/shared/alias/aliasEditor';
 import { displayErrorMessage } from '@/shared/common';
-import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined, SyncOutlined, WarningOutlined } from '@ant-design/icons-vue';
-import { message, Modal } from 'ant-design-vue';
-import { computed, h, onBeforeMount, ref, shallowRef, watch } from 'vue';
+import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { message } from 'ant-design-vue';
+import { computed, onBeforeMount, ref, shallowRef, watch } from 'vue';
 
 onBeforeMount(() => {
   loadAliasLists(false);
@@ -116,6 +116,20 @@ const createAliasList = () => {
 <template>
   <div id="alias-view" class="view">
 
+    <div id="alias-view-header">
+      <h2 id="alias-view-title">别名管理</h2>
+      <label for="alias-column-select">分类：</label>
+      <a-select v-model:value="columnName" v-bind="{
+        id: 'alias-column-select',
+        disabled: loadingAliasLists,
+        style: {
+          width: '8em',
+        },
+      }">
+        <a-select-option value="student_school">学院名称</a-select-option>
+      </a-select>
+    </div>
+
     <a-checkbox-group v-model:value="selectedAliasListNames" :style="{
       width: '100%',
     }">
@@ -145,29 +159,6 @@ const createAliasList = () => {
                 全部选中
               </template>
             </a-button>
-
-            <a-input-group id="alias-column-control" compact>
-              <a-tooltip v-bind="{
-                color: 'blue',
-                title: '刷新别名列表',
-              }">
-                <a-button @click="loadAliasLists(true)" v-bind="{
-                  loading: loadingAliasLists,
-                }">
-                  <template #icon>
-                    <SyncOutlined />
-                  </template>
-                </a-button>
-              </a-tooltip>
-              <a-select v-model:value="columnName" v-bind="{
-                disabled: loadingAliasLists,
-                style: {
-                  width: '8em',
-                },
-              }">
-                <a-select-option value="student_school">学院名称</a-select-option>
-              </a-select>
-            </a-input-group>
 
             <ToolbarButton v-bind="{
               type: 'primary',
@@ -254,6 +245,19 @@ const createAliasList = () => {
   padding: 32px;
 }
 
+#alias-view-header {
+  display: flex;
+  padding: 0 12px;
+  margin-bottom: 12px;
+  align-items: center;
+}
+
+#alias-view-title {
+  margin: 0;
+  margin-right: auto;
+  font-weight: bold;
+}
+
 #alias-list-header {
   display: flex;
   padding: 5px 0;
@@ -265,11 +269,6 @@ const createAliasList = () => {
   margin-right: auto;
 }
 
-#alias-column-control {
-  width: unset;
-}
-
-#alias-column-control,
 .toolbar-button {
   margin-left: 12px;
 }
