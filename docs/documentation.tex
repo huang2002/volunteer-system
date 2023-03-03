@@ -5,7 +5,7 @@
 \usepackage[colorlinks,allcolors=blue,pdflang=zh-CN]{hyperref}
 
 \newcommand{\systemname}{志愿服务信息管理系统}
-\newcommand{\systemversion}{v1.1.1}
+\newcommand{\systemversion}{v1.2.0}
 \newcommand{\githuburl}{https://github.com/huang2002/volunteer-system}
 \newcommand{\issuesurl}{\githuburl/issues}
 \newcommand{\releasesurl}{\githuburl/releases}
@@ -56,6 +56,7 @@
 /path/to/volunteer-system
         ├─ backend/
         ├─ frontend/
+        ├─ aliases.json
         ├─ 初始化（Windows）.bat
         ├─ 初始化（MacOS或Linux）.bash
         ├─ 启动（Windows）.bat
@@ -65,11 +66,17 @@
         └─ requirements.txt
 \end{verbatim}
 
-其中，\texttt{frontend}和\texttt{backend}文件夹分别存放前端和后端的代码。
-\texttt{*.bat}和\texttt{*.bash}是辅助使用的脚本程序。\texttt{使用手册.pdf}就是当前文件。
-\texttt{LICENSE.txt}和\texttt{requirements.txt}分别是开源许可证和\Python依赖项清单。
+其中，
 
-首次成功运行后，会生成三个文件夹：\texttt{data}、\texttt{backup}和\texttt{export}，
+\begin{itemize}
+    \item \texttt{frontend}和\texttt{backend}分别存放前端和后端的代码。
+    \item \texttt{aliases.json}是用于存放别名的数据文件。
+    \item \texttt{*.bat}和\texttt{*.bash}是辅助使用的脚本程序。
+    \item \texttt{使用手册.pdf}就是此文档的文件。
+    \item \texttt{LICENSE.txt}和\texttt{requirements.txt}分别是开源许可证和\Python依赖项清单。
+\end{itemize}
+
+首次成功运行后，会额外生成三个文件夹：\texttt{data}、\texttt{backup}和\texttt{export}，
 分别用来存放原始数据、备份数据和导出数据。
 
 \subsection{安装\Python}
@@ -201,10 +208,17 @@ python --version
 如果数据格式没有明显问题，但是程序却无法识别，请进行反馈（见章节\ref{subsec:report}）。
 
 \begin{warnings}
-    \item 后台程序处理导入数据时会自动去除单元格内的首尾空格。
+    \item 在处理导入数据时，后台程序会自动去除单元格内的首尾空格，
+    并根据设置处理别名（见章节\ref{subsec:alias}）。
     \item 导入时，后台程序会自动忽略多余的重复记录，仅保留第一条。
     如果确实需要导入相似数据，请填写不同的备注加以区分。
 \end{warnings}
+
+\subsection{别名管理}
+\label{subsec:alias}
+
+在“别名管理”页面中，可以查看和修改别名设置。
+在添加和导入数据时，程序会根据这里的设置将别名转化成原始名称。
 
 \subsection{数据备份}
 \label{subsec:backup}
