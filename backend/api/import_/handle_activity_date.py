@@ -6,7 +6,7 @@ EXCEL_DATE_ORIGIN = pd.to_datetime('1900/1/1') \
     - pd.DateOffset(days=2)  # manual fix
 
 DATE_SEP_EN = '-'
-DATE_SEP_COMPACT = r'-—－、，,'
+DATE_SEP_COMPACT = r'-—－、，, '  # '-' must be the first
 ADDITION_PATTERN = re.compile(r'[\(（][^)]*[\)）]')
 MULTIPLE_DATE_PATTERN = re.compile(r'''(?x)  # verbose mode
     (\d{1,2}月\d{1,2}日)
@@ -18,21 +18,22 @@ MULTIPLE_RANGE_PATTERN = re.compile(f'''(?x)  # verbose mode
     (?:[^{DATE_SEP_COMPACT}]+[{DATE_SEP_COMPACT}])*
 ''')
 REPLACEMENT_PATTERNS: List[Tuple[re.Pattern, str]] = [
-    (WHITESPACE_PATTERN, ''),
+    (re.compile(r'^\s+'), ''),
+    (re.compile(r'\s+$'), ''),
     (ADDITION_PATTERN, ''),
     (MULTIPLE_DATE_PATTERN, r'\1-\2'),
     (MULTIPLE_RANGE_PATTERN, DATE_SEP_EN),
 ]
 
 MONTH_PATTERN = re.compile(r'''(?x)  # verbose mode
-    (?:(\d{4})(?:年|/|\.))?
-    (\d{1,2})(?:月|/|\.|年|-)  # HACK
+    (?:(\d{4})(?:年|/|／|\.))?
+    (\d{1,2})(?:月|/|／|\.|年|-)  # HACK
 ''')
 
 DATE_PATTERN = re.compile(r'''(?x)  # verbose mode
     # date
-    (?:(\d{4})(?:年|月|/|\.))?  # HACK
-    (\d{1,2})(?:月|/|\.|年|-)  # HACK
+    (?:(\d{4})(?:年|月|/|／|\.))?  # HACK
+    (\d{1,2})(?:月|/|／|\.|年|-)  # HACK
     (\d{1,2})(?:日|号)?
     # optional time
     (?:\d{1,2}(?::|：|\.)\d{1,2})?
@@ -41,14 +42,14 @@ DATE_PATTERN = re.compile(r'''(?x)  # verbose mode
 
 DATE_RANGE_PATTERN = re.compile(r'''(?x)  # verbose mode
     # from
-    (?:(\d{4})(?:年|月|/|\.))?  # HACK
-    (\d{1,2})(?:月|/|\.|年)  # HACK
+    (?:(\d{4})(?:年|月|/|／|\.))?  # HACK
+    (\d{1,2})(?:月|/|／|\.|年)  # HACK
     (\d{1,2})(?:日|号)?
     # separate
-    (?:—+|-+|－|~|到|至|及)  # HACK
+    (?:—+|-+|－|~|:|：|到|至|及)  # HACK
     # to
-    (?:(\d{4})(?:年|月|/|\.))?  # HACK
-    (?:(\d{1,2})(?:月|/|\.|年))?  # HACK
+    (?:(\d{4})(?:年|月|/|／|\.))?  # HACK
+    (?:(\d{1,2})(?:月|/|／|\.|年))?  # HACK
     (\d{1,2})(?:日|号)?
     # optional time
     (?:\d{1,2}(?::|：|\.)\d{1,2}(?:—|——|-|－|~))?
@@ -58,13 +59,13 @@ DATE_RANGE_PATTERN = re.compile(r'''(?x)  # verbose mode
 DATE_OFFSET_TO_MONTH_END = pd.DateOffset(months=1, days=-1)
 MONTH_RANGE_PATTERN = re.compile(r'''(?x)  # verbose mode
     # from
-    (?:(\d{4})(?:年|/|\.))?
-    (\d{1,2})(?:月|/|\.|年)?  # HACK
+    (?:(\d{4})(?:年|/|／|\.))?
+    (\d{1,2})(?:月|/|／|\.|年)?  # HACK
     # separate
-    (?:—+|-+|－|~|到|至|及)  # HACK
+    (?:—+|-+|－|~|:|：|到|至|及)  # HACK
     # to
-    (?:(\d{4})(?:年|/|\.))?
-    (?:(\d{1,2})(?:月|/|\.|年))?  # HACK
+    (?:(\d{4})(?:年|/|／|\.))?
+    (?:(\d{1,2})(?:月|/|／|\.|年))?  # HACK
 ''')
 
 

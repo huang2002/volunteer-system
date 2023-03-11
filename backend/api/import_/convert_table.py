@@ -23,6 +23,12 @@ def convert_table(file: FileStorage) -> pd.DataFrame:
     except:
         raise ImportTableError(f'导入失败：{filename}')
 
+    # ignore empty rows
+    df_raw.dropna(
+        how='all',
+        inplace=True,
+    )
+
     # copy data
     df_result = pd.DataFrame()
     for col_src in df_raw.columns:

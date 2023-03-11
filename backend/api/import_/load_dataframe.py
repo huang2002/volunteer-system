@@ -21,6 +21,7 @@ def load_dataframe(
         'skiprows': skiprows,
         'nrows': nrows,
         'parse_dates': False,
+        'na_values': ('缺',),
     }
 
     if filename_lower.endswith(ACCEPTABLE_EXCEL_EXTENSIONS):
