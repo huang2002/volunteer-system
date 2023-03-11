@@ -2,7 +2,7 @@ from ..common import *
 from .common import *
 
 # all extensions will be in lower case
-ACCEPTABLE_EXCEL_EXTENSIONS = ('.xlsx')
+ACCEPTABLE_EXCEL_EXTENSIONS = ('.xlsx',)
 ACCEPTABLE_CSV_EXTENSIONS = ('.csv', '.csv.gz')
 ACCEPTABLE_TSV_EXTENSIONS = ('.tsv', '.tsv.gz')
 
