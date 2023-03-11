@@ -8,21 +8,23 @@ import { reactive, ref } from 'vue';
 
 interface ExportFormState {
   level: string;
-  begin_date?: string;
-  end_date?: string;
+  begin_date: undefined | string;
+  end_date: undefined | string;
   format: string;
-  encoding?: string;
+  encoding: undefined | string;
   suffix_encoding: boolean;
 }
 
-const exportFormState = reactive<ExportFormState>({
+const defaultExportFormState: ExportFormState = {
   level: 'school',
   begin_date: undefined,
   end_date: undefined,
   format: 'xlsx',
   encoding: undefined,
   suffix_encoding: true,
-});
+};
+
+const exportFormState = reactive<ExportFormState>({ ...defaultExportFormState });
 
 const paramNames: (keyof ExportFormState)[] = [
   'begin_date',
@@ -75,6 +77,10 @@ const onSubmit = async () => {
 
   exporting.value = false;
 
+};
+
+const onReset = () => {
+  Object.assign(exportFormState, defaultExportFormState);
 };
 
 const openingExportFolder = ref(false);
@@ -208,12 +214,20 @@ const openExportFolder = async () => {
       </a-form-item>
 
       <a-form-item v-bind="formTailLayout">
-        <a-button @click="onSubmit()" v-bind="{
-          type: 'primary',
-          loading: exporting,
-        }">
-          导出
-        </a-button>
+        <a-space>
+
+          <a-button @click="onSubmit()" v-bind="{
+            type: 'primary',
+            loading: exporting,
+          }">
+            导出
+          </a-button>
+
+          <a-button @click="onReset()">
+            重置
+          </a-button>
+
+        </a-space>
       </a-form-item>
 
     </a-form>
