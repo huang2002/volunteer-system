@@ -63,6 +63,7 @@ TODO: add table merge
 
 - POST `/api/import/preview`
     - Gets the import preview of uploaded files.
+    <!-- TODO: add option to remove stars -->
     - Request Body: table files
         - Type: `multipart/form-data`
         - Name of the file entries: `files[]`
