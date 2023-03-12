@@ -50,6 +50,7 @@ TODO: add table merge
 - POST `/api/export/create/<level>`
     - Creates an export of specific level.
     - Query Args:
+        - `tables` -- selected table names, separated by commas
         - `encoding` -- output encoding, default: `gb2312`
         - `format` -- output format, default: `xlsx`
         - `begin_date` -- filter by `activity_end <= begin_date`

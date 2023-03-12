@@ -22,16 +22,26 @@ def create(level: str) -> ResponseType:
 
     try:
 
-        table_names = get_table_names()
+        options = request.args
+
+        if not KEY_SELECTED_TABLES in options:
+            return RESPONSE_NO_TABLES_SELECTED
+        selected_table_names = options[KEY_SELECTED_TABLES].split(',')
+        all_table_names = get_table_names()
+        if any(
+            (not table_name in all_table_names)
+            for table_name in selected_table_names
+        ):
+            return RESPONSE_INVALID_TABLE_NAME
+
         dataframes = []
-        for table_name in table_names:
+        for table_name in selected_table_names:
             df = read_table(get_table_path(table_name))
             df[GRADE_COLUMN_NAME] = table_name
             dataframes.append(df)
         df_data = pd.concat(dataframes)
         handle_aliases(df_data)
 
-        options = request.args
         begin_date = None
         end_date = None
         if KEY_BEGIN_DATE in options:

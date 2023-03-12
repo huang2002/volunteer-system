@@ -2,9 +2,15 @@
 import { merge } from '3h-utils';
 import ToolbarButton from '@/components/ToolbarButton.vue';
 import { displayErrorMessage } from '@/shared/common';
-import { FolderOpenOutlined, QuestionCircleOutlined } from '@ant-design/icons-vue';
+import { loadingTableNames, tableNames, updateTableNames } from '@/shared/table/tableNames';
+import { CheckOutlined, CloseOutlined, FolderOpenOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
-import { reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref, shallowRef, watch } from 'vue';
+
+onMounted(async () => {
+  await updateTableNames(false);
+  selectedTableNames.value = tableNames.value.slice();
+});
 
 interface ExportFormState {
   level: string;
@@ -25,6 +31,32 @@ const defaultExportFormState: ExportFormState = {
 };
 
 const exportFormState = reactive<ExportFormState>({ ...defaultExportFormState });
+
+const tableSelectVisible = ref(false);
+const selectedTableNames = shallowRef<string[]>([]);
+watch(tableNames, (names) => {
+  selectedTableNames.value = selectedTableNames.value.filter(
+    (name) => names.includes(name)
+  );
+});
+
+const allSelected = computed(() => (
+  selectedTableNames.value.length === tableNames.value.length
+));
+
+const indeterminate = computed(() => {
+  const selected = selectedTableNames.value;
+  const all = tableNames.value;
+  return (selected.length > 0) && (selected.length < all.length);
+});
+
+const onClickSelectAll = () => {
+  if (indeterminate.value || !allSelected.value) {
+    selectedTableNames.value = tableNames.value.slice();
+  } else {
+    selectedTableNames.value = [];
+  }
+};
 
 const paramNames: (keyof ExportFormState)[] = [
   'begin_date',
@@ -62,6 +94,10 @@ const onSubmit = async () => {
       params.append(name, String(options[name]));
     }
   });
+  params.append(
+    'tables',
+    selectedTableNames.value.join(',')
+  );
 
   try {
     const url = `/api/export/create/${options.level}?${params.toString()}`;
@@ -81,6 +117,7 @@ const onSubmit = async () => {
 
 const onReset = () => {
   Object.assign(exportFormState, defaultExportFormState);
+  selectedTableNames.value = tableNames.value.slice();
 };
 
 const openingExportFolder = ref(false);
@@ -127,6 +164,12 @@ const openExportFolder = async () => {
       id: 'export-form',
       ...commonFormLayout
     }">
+
+      <a-form-item label="导出范围">
+        <a-button @click="tableSelectVisible = true">
+          选择导出范围
+        </a-button>
+      </a-form-item>
 
       <a-form-item label="导出级别" name="level" required>
         <a-radio-group v-model:value="exportFormState.level">
@@ -232,6 +275,64 @@ const openExportFolder = async () => {
 
     </a-form>
 
+    <a-drawer v-model:visible="tableSelectVisible" v-bind="{
+      title: '选择导出范围',
+      bodyStyle: {
+        paddingTop: '0',
+      },
+    }">
+
+      <template #extra>
+        <a-button type="primary" @click="tableSelectVisible = false">
+          确认
+        </a-button>
+      </template>
+
+      <a-checkbox-group v-model:value="selectedTableNames" style="width: 100%;">
+        <a-list :data-source="tableNames" size="small">
+
+          <template #header>
+            <div id="export-table-select-header">
+
+              <a-button @click="onClickSelectAll()" v-bind="{
+                disabled: loadingTableNames || !tableNames.length,
+              }">
+                <template #icon>
+                  <CloseOutlined v-if="allSelected" />
+                  <CheckOutlined v-else />
+                </template>
+                <template v-if="allSelected">
+                  取消全选
+                </template>
+                <template v-else>
+                  全部选中
+                </template>
+              </a-button>
+
+              <a-button @click="updateTableNames(true)" v-bind="{
+                type: 'link',
+                loading: loadingTableNames,
+              }">
+                <template #icon>
+                  <SyncOutlined />
+                </template>
+                刷新列表
+              </a-button>
+
+            </div>
+          </template>
+
+          <template #renderItem="{ item }">
+            <a-list-item :title="item">
+              <a-checkbox :value="item">{{ item }}</a-checkbox>
+            </a-list-item>
+          </template>
+
+        </a-list>
+      </a-checkbox-group>
+
+    </a-drawer>
+
   </div>
 </template>
 
@@ -255,5 +356,10 @@ const openExportFolder = async () => {
 #export-form {
   width: 500px;
   margin: 0 auto;
+}
+
+#export-table-select-header {
+  display: flex;
+  justify-content: space-between;
 }
 </style>

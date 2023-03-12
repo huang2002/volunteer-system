@@ -3,8 +3,10 @@ from ..common import *
 __all__ = [
     'ExportError',
     'RESPONSE_INVALID_LEVEL',
+    'RESPONSE_NO_TABLES_SELECTED',
     'KEY_BEGIN_DATE',
     'KEY_END_DATE',
+    'KEY_SELECTED_TABLES',
     'GRADE_COLUMN_NAME',
     'EXPORT_DATE_FORMAT',
     'EXPORT_TIME_FORMAT',
@@ -23,9 +25,12 @@ class ExportError(Exception):
 
 
 RESPONSE_INVALID_LEVEL: ResponseType = ('未知的报表级别', 400)
+RESPONSE_NO_TABLES_SELECTED: ResponseType = ('未选择任何表格', 400)
 
 KEY_BEGIN_DATE = 'begin_date'
 KEY_END_DATE = 'end_date'
+KEY_SELECTED_TABLES = 'tables'
+
 GRADE_COLUMN_NAME = 'grade'
 EXPORT_DATE_FORMAT = '%Y.%m.%d'
 EXPORT_TIME_FORMAT = '%Y.%m.%d-%H.%M.%S'
