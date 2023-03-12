@@ -3,9 +3,10 @@
 \usepackage[utf8]{inputenc}
 \usepackage{ctex}
 \usepackage[colorlinks,allcolors=blue,pdflang=zh-CN]{hyperref}
+\usepackage{graphicx}
 
 \newcommand{\systemname}{志愿服务信息管理系统}
-\newcommand{\systemversion}{v1.4.0}
+\newcommand{\systemversion}{v1.4.1}
 \newcommand{\githuburl}{https://github.com/huang2002/volunteer-system}
 \newcommand{\issuesurl}{\githuburl/issues}
 \newcommand{\releasesurl}{\githuburl/releases}
@@ -151,9 +152,21 @@ python --version
 
 系统的前端页面左侧设有导航菜单，点击菜单中的选项即可打开对应的功能页面。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../screenshots/home.jpg}
+    \caption{欢迎界面}
+\end{figure}
+
 \subsection{增删改查}
 
 在“增删改查”页面中，可以查看系统中现存表格的所有记录，并进行添加、修改、删除等操作。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../screenshots/table.jpg}
+    \caption{增删改查}
+\end{figure}
 
 录入同一活动的多条记录时，可勾选“批量导入模式”。
 在此模式下，成功添加记录后不会立即清除并关闭录入表单，
@@ -167,6 +180,12 @@ python --version
 \subsection{生成报表}
 
 在“生成报表”页面中，可以导出各种分级表格。目前，可以选择以下导出等级：
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../screenshots/export.jpg}
+    \caption{生成报表}
+\end{figure}
 
 \begin{description}
     \item[学院] 分学院导出数据表格，表格将以学院名称命名。
@@ -190,6 +209,12 @@ python --version
 
 在“导入记录”页面中，可以上传已有的数据表格，让后台程序自动识别并导入其中的记录。
 如果有现存数据需要导入系统，请使用此功能，避免逐条手动输入。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../screenshots/import.jpg}
+    \caption{导入记录}
+\end{figure}
 
 导入步骤如下：
 
@@ -221,11 +246,23 @@ python --version
 在“别名管理”页面中，可以查看和修改别名设置。
 在添加和导入数据时，程序会根据这里的设置将别名转化成原始名称。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../screenshots/alias.jpg}
+    \caption{别名管理}
+\end{figure}
+
 \subsection{数据备份}
 \label{subsec:backup}
 
 在“数据备份”页面中，可以查看、生成、加载和删除备份。
 建议每周或每月进行一次备份，并保留最新的几次备份、删除多余备份。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\textwidth]{../screenshots/backup.jpg}
+    \caption{数据备份}
+\end{figure}
 
 备份数据会保存在软件目录下\texttt{backup}中以备份名称命名的新文件夹里。
 
