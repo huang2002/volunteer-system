@@ -127,6 +127,7 @@ const createAliasList = () => {
         },
       }">
         <a-select-option value="student_school">学院名称</a-select-option>
+        <a-select-option value="student_class">班级名称</a-select-option>
       </a-select>
     </div>
 

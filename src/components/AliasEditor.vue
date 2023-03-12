@@ -36,9 +36,14 @@ const loadAliases = async (
     const response = await fetch(`/api/alias/view/${props.columnName}`);
     if (response.status === 200) {
       const result = await response.json() as AliasViewResult;
-      aliases.value = result
-        .find((item) => (item.name === props.listName))!
-        .aliases;
+      const targetAliases = result.find(
+        (item) => (item.name === props.listName)
+      );
+      if (targetAliases) {
+        aliases.value = targetAliases.aliases;
+      } else {
+        aliases.value = [];
+      }
       if (alertSuccess) {
         message.success('刷新成功');
       }

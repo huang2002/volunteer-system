@@ -4,6 +4,8 @@ __all__ = [
     'AliasMap',
     'AliasList',
     'AliasLists',
+    'AliasMapper',
+    'map_alias',
     'load_aliases',
     'get_alias_lists',
     'update_alias_list',
@@ -17,15 +19,52 @@ ALIASES_ENCODING = 'utf-8'
 AliasMap = Dict[str, str]  # alias -> name
 AliasList = List[str]
 AliasLists = Dict[str, AliasList]  # name -> [aliases...]
+AliasMapper = Callable[[AliasMap, str], str]
 
 # col -> alias_map
 alias_maps: Dict[str, AliasMap] = {
-    "student_school": {},
-    # TODO: "class_map": {},
+    'student_school': {},
+    'student_class': {},
 }
 
 # col -> alias_lists
 alias_list_map: Dict[str, AliasLists] = {}
+
+
+def map_student_school(alias_map: AliasMap, value: str) -> str:
+    if value in alias_map:
+        return alias_map[value]
+    else:
+        return value
+
+
+CLASS_PATTERN = re.compile(r'^(\D+)(\d+)')
+
+
+def map_student_class(alias_map: AliasMap, value: str) -> str:
+    match_result = CLASS_PATTERN.match(value)
+    if not match_result:
+        return value
+    class_name = match_result[1]
+    class_number = match_result[2]
+    if class_name in alias_map:
+        return alias_map[class_name] + class_number
+    else:
+        return class_name + class_number
+
+
+alias_mappers: Dict[str, AliasMapper] = {
+    'student_school': map_student_school,
+    'student_class': map_student_class,
+}
+
+
+def map_alias(column_name: str, value: Any) -> Any:
+    if not column_name in alias_mappers:
+        return value
+    mapper = alias_mappers[column_name]
+    alias_map = alias_maps[column_name]
+    return mapper(alias_map, value)
 
 
 def set_aliases(target_map: AliasMap, source: Any) -> NoReturn:
@@ -51,8 +90,12 @@ def load_aliases() -> NoReturn:
         alias_list_map = json.load(input_file)
     assert isinstance(alias_list_map, dict)
 
-    for column_name, source_map in alias_list_map.items():
-        set_aliases(alias_maps[column_name], source_map)
+    for column_name in alias_maps.keys():
+        if column_name in alias_list_map:
+            set_aliases(alias_maps[column_name], alias_list_map[column_name])
+        else:
+            # fix the missing entry
+            alias_list_map[column_name] = {}
 
 
 def get_alias_lists(column_name: str) -> AliasLists:
@@ -87,13 +130,8 @@ def save_aliases() -> NoReturn:
 
 def handle_aliases(df: pd.DataFrame) -> NoReturn:
     for column_name in df.columns:
-        if not column_name in alias_maps:
+        if not column_name in alias_mappers:
             continue
-        alias_map = alias_maps[column_name]
         df[column_name] = df[column_name].map(
-            lambda value: (
-                alias_map[value]
-                if value in alias_map
-                else value
-            )
+            lambda value: map_alias(column_name, value)
         )
