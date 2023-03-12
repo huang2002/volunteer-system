@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import AliasEditor from '@/components/AliasEditor.vue';
 import ToolbarButton from '@/components/ToolbarButton.vue';
-import { type AliasViewResult, type AliasViewResultItem, updateAliasList, deleteAliasLists, aliasActionDisabled } from '@/shared/alias/aliasActions';
+import { type AliasViewResult, type AliasViewResultItem, updateAliasList, renameAliasList, deleteAliasLists, aliasActionDisabled } from '@/shared/alias/aliasActions';
 import { showAliasEditor } from '@/shared/alias/aliasEditor';
 import { displayErrorMessage } from '@/shared/common';
-import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons-vue';
+import { CheckOutlined, ClearOutlined, CloseOutlined, DeleteOutlined, EditOutlined, FormOutlined, PlusOutlined, SyncOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { computed, onBeforeMount, ref, shallowRef, watch } from 'vue';
 
@@ -173,6 +173,19 @@ const createAliasList = () => {
             </ToolbarButton>
 
             <ToolbarButton v-bind="{
+              disabled: aliasActionDisabled,
+              loading: loadingAliasLists,
+              onClick: () => {
+                loadAliasLists(true);
+              },
+            }">
+              <template #icon>
+                <SyncOutlined />
+              </template>
+              刷新列表
+            </ToolbarButton>
+
+            <ToolbarButton v-bind="{
               danger: true,
               disabled: aliasActionDisabled || loadingAliasLists || !selectedAliasListNames.length,
               onClick: deleteSelectedAliasLists,
@@ -203,16 +216,31 @@ const createAliasList = () => {
 
             <template #actions>
 
-              <a-button type="link" @click="editAliasList(
-                (item as AliasViewResultItem).name
-              )">
+              <a-button @click="editAliasList((item as AliasViewResultItem).name)" v-bind="{
+                type: 'text',
+                style: {
+                  color: '#19F',
+                },
+              }">
                 <template #icon>
                   <EditOutlined />
                 </template>
                 编辑
               </a-button>
 
-              <a-button type="link" danger @click="deleteAliasLists(
+              <a-button @click="renameAliasList(columnName, (item as AliasViewResultItem).name, () => { loadAliasLists(false); })" v-bind="{
+                type: 'text',
+                style: {
+                  color: '#F90',
+                },
+              }">
+                <template #icon>
+                  <FormOutlined />
+                </template>
+                重命名
+              </a-button>
+
+              <a-button type="text" danger @click="deleteAliasLists(
                 columnName,
                 [(item as AliasViewResultItem).name],
                 () => {

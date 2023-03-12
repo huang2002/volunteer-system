@@ -45,7 +45,40 @@ export const updateAliasList = async (
 
 };
 
-export const deleteAliasLists = async (
+export const renameAliasList = async (
+    columnName: string,
+    listName: string,
+    onSuccess?: () => void,
+) => {
+
+    if (aliasActionDisabled.value) {
+        return;
+    }
+    aliasActionDisabled.value = true;
+
+    const newName = prompt('请输入新的原始名称：', listName);
+    if (!newName) {
+        aliasActionDisabled.value = false;
+        return;
+    }
+
+    try {
+        const url = `/api/alias/rename/${columnName}/${listName}/${newName}`;
+        const response = await fetch(url, { method: 'POST' });
+        if (response.status === 200) {
+            message.success('重命名成功');
+            onSuccess?.();
+        } else {
+            await displayErrorMessage(response, '重命名别名列表时出错');
+        }
+    } catch {
+        message.error('重命名别名列表失败');
+    }
+    aliasActionDisabled.value = false;
+
+};
+
+export const deleteAliasLists = (
     columnName: string,
     listNames: string[],
     onSuccess?: () => void,
