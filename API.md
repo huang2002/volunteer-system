@@ -100,6 +100,9 @@ TODO: add table merge
         - Type: JSON
         - Format: `[{ "name": "foo", "aliases": [...] }, ...]`
 
+- POST `/api/alias/rename/<column_name>/<list_name>/<new_name>`
+    - Renames specific alias list.
+
 - POST `/api/alias/update/<column_name>/<list_name>`
     - Updates/Creates specific alias list.
     - Request Body:

@@ -1,6 +1,7 @@
 from ..common import *
 
 __all__ = [
+    'RESPONSE_UNKNOWN_ALIAS_LIST',
     'AliasMap',
     'AliasList',
     'AliasLists',
@@ -9,10 +10,13 @@ __all__ = [
     'load_aliases',
     'get_alias_lists',
     'update_alias_list',
+    'rename_alias_list',
     'delete_alias_list',
     'save_aliases',
     'handle_aliases',
 ]
+
+RESPONSE_UNKNOWN_ALIAS_LIST: ResponseType = ('未知的别名列表', 404)
 
 ALIASES_ENCODING = 'utf-8'
 
@@ -113,6 +117,17 @@ def update_alias_list(
     alias_list_map[column_name][list_name] = alias_list
     for new_alias in alias_list:
         alias_maps[column_name][new_alias] = list_name
+    save_aliases()
+
+
+def rename_alias_list(column_name: str, list_name: str, new_name: str) -> NoReturn:
+    if list_name == new_name:
+        return
+    for alias in alias_list_map[column_name][list_name]:
+        alias_maps[column_name][alias] = new_name
+    alias_list_map[column_name][new_name] = \
+        alias_list_map[column_name][list_name]
+    del alias_list_map[column_name][list_name]
     save_aliases()
 
 
