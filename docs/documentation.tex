@@ -5,7 +5,7 @@
 \usepackage[colorlinks,allcolors=blue,pdflang=zh-CN]{hyperref}
 
 \newcommand{\systemname}{志愿服务信息管理系统}
-\newcommand{\systemversion}{v1.2.0}
+\newcommand{\systemversion}{v1.3.0}
 \newcommand{\githuburl}{https://github.com/huang2002/volunteer-system}
 \newcommand{\issuesurl}{\githuburl/issues}
 \newcommand{\releasesurl}{\githuburl/releases}
@@ -177,8 +177,9 @@ python --version
 导出的文件（夹）会存放在软件的\texttt{export}文件夹中。
 点击“生成报表”页面右上角的“打开导出目录”，后台程序会尝试在文件管理器中打开\texttt{export}文件夹。
 
-在导出时，还可以选择“开始日期”和“结束日期”对数据进行筛选，达到仅导出部分数据的效果。
-留空则表示跳过对应的筛选。筛选条件如下：
+在导出时，可以通过“导出范围”选择想要导出的数据表格，
+还可以选择“开始日期”和“结束日期”对数据进行筛选。
+留空则表示跳过对应的筛选。日期筛选条件如下：
 
 \begin{description}
     \item[开始日期] 仅导出活动结束日期大于等于此日期的数据。
@@ -204,7 +205,7 @@ python --version
 目前，导入程序已尽可能兼容各种内容格式，尤其是日期数据。
 如果在导入时还是遇到了无法识别的问题，请先根据提示检查数据是否有误。
 若是数据本身有问题，例如“6月31日”（不存在的日期）、“XX年暑假”（缺少明确日期）等，
-麻烦手动修改，然后移除已选择的文件、重新上传并再次尝试生成导入预览。
+麻烦手动修改，然后在上传列表中移除已选择的文件、重新上传并再次尝试生成导入预览。
 如果数据格式没有明显问题，但是程序却无法识别，请进行反馈（见章节\ref{subsec:report}）。
 
 \begin{warnings}
